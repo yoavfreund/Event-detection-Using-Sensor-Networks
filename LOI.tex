@@ -1,0 +1,43 @@
+\documentclass{letter}
+\usepackage{todonotes}
+\signature{Yoav Freund}
+\address{9500 Gilman Drive \\ San Diego \\ CA 92037}
+
+\begin{document}
+\begin{letter}{UCSD \\ Computer Science and Enginering}
+\opening{{\bf Letter of Intent: ``HDR TRIPODS: From detection to reaction - computation in resource constrained sensor networks"}}
+
+\date{March 2019}
+
+This letter of intent is a representation of our intention to submit a proposal to the program solicitation NSF 19-550: Harnessing the data revolution (HDR): Transdisciplinary Research in data science (TRIPODS) Phase I.
+
+{\bf Synopsis}\\
+Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into a {\bf knowledge} (representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the {\bf knowledge}.
+
+The design of the sensors is dominated by considerations of sensitivity and resolution (temporal and spatial).  The goal is to detect the smallest, faintest and most transient signals, \comment{\color{blue} by exploiting priors on the physical model of signal acquisition, and the geometry of signal representation}}. Computation is used to reduce raw data into an internal representation and then into actions. 
+
+These days the leading architecture of reactive systems is wireless sensor networks. Sensor networks consist of large numbers of small independent units, each with sensors, computation and wireless communication. Such systems are constrained by power and communication bandwidth. 
+
+One important consequence of these constraints is {\em pushing computation to the edge}. Instead of communicating the raw information from each sensor to a central computer, each sensor unit locally computes summaries, or sketches, which are shorter and therefore cheaper to communicate. This also reduces the computation load on the units that receive the information.
+
+The focus of our planned proposal is to develop a mathematical theory and algorithms for distributed data analysis. We will draw on our expertise in signal processing, statistics, compressed sensing, machine learning, low dimensional manifolds. We have  experience with real-world seismic and acoustic sensor networks. This  will ensure that the theoretically rigorous methods we develop can be utilized in practical real-world applications.
+
+We plan to develop a TRIPODS institute that will be part of the Halicio\u{g}lu Data Science Institute. {\bf Rajesh}, can you expand on how a TRIPODS institute will benefit from being part of HDSI? Maybe a connection with CONIX?
+
+
+{\bf Project PI and Personnel}\\
+
+\begin{itemize}
+    \item PI Yoav Freund, Computer Science and Engineering, UCSD.
+    \item Co-PI Peter Gerstoft, Scripps Institution of Oceanography and Electrical and Computer Enginnering, both UCSD.
+    \item Co-PI Rayan Saab, Mathematics, UCSD.
+    \item Co-PI Piya Pal, Electrical and Computer Enginnering, UCSD.
+    \item Co-PI Alexander Cloninger, Mathematics, UCSD.
+\end{itemize}
+
+
+%\closing{Sincerely,}
+%\ps{P.S. Here goes your ps.}
+%\encl{Enclosures.}
+\end{letter}
+\end{document}

@@ -1,0 +1,198 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+%\usepackage[colorinlistoftodos]{todonotes}
+
+%\newcommand{\comment}[3]{}  % suppress comments
+\newcommand{\comment}[3]{{\color{#1} {\bf #2 :} #3}}
+
+\newcommand{\yoav}[1]{\comment{magenta}{Yoav}{#1}}
+\newcommand{\piya}[1]{\comment{blue}{Piya}{#1}}
+\newcommand{\peter}[1]{\comment{purple}{Peter}{#1}}
+\newcommand{\rayan}[1]{\comment{red}{Rayan}{#1}}
+\newcommand{\alex}[1]{\comment{green}{Alex}{#1}}
+
+\title{HDR TRIPODS: From detection to reaction - computation in resource constrained sensor networks}
+%\author{yfreund }
+\date{March 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Summary}
+Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into a {\bf knowledge} (representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the {\bf knowledge}.
+
+The design of the sensors is dominated by considerations of sensitivity and resolution (temporal and spatial).  The goal is to detect the smallest, faintest and most transient signals,
+by exploiting priors on the physical model of signal acquisition, and the geometry of signal representation. Computation is used to reduce raw data into an internal representation and then into actions. 
+
+These days the leading architecture of reactive systems is wireless sensor networks. Sensor networks consist of large numbers of small independent units, each with sensors, computation and wireless communication. Such systems are constrained by power and communication bandwidth. 
+
+One important consequence of these constraints is {\em pushing computation to the edge}. Instead of communicating the raw information from each sensor to a central computer, each sensor unit locally computes summaries, or sketches, which are shorter and therefore cheaper to communicate. This also reduces the computation load on the units that receive the information.
+
+\section{Examples}
+\begin{enumerate}
+    \item {\bf Localization:} Peter's work using seismic sensor network to detect cars and train using Graph Signal processing\cite{riahi2017}. The "Sloocalization" paper on localizing passive RFID tags by integrating over a very long time.
+    \item {\bf Anomaly detection} using a network of cameras and or microphones for low communication and low energy detection of anomalous events. Examples: cameras monitoring a highway. Microphone on factory floors. Smart-homes for the elderly living alone. Building security.
+    
+    An interesting part here is creating a model for what is normal with little or now intervention. Can we create a sketch of the signal which would be useful for defining the "normal" and distinguishing it from the abnormal?
+\end{enumerate}
+
+\section{Prompts}
+These prompts are intended as starting points for sections in the proposal description. The names attached are my wild guess as to whom might interest.
+
+\begin{itemize}
+    \item (Piya): Optimizing sensor locations in space. (Rayan/Piya?): Possibly related problem: Unknown (or imperfectly known) sensor locations. {\peter That is array calibration and has been studied much in SP}
+    \item (Piya): Suppose we use a sensor array to localize a target. What is the minimal amount of communication between sensors that is needed in order to achieve localization?
+    \item (Peter) What are the theoretically minimal resources to perform analysis of seismology / noise. {\bf Peter} I dont think my research focus will be seismology in this proposal. if needed, can do it for proposal. {\bf Yoav} Peter, can you describe some theoretical problems that are interesting for you?
+    \item {\peter Focus on the spatio-temporal fields in a  sensor network}
+    \item (Rayan, Yoav, Alex): Statistical analysis on sketches. Sub-problems: Anomaly detection. Distribution drift. Creating long-term statistical models (Cars on highway, Factory floor, foot-traffic, engine monitoring){\peter seems interesting}
+    \item (Rayan) Learning fast transforms (to reduce computation cost at sensors) 
+\end{itemize}
+
+\section{Long-term statistical modeling}
+ One important application of sensor networks is to monitor activity and identify anomalies. Examples include: building security systems, factory floors, highway monitoring, health monitoring for the sick or elderly and many others. In a typical application, a small number of people will be responsible for a large area or a large number of people. The task of the sensor system is to direct those people to the places/people which require their attention. 
+ 
+ Given the high price of manual work and the low price of sensors we expect sensors to be placed in an ad-hoc fashion at available locations with the expectation that the system will configure and calibrate itself.
+ 
+ On its face, this might seem like an under-constrained impossible problem. However, note that for all of the environments listed above there is a highly repetitive pattern from day to day and from week to week. Add to that the sensors are stationary, and one would expect that most sensors observe highly regular and highly predictable patterns.
+ 
+ 
+ 
+ monitoring a building or a parking lot, monitoring a factory floor
+
+\section{Distributed signal processing}
+
+Consider a source of a time signal, it can be a source of sound or vibration, it can be an electromagnetic signal such as WiFi. In the simplest version we consider a stationary point source that is emitting a signal in continuous time: $f(t)$
+
+A stationary sensor network is measuring the signal as transformed by the environment transfer function. The network, as a whole, has one of a set of goals listed below
+
+\begin{itemize}
+    \item Recovering the transfer function of the environment in order to estimate properties of the environment. As, for example, Sonar or Seismology. This typically requires that $f(t)$ is under our control.
+    %\item Reconstructing the original signal $f(t)$.
+    \item Estimating the location of the source, especially if the source is not stationary.
+    \item In the case of many sensors, selecting a subset of the sensors that is sufficient for the task.
+\end{itemize}
+
+Good algorithms for reaching these goals exist in the centralized computation setting. In other word, if we assume that all data is  transmitted to a single computer and processed together. We seek solutions for the setting where the communication bandwidth between sensors is restricted.
+
+Some interesting extensions of the basic model. More than a single source exists (the cocktail party problem) or the source is not a point. The sources or the sensors are not stationary. 
+
+As the source locations are in three dimensions of physical space, can we learn the 3D manifold of the signal properties? (cite)
+
+
+\piya{\em [From source localization perspective, it will be good to mention two or three different types of models. For example, a network of distributed radars (for example, on smart cars) should be modeled differently from a network of cameras.) Maybe Peter can also suggest some realistic models. For now, I am using a somewhat generic model.]}
+
+\rayan{\em [Not sure this is the right place for this comment, but here goes: One interesting class of problems that we can consider are "blind" or semi-blind problems, e.g., radar placed on ships where the exact locations of the ships is not known. There is some recent work from industry on problems of this type but with almost no theory whatsoever.]}
+
+\subsection{Model for Localization (Piya)} A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain parameters $\theta_i\in\mathbb{C}^P, i=1,\ldots,K$ from $K$ targets of interest (which will be termed as sources) in the environment by acquiring signals emitted by them. As an example, consider a network consisting of active radar units (for example, those mounted on autonomous vehicles) attempting to create a map of the environment. In this case, $K$ can denote the total number of pedestrians, byclists and other cars and $\theta_i\in\mathbb{R}^3$ for the $i$th target will consist of its location $\mathbf{x}_i=[x_i,y_i]^T$ and velocity $(v_i)$ parameters, i.e.
+\begin{equation} \theta_i = [ x_i, y_i, v_i ]^T, \quad 1\leq i\leq K  
+\end{equation} 
+Mathematically the space-time measurements collected at the $m$th sensing element can be described as \begin{equation} 
+y_m (t) = \sum_{i=1}^{K} \phi (\mathbf{d}_m,\theta_i,t) + w_m(t), \quad 1\leq m\leq M
+\end{equation}
+where $w_m(t)$ is the additive noise. Here $\mathbf{d}_m\in \mathbb{R}^3$ denotes the location of the $m$th sensor and the function $\phi(.)$ characterizes the measurement model (often referred to as the point-spread function in the context of imaging) that depends on the physical laws governing wave propagation, and properties of the medium. Depending on the application and model assumptions, the function $\phi(.)$ can be linear, non-linear, and potentially, even non-convex. However, it can be {\em partially designed} by choice of senor locations $\mathbf{d}_m$. This will be a key enabler towards obtaining compressed sketches of measurements (or reducing the number of sensing units) while preserving the ability to reliably infer the parameter $\theta_i, 1\leq i\leq K$.\\
+
+\noindent {\em Extension of the Basic Model (Peter (?))}
+
+The basic model assumes targets as point sources, but in many situations, they are distributed. {\color{red} Perhaps Peter can help characterize this model, since SONAR deals with such targets}. 
+
+\subsection{Central Objective and Role of Sensing Geometry (Piya)}
+The main objective is to obtain estimates $\hat\theta_i, 1\leq i\leq K$ of the parameters of interest ($\theta_i$) using {\em minimal number of measurements/minimizing the number of sensing elements}. These estimates essentially are some appropriate functions of the spatio-temporal measurements $Y_T = \{y_m(t),  1\leq m\leq M, 1\leq t\leq T \}$, i.e., \begin{equation}
+\hat{\theta_i}(T) = g_i (Y_T) 
+\end{equation} 
+In many scenarios, the parameters of interest can be reliably inferred from the {\em correlation of the measurements}. In other words, the correlation of the measurements act as a sufficient statistic for the parameters to be inferred. Depending on the application, the correlation matrix can be spatial (when the source signals are stationary), or spatio-temporal (when the temporal dynamics need to be tracked, such as for change-point detection). In these cases, we can effectively summarize the large amount of raw sensor measurements by only retaining and communicating their correlation. 
+\yoav{The way I was thinking about it, each sensor has only one signal. In a one scenario, the quantity of interest is the "time delay of arrival" or the time shift of one signal relative to another that would maximize the correlation. Is there anything known about computing this time delay without communicating the whole time series?}
+
+\noindent{\bf Spatial Correlation and Localization:} Suppose we compute the spatial correlation between $y_m(t)$ and $y_n(t)$  by averaging over $T$ time samples (the signals are assumed to be stationary over this interval) \footnote{Reasonable to do so when the source signals are stationary and emit independent signals. This is the common practice in source localization using antenna arrays. We can also use more sophisticated regularized estimation of correlation.}
+\begin{equation}
+r_{m,n} (T) = \frac{1}{T}\sum_{t=1}^{T} y_m (t) y^*_n (t) 
+\end{equation} 
+We can summarize the self and cross correlation between $M$ time-series measurements (collected at $M$ sensors) using these $M^2$ correlation values (collected in the form of a correlation matrix $R_T$). Owing to the geometry of the measurements, these correlation values directly depend on the sensor locations $\mathbf{d}_m$  (via the mapping $\phi(.)$). Hence, it is natural to ask 
+\begin{enumerate}
+\item Can we exploit the geometry of the measurement model to further compress the  correlation matrix $R_T$? What is the role of sensor geometry in this case? We should still be able reliably infer $\theta_i, i=1,2,\ldots, K$ from such a compressed sketch.
+\item How large should $M$ be (in comparison to $K$) ?
+\end{enumerate}
+
+\section{Correlation-Aware Sensing (Piya)} 
+With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
+
+\begin{itemize}
+\item {\bf Difference set-inspired Designs:} I will review some results in the context of array processing and DOA estimation...(to be filled in).
+\item {\bf Proposed Research:} Motivated by these results, our goal will be to develop a rigorous framework for further developing the key idea of correlation-aware sensing to a distributed scenario and make it applicable for imaging problems beyond point target localization.
+\begin{enumerate}
+\item {\em Distributed Sensing:} {\color{red} [To be written]}.  Will focus on what subsets of sensors in a distributed setting should communicate to be able to reconstruct the source scene. Can think of a subset of spatially close sensors to fully communicate with each other (assuming cost of communication proportional to proximity/distance), and then transmit the sketch / coarse parameter estimates (or their binarized measurement) to the sensors further away. Can lead to interesting hierarchical configurations for distributed sensors, dictated by $\phi(.)$. {\color{red} [To Add more Details..]}.
+\yoav{I think this is a very interesting question. Especially when the best subset depends on the location of the source.}
+\item {\em Beyond Point Target Localization: Using Priors and Sparsity} In many applications such as camera networks, the quantities of interest are not the low-level measurements acquired at the CCD sensors, but the processed images $I_t$. In such cases, we need to obtain a compressive sketch of the image $A (I_t)$ via the sketching operator $A (.)$ using low dimensional representation (over unions of subspaces or manifolds). In addition to conventional sparsity and low-rank priors, one can also utilize (partial) knowledge of the prior distribution of the images $I_t\sim~\mathcal{D}$. Utilizing these priors can lead to more effective compression for a given level of sparsity. {\color{red} [To be written..]}  
+\end{enumerate}
+{\color{red} These tasks can be further integrated with the binary embedding based sketching ideas proposed by Rayan and Alex.}
+\end{itemize}
+
+\section{Fast binary embeddings... (Saab, Cloninger,...)}
+Often, distributed systems have severe bandwidth and energy constraints that necessitate extremely
+coarse, e.g., binary, quantization of their measurements (e.g, \cite{Fang et al., 2014}). Simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{Jacques,Laska}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others. 
+\yoav{I would differentiate between reconstruction, which corresponds to the lossy compression and compression methods whose output is designed to make particular types of inferences at the receiver end, rather than reconstruction. such as change detection, localization, statistical hypothesis testing. I think the former takes us into well trodden areas which have been studied in information theory, while the latter is much more of an open field. I recommend we focus on the latter.}
+
+Our goal here is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze, algorithms for (a) producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms... 
+
+\subsection{Models (?)}
+Suppose signals of interest are modeled as $x\in \mathcal{X} \subset \mathbb{R}^d$, where $\mathcal{X}$ could be a finite set, i.e., a point cloud, or an infinite set (e.g., a compact manifold, or the set of all sparse vectors). Alternatively, we may model signals as random vectors drawn according to some distribution, i.e., $x\sim~\mathcal{D}$, where $\mathcal{D}$ accounts for any structure in the signals. Further, assume that the measurement operator, accounting for all the measurements at all the sensors, is given by $A:\mathbb{R}^d \to \mathbb{R}^m$, where $A$ could either be a linear or non-linear operator, depending on the sensing model.  In the case of distributed sensing systems, we can assume each sensor collects/computes a portion, $A_i x \in \mathbb{R}^{m_i}$, of $Ax \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$) and the corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to compute, or approximate, some function of interest $g(x)$ via $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$, where $g$ is an inference task (e.g., classification).
+
+\begin{equation}
+x 
+%\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
+\mapsto Q(Ax) =\left[ \begin{array}{c} Q(A_1 x) \\ \vdots \\ Q(A_k x) \end{array}\right] \mapsto f(Q(Ax))\approx g(x)
+\end{equation}
+
+
+\rayan{ Seems like in a model like this we could talk about Privacy (though I am not an expert on this -- any takers?} 
+
+
+\subsection{Compressed Statistics}
+The type of information that can be derived from $g(x)=Q(Ax)$ depends on the choice of measurement operator $A_i$ at each sensor.  For several of the tasks below, we will assume a particular nonlinear operator $A$ that guarantees $\langle g(x), g(y) \rangle \approx e^{-\|x-y\|_2^2/\sigma^2}$.  Roughly speaking, this can be done by quantizing $cos(2\pi \langle w, x \rangle)$ for random choices of $w$.  
+\begin{itemize}
+\item Two Sample Testing: Assume the set of sensors collects a data set $\mathcal{X}\sim p_1$ for some distribution of points $p_1$, and a new data set $\mathcal{Y}\sim p_2$ for some distribution of points $p_2$.  An important question to ask is whether $p_1=p_2$, and whether this question can be addressed without storing all data points from both sets.  A modern approach to two sample testing, Kernel Maximum Mean Discrepancy \cite{Gretton 2012}, defines distances distances between distributions by mapping each distribution to a Reproducing Kernel Hilbert Space through a smooth kernel $K$, and has existing results regarding consistency and power of the test.  However, construction of $K$ can be memory intensive, which motivated computational speed ups presented in \cite{Cheng, Cloninger, Coifman 2017} under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  Unfortunately these results cannot be efficiently implemented under power and communication bandwidth constraints, as they require passing individual data points between sensors.  
+
+Our goal is to eliminate these bottlenecks through the use of binarized embeddings like $g(x)$, which has the additional benefit of building a sketching of the data for appropriate choice of $A$.  
+%\yoav{ What does the future tense mean here? Has a theorem been proven, is this a prediction that such a proof will be found. Or is the intention to say something like "we will characterize the minimal conditions under which XXX.}
+We will analyze $\|\mathbb{E}_{x\in \mathcal{X}} g(x) - \mathbb{E}_{y\in \mathcal{Y}} g(y)\|$, under appropriate norm, and seek to characterize the minimal conditions under which a deviation of the type $\int K(x,y) (p_1(y) - p_2(y)) dy$ can be detected by $\mathbb{E} g(x)$.
+The communication benefit of such a statistic is that the sensors need only transmit the mean of $g(x)$, rather than individual points $x$ sampled.  
+%\yoav{Rather than describing the existing approach at the end, I would start with it and say, we plan to extend this approach ...}
+%The approach builds on the existing literature of kernel Maximum Mean Discrepancy \cite{Gretton 2012} and the computational speed ups presented in \cite{Cheng, Cloninger, Coifman 2017} under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed. 
+%One approach to two sample testing, Maximum Mean Discrepancy \cite{Gretton et al, 2012}, defines an unbiased distance between distributions as
+%\begin{equation}
+%    MMD(X,Y;\mathcal{F}) = \sup_{f\in \mathcal{F}} \left| \mathbb{E}_{x\in \mathcal{X}} f(x) - \mathbb{E}_{y\in \mathcal{Y}} f(y) \right|.
+%\end{equation}
+%As the number of samples $n\rightarrow \infty$, MMD is shown to detect any nonzero deviation $\|p-q\|_\infty$ when $\mathcal{F}$ is a Reproducing Kernel Hilbert Space \cite{Skolkoph}.  However, the method requires $\mathbb{O}(n^2)$ storage.
+
+\item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   There exists a kernelized approach to change point analysis \cite{Bach 2008} which uses the kernel Fisher discriminant ratio to measure the homogeneity between time segments of the process.  However, this once again requires storage of all points over the length of the detection window and communication of those points across sensors for both computing the window mean and variance, as well as the inability to begin computing the change point statistic until all points in the window have been collected.  We aim to introduced the binarized sketching framework to produce an efficient computation to the kernel mean as in two sample testing, as well as a fast construction of a low rank approximation to the kernel covariance matrix.  We will derive it's new limiting distribution under the null model of no change, as well as the consistency under the alternative distribution when a change does occur.  
+
+\item Multiple Sensor Common Factor Identification: A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  Under a linear model, algorithms such as Canonical Correlation Analysis \cite{} acting on multiple streams of simultaneously collected data $X_i(t)$ can filter noise identified by each sensor to magnify the shared signal.  Recently, kernel CCA \cite{Talmon Lederman} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.  However, this requires sharing of all $n$ points across sensors to compute the kernel product.  We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx g_i(X) g_i(X)^*$ and only passing vectors $g_i(X)^* v_j$ such that $\mathbb{E}_{j,k}[g_1(X)^* v_j w_k^* g_2(X)] \approx g_1(X)^* g_2(X)$.  Because $g_1(X)^* g_2(X)$ is low rank, the set of $v_j, w_k$ needed is significantly smaller than the number of points.  The amplification of the common factors observed by all the sensors can serve to boost the power of the two sample and change point statistics, as well as other compressed statistics that can be computed \cite{Griboval}.
+
+\end{itemize}
+
+
+
+
+
+\section{results from previous grants}
+\subsection{Sampling and quantization theorems for modern data acquisition}
+%The investigator has not received prior NSF support.
+%\vspace{5pt}\noindent{\bf Results from Prior NSF Support:} 
+{Co-PI Saab: \em Sampling and quantization theorems for modern data acquisition (DMS-1517204, 08/01/2015--07/31/19,
+\$160,404)} 
+%   So far this grant has resulted in three journal articles \cite{KSW16, MS16, NSW16} and one journal submission \cite{SWY16}. \\
+%   {\bf Intellectual Merit:} Two of the above works \cite{KSW16, SWY16} pertain to the quantization of compressed sensing measurements. Specifically, \cite{KSW16} is the first result showing that \emph{scalar} 1-bit quantization allows the magnitude of sparse signals to be recovered from compressed sensing measurements, provided an affine shift is employed. \cite{SWY16} shows that a combination of Sigma-Delta quantization and an encoding step based on a discrete Johnson-Lindenstrauss embedding allows for a near-optimal rate-distortion relationship. The other two papers quantify how using prior information (in the form of a possibly erroneous support estimate) in conjunction with weighted $\ell_1$ minimization allows for improved recovery guarantees from fewer compressed sensing measurements when the support estimate is accurate enough. 
+% \\ {\bf Broader Impacts: }  In addition to dissemination of research results through seminars and workshop talks, Saab has developed and taught graduate courses on (1) compressed sensing and its applications and (2) applied and computational harmonic analysis. Additionally, he has mentored a (former) undergraduate (Steven Gagniere, currently at UCLA) in research on quantization of compressed sensing measurements (paper currently being written).   
+This grant resulted in 9 published or accepted journal articles \cite{KSW16, MS16, NSW16, SWY16, NSW17, LS2018, IPSV2018, HS2018, FKS17}, and 4 conference papers \cite{NSW17_conf, FKS17_conf, IPSV17_conf, ILNS19}.  {\bf Intellectual Merit:}  \cite{KSW16, SWY16, FKS17, LS2018, ILNS19} study quantization of compressed sensing (CS) measurements,  dealing with  $1$-bit scalar quantization, compression of  bit-streams,  circulant measurement matrices, and low-rank matrices, and manifold-valued signals. \cite{HS2018} develops a state-of-the-art technique, and accompanying theory, for embedding datasets into the binary cube while preserving Euclidean distances.  \cite{NSW17} provides a framework for using $1$-bit  measurements for classification  and analyzes the case of two clusters. The papers \cite{MS16, NSW16} show that using prior support information and weighted $\ell_1$ minimization yield improved recovery  from fewer CS measurements. Finally, \cite{IPSV2018, IPSV17_conf} study phase retrieval from local measurements. The works use and develop tools in random matrix theory, mathematical signal processing, and applied harmonic analysis.  
+   %Specifically, \cite{KSW16} is the first result showing that \emph{scalar} 1-bit quantization allows magnitude recovery from compressed sensing measurements, provided an affine shift is employed. \cite{SWY16} shows that Sigma-Delta quantization with an encoding step based on a discrete Johnson-Lindenstrauss embedding allows for a near-optimal rate-distortion relationship. \cite{FKS}The other two papers quantify how using prior information (in the form of a possibly erroneous support estimate) in conjunction with weighted $\ell_1$ minimization allows for improved recovery guarantees from fewer compressed sensing measurements when the support estimate is accurate enough. 
+ {\bf Broader Impacts: }  In addition to dissemination of results through multiple seminars and workshop talks, Saab has developed and taught graduate courses on (1) compressed sensing and its applications, (2) applied and computational harmonic analysis, and (3) mathematical methods in data science. He has  mentored a UCSD undergraduate (S. Gagniere, currently at UCLA) in research on quantization of CS measurements, and UCSD graduate students (E. Lybrand, A. Nelson, B. Preskitt, J. Liang), and postdocs (A. Ma, T. Huynh),  some of whom are co-authors on the works above, while others are taking part in ongoing work. Two of the above mentioned graduate students and postdocs are female, one is an air-force officer, and at least two are members of under-represented groups.%\hfill\\
+
+
+\nocite{*}
+\bibliography{tripods}{}
+\bibliographystyle{unsrt}
+
+\end{document}
