@@ -29,12 +29,12 @@
 
 \title{HDR TRIPODS: From detection to reaction - computation in resource constrained sensor networks}
 %\author{yfreund }
-\date{March 2019}
+%\date{March 2019}
 
 \begin{document}
 
 \maketitle
-\yoav{We should define, in the introduction, some repeating terms, including compressed sensing and sketches. Maybe also more technical terms such as kernel, low rank matrices and low magnitude vectors/matrices.}\rayan{+ JL lemma}
+%\yoav{We should define, in the introduction, some repeating terms, including compressed sensing and sketches. Maybe also more technical terms such as kernel, low rank matrices and low magnitude vectors/matrices.}\rayan{+ JL lemma}
 
 \section{Summary}
 Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into a {\bf knowledge} (representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the {\bf knowledge}.
@@ -86,10 +86,31 @@ the analog-to-digital transformation of the physical signal into a discrete time
 \[
 \Vdsignal = \transfer(\Vsignal,\Vstate,\VSstate,\env)
 \]
+The problems we plan to tackle in this proposal are inverse
+computation problems. We assume that some aspects of the physical
+space are known, i.e. we know a subset of
+$\Vsignal,\Vstate,\VSstate,\env$. Given the digitized signals
+$\Vdsignal$, our task is to estimate the unknown parts of the physica
+space. Reliable methods for computing such estimates exist. However,
+they typically require high communication bandwidth. The goal of this
+proposal is to find distributed estimation algorithms that achieve
+good performance while using significantly less communication.
 
-We now give a few specific examples of tasks. We will elaborate on some of these tasks below
+\subsubsection*{Some specific tasks}
+We give a few specific examples of tasks. We will elaborate on some of these tasks below
 \begin{enumerate}
-    \item {\bf Target Localization:}  Figure~\ref{fig:prototypicalSensorNetwork} depicts an archetypal target localization task. In this case the locations of the sensors $\VSstate$ and the state of the environment $\env$ are assumed to be fixed. A typical additional assumption, which is represented in the transfer function $\transfer$, is that strongest signal corresponds to the straight line of transmission between the target and the sensors. It is well known that placing sensors far from each other provides the most accurate localization. However, achieving this accuracy with bounded communication between the sensors remains a challenge.
+    \item {\bf Target Localization:}
+      Figure~\ref{fig:prototypicalSensorNetwork} depicts an archetypal
+      target localization task. In this case the locations of the
+      sensors $\VSstate$ and the state of the environment $\env$ are
+      assumed to be fixed. A typical additional assumption, which is
+      represented in the transfer function $\transfer$, is that
+      strongest signal corresponds to the straight line of
+      transmission between the target and the sensors. A common
+      approach to target localization is to estimate the delay between
+      the arrival of the signal at different sensors by using some
+      type of cross correlation~\cite{}. This calculation is performed  
+      It is well known that placing sensors far from each other provides the most accurate localization. However, achieving this accuracy with bounded communication between the sensors remains a challenge.
     \item {\bf Signal reconstruction} Voice based systems such as speakerphones, and voice activated computers, need to reconstruct the speech signal. Microphone arrays are sensor networks where the sensor is a microphone. Accurately reproducing the speech signal when there is more than one speaker is an open challenge. In this problem the location of the sensors is known, the goal is to reproduce the raw signal $\Vsignal$ where the environment $\env$ is unknown and the transfer function $\transfer$ is complex (reverberating environment).
     
     
@@ -101,81 +122,12 @@ We now give a few specific examples of tasks. We will elaborate on some of these
     
 \end{enumerate}
 
-\iffalse
-\section{Prompts}
-These prompts are intended as starting points for sections in the proposal description. The names attached are my wild guess as to whom might interest.
-
-\begin{itemize}
-    \item (Piya): Optimizing sensor locations in space. (Rayan/Piya?): Possibly related problem: Unknown (or imperfectly known) sensor locations. {\peter That is array calibration and has been studied much in SP}
-    \item (Piya): Suppose we use a sensor array to localize a target. What is the minimal amount of communication between sensors that is needed in order to achieve localization?
-    \item (Peter) What are the theoretically minimal resources to perform analysis of seismology / noise. {\bf Peter} I dont think my research focus will be seismology in this proposal. if needed, can do it for proposal. {\bf Yoav} Peter, can you describe some theoretical problems that are interesting for you?
-    \item {\peter Focus on the spatio-temporal fields in a  sensor network}
-    \item (Rayan, Yoav, Alex): Statistical analysis on sketches. Sub-problems: Anomaly detection. Distribution drift. Creating long-term statistical models (Cars on highway, Factory floor, foot-traffic, engine monitoring){\peter seems interesting}
-    \item (Rayan) Learning fast transforms (to reduce computation cost at sensors) 
-\end{itemize}
-\fi
-
-\section{Difference based communication (Yoav)}
-We propose a general framework for designing and analyzing sensor networks. Suppose we have two sensors two sensors whose task is to track state of target whose trajectory is defined by $\state(t)$. Suppose the sensors use a dynamic model to predict future states. For the sake of concreteness, suppose a Newtonian model of motion is used which predicts constant velocity of the target unless a disruptive force acts on it.
-
-Let $\estate_1(t),\estate_2(t)$ be the estimates of the target location for each sensor. {\em In addition, each sensor maintains an estimate of the estimate of the other sensor.} $\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of the velocity of the location of the target according to the signal it measures, but it does not update it's estimate of the other's estimate.  If the two estimate are close to each other $\estate_i(t) \approx \estate_{i,j}(t)$ then sensor $i$ sends no information to sensor $j$. On the other hand, if $\estate_i(t)$ is far from $\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor 
-$i$ to sensor $j$. Thus if the target is moving in constant speed, uninterrupted, there is not communication between the sensors.
-
-The basic idea here is that a sensor sends out information only if
-that information cannot be predicted by the receiver. Similar ideas
-have been used in arithmetic coding and \yoav{I think} in
-$\Sigma\Delta$ encoding.
-
-Recently, PI Freund~\cite{TMSN} proposed an asynchronous computation
-model called ``Tell Me Something New'' in which each agent broadcasts
-a message only when the estimate it computes differs from the existing
-estimates in a statistically significant way.
-
- One important application of sensor networks is to monitor activity
- and identify anomalies. Examples include: building security systems,
- factory floors, highway monitoring, health monitoring for the sick or
- elderly and many others.
-
- On its face, this might seem like an under-constrained impossible
- problem. However, note that for all of the environments listed above
- there is a highly repetitive pattern from day to day and from week to
- week. Add to that the sensors are stationary, and one would expect
- that most sensors observe highly regular and highly predictable
- patterns.
- 
- The approach we propose in this case is that each sensor creates a
- model of the characteristics of the signals that it observes during
- normal operations. It alerts neighboring sensors if it observes
- something that is abnormal, i.e. a signal that has very low
- probability according to the model. When several sensors send an
- alert with a short time window, and when the alerts are consistent
- with each other, a global alert is sent to the human operators.
-
-\section{Distributed signal processing}
-
-Consider a source of a time signal, it can be a source of sound or vibration, it can be an electromagnetic signal such as WiFi. In the simplest version we consider a stationary point source that is emitting a signal in continuous time: $f(t)$
-
-A stationary sensor network is measuring the signal as transformed by the environment transfer function. The network, as a whole, has one of a set of goals listed below
-
-\begin{itemize}
-    \item Recovering the transfer function of the environment in order to estimate properties of the environment. As, for example, Sonar or Seismology. This typically requires that $f(t)$ is under our control.
-    %\item Reconstructing the original signal $f(t)$.
-    \item Estimating the location of the source, especially if the source is not stationary.
-    \item In the case of many sensors, selecting a subset of the sensors that is sufficient for the task.
-\end{itemize}
-
-Good algorithms for reaching these goals exist in the centralized computation setting. In other word, if we assume that all data is  transmitted to a single computer and processed together. We seek solutions for the setting where the communication bandwidth between sensors is restricted.
-
-Some interesting extensions of the basic model. More than a single source exists (the cocktail party problem) or the source is not a point. The sources or the sensors are not stationary. 
-
-As the source locations are in three dimensions of physical space, can we learn the 3D manifold of the signal properties? (cite)
-
-
-\piya{\em [From source localization perspective, it will be good to mention two or three different types of models. For example, a network of distributed radars (for example, on smart cars) should be modeled differently from a network of cameras.) Maybe Peter can also suggest some realistic models. For now, I am using a somewhat generic model.]}
-
-\rayan{\em [Not sure this is the right place for this comment, but here goes: One interesting class of problems that we can consider are "blind" or semi-blind problems, e.g., radar placed on ships where the exact locations of the ships is not known. There is some recent work from industry on problems of this type but with almost no theory whatsoever.]}
-
-\subsection{Model for Localization (Piya)} A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain parameters $\theta_i\in\mathbb{C}^P, i=1,\ldots,K$ from $K$ targets of interest in the environment by acquiring signals emitted by them. 
+\subsection{Target Localization using minimal number of sensors}
+\yoav{Piya, can you use the notation I defined in the framework
+  section? Also I would like to merge this  subsection and the
+  following one, which describes sensing geometry and the goal of
+  minimizing the number of sensors.}
+A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain parameters $\theta_i\in\mathbb{C}^P, i=1,\ldots,K$ from $K$ targets of interest in the environment by acquiring signals emitted by them. 
 
 \yoav{This describes a more general framework, using $\mathbb{C}^P$ (does that mean each coordinate is complex?). What is gained from this generality? maybe drop the general notation? Also how does high resolution/super-resolution fit here? If you have worked on such problem, I suggest you devote a paragraph and cite, rather than just mentioning in passing.} 
 
@@ -191,10 +143,10 @@ where $w_m(t)$ is the additive noise. Here $\mathbf{d}_m\in \mathbb{R}^3$ denote
 
 The basic model assumes targets as point sources, but in many situations, they are distributed. \piya{Perhaps Peter can help characterize this model, since SONAR deals with such targets}. 
 
-\subsection{Central Objective and Role of Sensing Geometry (Piya)}
 The main objective is to obtain estimates $\hat\theta_i, 1\leq i\leq K$ of the parameters of interest ($\theta_i$) using {\em minimal number of measurements/minimizing the number of sensing elements}. These estimates essentially are some appropriate functions of the spatio-temporal measurements $Y_T = \{y_m(t),  1\leq m\leq M, 1\leq t\leq T \}$, i.e., \begin{equation}
 \hat{\theta_i}(T) = g_i (Y_T) 
 \end{equation} 
+%\subsection*{Central Objective and Role of Sensing Geometry (Piya)}
 In many scenarios, the parameters of interest can be reliably inferred from the {\em correlation of the measurements}. In other words, the correlation of the measurements act as a sufficient statistic for the parameters to be inferred. Depending on the application, the correlation matrix can be spatial (when the source signals are stationary), or spatio-temporal (when the temporal dynamics need to be tracked, such as for change-point detection). In these cases, we can effectively summarize the large amount of raw sensor measurements by only retaining and communicating their correlation. 
 \yoav{The way I was thinking about it, each sensor has only one signal. In a one scenario, the quantity of interest is the "time delay of arrival" or the time shift of one signal relative to another that would maximize the correlation. Is there anything known about computing this time delay without communicating the whole time series?}
 
@@ -208,7 +160,11 @@ We can summarize the self and cross correlation between $M$ time-series measurem
 \item How large should $M$ be (in comparison to $K$) ?
 \end{enumerate}
 
-\section{Correlation-Aware Sensing (Piya)} 
+\section{Correlation-Aware Sensing (Piya)}
+\yoav{How is this problem different from the problem of finding the
+  best placement for the sensors in order to maximize the accuracy of
+  localization, ignoring communication bendwidth?}
+
 With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
 
 \begin{itemize}
@@ -232,8 +188,75 @@ Hence, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  =
 \rayan{Agree!}
 \end{itemize}
 
+\section{Localization of weak sources (Peter)}
+
+\yoav{Can the description of SCM be folded into Piya's introduction?}
+
+The focus here is detecting weak sources within a sensor network without a fusion center. To observe weak sources, as much information as possible should be used. Thus, at first there is no attempt to reduce the information in the data by sketching or special sensor arrangements. The network could consist of sensors with know location, partially unknown or unknown positions.
+
+The propagation path from a given source location would here represent multiple propagation paths in a non-uniform media. The frequency domain transfer function from a source location to $N$ receivers ${\bf a}$. Assuming $K$ uncorrelated sources of complex amplitude ${\bf s}$ at spatial location ${\bf x}_k$, the received signal ${\bf y}\in {\cal R}^N$ on $N$ receivers is 
+\begin{equation}
+{\bf y}={\bf A}{\bf s}+{\bf n},
+\end{equation}
+where ${\bf A}=[{\bf a}_1, \ldots {\bf a}_K ]$  and $\bf n$ is uncorrelated noise. 
+The sources might be located in the near field and  composed of many propagation paths. Examples of many propagation paths from a single source could be waves from  
+1) a source in a house propagating though the air and though the wall.
+2) a cell phone signal with a direct path, a reflected path or refracted path.
+3) a car radiating noise though the air and though the ground.
+Further, the sensors are not placed in a regular order, but where practical and maybe with unknown location. Thus the elements in ${\bf a}_k$ are unknown.
+
+\yoav{What is the relationship between $a_k$ and $x_k$?}
+
+To make observations of weak sources we observe $L$ snapshots  assuming  stationarity ${\bf Y}=[{\bf y}_1 \ldots {\bf y}_L]$.
+We can here form the sample covariance matrix (SCM)
+\begin{equation}
+{\bf S} ={\bf Y}{\bf Y}^H/L
+\end{equation}
+and form the the normalized SCM $\hat{\bf S}$ or coherence with elements
+\begin{equation}
+{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
+\end{equation}
+
+\yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
+
+Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
+\begin{equation}
+{\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
+\end{equation}
+
+The array signal processing literature is ample with processing of this type, especially with the structure of the $\bf A$ matrix partially known. In this work we will focus on pushing the computations to the sensor nodes and thus only observing part of SCM.
+
+\subsection{Graph signal processing approach without a fusion center}
+\yoav{I think this section can be combined with Piya's
+  sections. Choosing which pairs should communicate is clearly related
+  to their geometric layout.}
+
+Here the processing is done locally at each node. A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM at once, i.e., using a fusion center. 
+When the coherence $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM can then be used localize the source more precisely.
+
+To extract very weak signals with a well estimated and robust SCM is needed. Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods\cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could either be communicated further to a wider set of nodes.
+
+Robust signal processing methods\cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. A qualitatively robust estimator is characterized by an IF that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
+
+\subsection{Tomography}
+\yoav{I believe you are talking here about tomography, or reconstructing the environment. Can you write a paragraph of introduction, what is the problem? What is the desired solution?}
+Sparse modeling assumes that signals can be reconstructed using a few (sparse) vectors, called atoms, from a potentially large set of atoms, called a dictionary. Recent ocean acoustics works utilizing sparse modeling is beamforming\cite{Xenaki2014}, matched field processing \cite{Gemba2017}, and geoacoustic inversion \cite{gerstoft2018}. One challenge in sparse modeling is finding the best dictionary for sparsely representing specific signals. Such dictionaries can be composed of wavelets, or the discrete cosine transform (DCT). These predefined dictionaries perform well for many signals. However, using a form of unsupervised machine learning, called dictionary learning, optimal dictionaries can be learned directly from specific data\cite{mallat1999}. It has been shown that learned dictionaries outperform generic dictionaries when sufficient signal examples are available. Machine learning, and specifically dictionary learning, have recently obtained compelling results in ocean acoustics cite{Bianco2017} and seismology\cite{kong2018}. 
+
+\yoav{The simplest type of Dictionary learning is learning a codebook for Vector Quantization. Dictionaries are different than VQ if they combine (add) multiple vectors to represent a singe location in the signal. Is there a chance that VQ methods might work?}
+
+
+\yoav{I don't understand the following three paragraphs, can you give some technical details? Formulas?}
+In current work, we have developed a machine learning-based travel time tomography method called locally sparse travel time tomography (LST)\cite{bianco2018}. In LST, small scale local features contained in small rectangular groups of pixels, called patches, in an overall slowness (inverse  speed) map are constrained using a sparse model. Further, the sparsifying dictionary is adapted to the specific slowness data using dictionary learning. Larger scale, or global features spanning the  map, are constrained with least-squares regularization. Unlike conventional tomography, in which model features are forced to be exclusively smooth or discontinuous, the LST approach permits smooth and discontinuous local features via dictionary learning. 
+
+
+Whereas many machine learning techniques in geoscience\cite{kong2018}, are reliant on large amounts of training data, LST requires none. In LST we adopt the adaptive dictionary learning paradigm from image denoising \cite{elad2010} and medical imaging\cite{ravishankar2011}, in which dictionaries are learned directly from patches of the corrupted image. In LST, slowness dictionaries are learned from patches of a least squares regularized inversion, and are then used to reconstruct a sparsity-constrained slowness image. Assuming sufficiently dense ray sampling, the dictionary is initially unknown and is learned in parallel with the inversion. LST obtains high resolution by assuming that small patches of discrete slowness maps are repetitions of few elemental patterns from a dictionary of patterns. These patterns, which are described by the atoms in the dictionaries, are extracted from the data by dictionary learning. The increase in performance for synthetic slownesses relative to competing methods, are demonstrated for  ambient noise tomography\cite{bianco2018}. 
+
+Assuming that the travel paths between sensors has been estimated\cite{sabra2005,gerstoft2006} We here propose the future development of machine learning-based tomography methods in ocean acoustics. Such methods will help to more fully-exploit both existing hydrophone and environmental data, as well as very dense sampling from future arrays with many sensors. Such large scale, mobile, and deformable arrays, will use ambient noise processing \cite{sabra2005}, to obtain very dense and rich data sets. We propose for future work to: (1) further develop a dictionary learning-based travel time tomography \cite{bianco2018}, accounting for uncertainty in the measurements and physics; (2) formulate the dictionary learning-based approach as CNN via CSC; and (3) apply this CSC tomography framework to  data assimilation, to obtain higher-resolution estimates of water column parameters over conventional methods. We further propose to develop  (5) acoustic event detection methods that leverage recent advances in machine learning.
+
 \section{Fast binary embeddings... (Saab, Cloninger,...)}
-%\yoav{Please describe the algorithm (at least the outline)}
+\yoav{Rayan and Alex, please link your sections to one or more of the
+  specific tasks above. Feel free to add other tasks, but these should
+  be specific real world applications, not just mathematical frameworks.}
 \rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
 
 
@@ -289,7 +312,6 @@ While signal reconstruction is not a major focus of our work, the promising resu
 Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
 
 \subsection{Models}
-\newcommand{\transfer}{\phi}
   
 Suppose signals of interest are modeled as $Y\in \mathcal{X} \subset
 \mathbb{R}^d$, where $\mathcal{X}$ could be a finite set, i.e., a
@@ -428,66 +450,42 @@ However, this requires communication of all $n$ points across sensors to compute
 and clustering: Analogous to the above...}
 \end{itemize}
 
-\section{Localization of weak sources (Peter)}
 
-\yoav{This section describes a well known technique, you can be brief and give a textbook reference. It would be good if you could expand on the last part: "pushing computation to the sensor nodes.}
+\section{Tell me something new (Yoav)}
+We propose a general framework for designing and analyzing sensor networks. Suppose we have two sensors two sensors whose task is to track state of target whose trajectory is defined by $\state(t)$. Suppose the sensors use a dynamic model to predict future states. For the sake of concreteness, suppose a Newtonian model of motion is used which predicts constant velocity of the target unless a disruptive force acts on it.
 
-The focus here is detecting weak sources within a sensor network without a fusion center. To observe weak sources, as much information as possible should be used. Thus, at first there is no attempt to reduce the information in the data by sketching or special sensor arrangements. The network could consist of sensors with know location, partially unknown or unknown positions.
+Let $\estate_1(t),\estate_2(t)$ be the estimates of the target location for each sensor. {\em In addition, each sensor maintains an estimate of the estimate of the other sensor.} $\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of the velocity of the location of the target according to the signal it measures, but it does not update it's estimate of the other's estimate.  If the two estimate are close to each other $\estate_i(t) \approx \estate_{i,j}(t)$ then sensor $i$ sends no information to sensor $j$. On the other hand, if $\estate_i(t)$ is far from $\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor 
+$i$ to sensor $j$. Thus if the target is moving in constant speed, uninterrupted, there is not communication between the sensors.
 
-The propagation path from a given source location would here represent multiple propagation paths in a non-uniform media. The frequency domain transfer function from a source location to $N$ receivers ${\bf a}$. Assuming $K$ uncorrelated sources of complex amplitude ${\bf s}$ at spatial location ${\bf x}_k$, the received signal ${\bf y}\in {\cal R}^N$ on $N$ receivers is 
-\begin{equation}
-{\bf y}={\bf A}{\bf s}+{\bf n},
-\end{equation}
-where ${\bf A}=[{\bf a}_1, \ldots {\bf a}_K ]$  and $\bf n$ is uncorrelated noise. 
-The sources might be located in the near field and  composed of many propagation paths. Examples of many propagation paths from a single source could be waves from  
-1) a source in a house propagating though the air and though the wall.
-2) a cell phone signal with a direct path, a reflected path or refracted path.
-3) a car radiating noise though the air and though the ground.
-Further, the sensors are not placed in a regular order, but where practical and maybe with unknown location. Thus the elements in ${\bf a}_k$ are unknown.
+The basic idea here is that a sensor sends out information only if
+that information cannot be predicted by the receiver. Similar ideas
+have been used in arithmetic coding and \yoav{I think} in
+$\Sigma\Delta$ encoding.
 
-\yoav{What is the relationship between $a_k$ and $x_k$?}
+Recently, PI Freund~\cite{TMSN} proposed an asynchronous computation
+model called ``Tell Me Something New'' in which each agent broadcasts
+a message only when the estimate it computes differs from the existing
+estimates in a statistically significant way.
 
-To make observations of weak sources we observe $L$ snapshots  assuming  stationarity ${\bf Y}=[{\bf y}_1 \ldots {\bf y}_L]$.
-We can here form the sample covariance matrix (SCM)
-\begin{equation}
-{\bf S} ={\bf Y}{\bf Y}^H/L
-\end{equation}
-and form the the normalized SCM $\hat{\bf S}$ or coherence with elements
-\begin{equation}
-{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
-\end{equation}
+ One important application of sensor networks is to monitor activity
+ and identify anomalies. Examples include: building security systems,
+ factory floors, highway monitoring, health monitoring for the sick or
+ elderly and many others.
 
-\yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
-
-Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
-\begin{equation}
-{\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
-\end{equation}
-
-The array signal processing literature is ample with processing of this type, especially with the structure of the $\bf A$ matrix partially known. In this work we will focus on pushing the computations to the sensor nodes and thus only observing part of SCM.
-
-\subsection{Graph signal processing approach without a fusion center}
-Here the processing is done locally at each node. A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM at once, i.e., using a fusion center. 
-When the coherence $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM can then be used localize the source more precisely.
-
-To extract very weak signals with a well estimated and robust SCM is needed. Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods\cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could either be communicated further to a wider set of nodes.
-
-Robust signal processing methods\cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. A qualitatively robust estimator is characterized by an IF that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
-
-\subsection{Tomography}
-\yoav{I believe you are talking here about tomography, or reconstructing the environment. Can you write a paragraph of introduction, what is the problem? What is the desired solution?}
-Sparse modeling assumes that signals can be reconstructed using a few (sparse) vectors, called atoms, from a potentially large set of atoms, called a dictionary. Recent ocean acoustics works utilizing sparse modeling is beamforming\cite{Xenaki2014}, matched field processing \cite{Gemba2017}, and geoacoustic inversion \cite{gerstoft2018}. One challenge in sparse modeling is finding the best dictionary for sparsely representing specific signals. Such dictionaries can be composed of wavelets, or the discrete cosine transform (DCT). These predefined dictionaries perform well for many signals. However, using a form of unsupervised machine learning, called dictionary learning, optimal dictionaries can be learned directly from specific data\cite{mallat1999}. It has been shown that learned dictionaries outperform generic dictionaries when sufficient signal examples are available. Machine learning, and specifically dictionary learning, have recently obtained compelling results in ocean acoustics cite{Bianco2017} and seismology\cite{kong2018}. 
-
-\Yoav{The simplest type of Dictionary learning is learning a codebook for Vector Quantization. Dictionaries are different than VQ if they combine (add) multiple vectors to represent a singe location in the signal. Is there a chance that VQ methods might work?}
-
-
-\yoav{I don't understand the following three paragraphs, can you give some technical details? Formulas?}
-In current work, we have developed a machine learning-based travel time tomography method called locally sparse travel time tomography (LST)\cite{bianco2018}. In LST, small scale local features contained in small rectangular groups of pixels, called patches, in an overall slowness (inverse  speed) map are constrained using a sparse model. Further, the sparsifying dictionary is adapted to the specific slowness data using dictionary learning. Larger scale, or global features spanning the  map, are constrained with least-squares regularization. Unlike conventional tomography, in which model features are forced to be exclusively smooth or discontinuous, the LST approach permits smooth and discontinuous local features via dictionary learning. 
-
-
-Whereas many machine learning techniques in geoscience\cite{kong2018}, are reliant on large amounts of training data, LST requires none. In LST we adopt the adaptive dictionary learning paradigm from image denoising \cite{elad2010} and medical imaging\cite{ravishankar2011}, in which dictionaries are learned directly from patches of the corrupted image. In LST, slowness dictionaries are learned from patches of a least squares regularized inversion, and are then used to reconstruct a sparsity-constrained slowness image. Assuming sufficiently dense ray sampling, the dictionary is initially unknown and is learned in parallel with the inversion. LST obtains high resolution by assuming that small patches of discrete slowness maps are repetitions of few elemental patterns from a dictionary of patterns. These patterns, which are described by the atoms in the dictionaries, are extracted from the data by dictionary learning. The increase in performance for synthetic slownesses relative to competing methods, are demonstrated for  ambient noise tomography\cite{bianco2018}. 
-
-Assuming that the travel paths between sensors has been estimated\cite{sabra2005,gerstoft2006} We here propose the future development of machine learning-based tomography methods in ocean acoustics. Such methods will help to more fully-exploit both existing hydrophone and environmental data, as well as very dense sampling from future arrays with many sensors. Such large scale, mobile, and deformable arrays, will use ambient noise processing \cite{sabra2005}, to obtain very dense and rich data sets. We propose for future work to: (1) further develop a dictionary learning-based travel time tomography \cite{bianco2018}, accounting for uncertainty in the measurements and physics; (2) formulate the dictionary learning-based approach as CNN via CSC; and (3) apply this CSC tomography framework to  data assimilation, to obtain higher-resolution estimates of water column parameters over conventional methods. We further propose to develop  (5) acoustic event detection methods that leverage recent advances in machine learning.
+ On its face, this might seem like an under-constrained impossible
+ problem. However, note that for all of the environments listed above
+ there is a highly repetitive pattern from day to day and from week to
+ week. Add to that the sensors are stationary, and one would expect
+ that most sensors observe highly regular and highly predictable
+ patterns.
+ 
+ The approach we propose in this case is that each sensor creates a
+ model of the characteristics of the signals that it observes during
+ normal operations. It alerts neighboring sensors if it observes
+ something that is abnormal, i.e. a signal that has very low
+ probability according to the model. When several sensors send an
+ alert with a short time window, and when the alerts are consistent
+ with each other, a global alert is sent to the human operators.
 
 
 \subsection{Spatio-temporal fields}
