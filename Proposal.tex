@@ -5,7 +5,7 @@
 \usepackage{color}
 
 % For figures
-\usepackage{graphicx} % more modern
+\usepackage{graphicx,xcolor} % more modern
 %\usepackage{epsfig} % less modern
 \usepackage{subfigure} 
 
@@ -16,7 +16,8 @@
 
 \newcommand{\yoav}[1]{\comment{magenta}{Yoav}{#1}}
 \newcommand{\piya}[1]{\comment{blue}{Piya}{#1}}
-\newcommand{\peter}[1]{\comment{purple}{Peter}{#1}}
+%\newcommand{\peter}[1]{\comment{purple}{Peter}{#1}}
+\newcommand{\peter}[1]{\comment{pink}{Peter}{#1}}
 \newcommand{\rayan}[1]{\comment{red}{Rayan}{#1}}
 \newcommand{\alex}[1]{\comment{green}{Alex}{#1}}
 
@@ -33,6 +34,7 @@
 \begin{document}
 
 \maketitle
+\yoav{We should define, in the introduction, some repeating terms, including compressed sensing and sketches. Maybe also more technical terms such as kernel, low rank matrices and low magnitude vectors/matrices.}\rayan{+ JL lemma}
 
 \section{Summary}
 Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into a {\bf knowledge} (representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the {\bf knowledge}.
@@ -47,42 +49,56 @@ One important consequence of these constraints is {\em pushing computation to th
 \section{Framework}
 \newcommand{\state}{\theta}
 \newcommand{\estate}{\hat{\theta}}
-\newcommand{\signal}{x}
+\newcommand{\Vstate}{\Theta}
+\newcommand{\eVstate}{\hat{\Theta}}
+\newcommand{\Sstate}{\psi}
+\newcommand{\eSstate}{\hat{\psi}}
+\newcommand{\VSstate}{\Psi}
+\newcommand{\eVSstate}{\hat{\Psi}}
+\newcommand{\env}{\mathbf{E}}
+\newcommand{\transfer}{\mathbf{\Phi}}
+
+\newcommand{\signal}{\mathbf{x}}
+\newcommand{\Vsignal}{\mathbf{X}}
+\newcommand{\dsignal}{\mathbf{y}}
+\newcommand{\Vdsignal}{\mathbf{Y}}
 \newcommand{\dtime}{t}
 \newcommand{\ctime}{\tau}
-
-This proposal combined several related lines of work. To facilitate the exposition, we start by introducing some terminology and notation that will be used throughout.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\columnwidth]{figs/Framework.jpg}
-\caption{A schematic of a prototypical sensor network and associated
-  notation\label{fig:prototypicalSensorNetwork}}
+\caption{An example of a sensor network\label{fig:prototypicalSensorNetwork}. The goal of the network is to track a car. The location of the car as a function of time is $\theta(\ctime)$, and the goal of the network to produce $\estate(\ctime)$. The car emits a sound wave, which we denote by $x(\ctime)$. The sound wave travels through the physical environment and arrives at each sensor $i$, where it is digitized and made into a time sequence $y_i(\dtime)$. The transformation of the signal $x(\ctime)$ into $y_i(\dtime)$ is represented by a transfer function $\phi$. In this car tracking example 
+$y_i(\dtime) = \phi(x(\ctime),\state(\ctime),\Sstate_i(\ctime))$. We are seeking an inverse transformation that would map the measurements vector $y_1(\dtime),y_2(\dtime),y_3(\dtime)$ to an estimate of the car location $\estate(\dtime)$}
 \end{figure}
 
-We assume the sensor network is monitoring a physical system or space which is changing over time. We denote the {\em state} of the physical system at time $\ctime$ by $\state(\ctime)$ where $\ctime$ is continuous time. The nature of $\state$ will depend on the particular system. When tracking the location of a moving object the state would be a point in three dimensional space $\theta(\ctime) \in R^3$. When tracking the health of a bridge the state might be a function that maps locations on the bridge to the estimated stress and strain tensors for each location.
+This proposal combines several related lines of work. To facilitate the exposition, we start by introducing some terminology and notation that will be used throughout. {\bf Figure~\ref{fig:prototypicalSensorNetwork}} describes a simple sensor network that tracks a car using the sound waves the car is emitting.
 
-The task of the sensor network is to estimate the trajectory of the true state. We denote the estimated state by $\estate(\ctime)$. Our goal is to design a system that generates estimates $\theta(\ctime)$ that are close to the true states $\state(\tau)$. The quantification of this approximation will depend on the application.
+We now expand this simple example into a more general framework.
+We assume that the network consists of a $n$ sensors and $m$ 
+targets. Sensor $i$'s state at time $\ctime$ is denoted $\Sstate_i(\ctime)$.  Similarly, the state of target $j$ at time $\ctime$ is denoted $\state_j(\ctime)$.
+Here and in the rest of this section, we don't specify the spaces in which  $\Sstate_i$ or $\state_j$ are members. These allows for a general introduction which will be made more specific in later sections. When appropriate, we will denote the combined state of all targets by $\Vstate(\ctime)$ and the combined state of all sensor by $\VSstate(\ctime)$. The third state component is the state of physical environment in which the targets and sensors reside. We denote the state of the environment by $\env(\ctime)$
 
-Each sensor produces a sequence of measurements, which we call the {\em signal}. As we are focused on digital systems, we assume that the signal is a sequence of binary encoded numbers. We use $\dtime =1,2,3,\cdots$ to denote the discrete time used in each sensor. We denote a signal by $\signal_1,\signal_2,\cdots$.
+The targets generate signals, which we call the {\em raw} signals. We denote the raw signal generated by target $i$ as $\signal_i(\ctime)$. We denote the collection of all $m$ signals by $\Vsignal(\ctime)$. On the receiving end, each sensor $i$ captures a digital signal $\dsignal_i$. These digital signals are the inputs to the computations we will discuss. As the signals arrive at physically separated sensors, the computation is inherently distributed. The main goal of this proposal is to develop algorithms that achieve desired tasks with minimal communication between the sensors.
 
-%\yoav{In reality, sensor clocks are not synchronized and communication has non-zero latency. While this is the case, I think it is better to ignore this issue in this proposal.}
+The transfer function $\transfer$ defines the way by which the raw signals $\Vsignal$ are transformed into the digitized signals $\Vdsignal$. This function represents both the point transfer function of the physical environment,
+the analog-to-digital transformation of the physical signal into a discrete time physical signal, and the noise that is added through this process. The transformation is defined by:\footnote{Note that the transfer function $\transfer$ operates on the whole sequences, not just on the sequence at a single time $\ctime$. That is because signal propagation takes time, so $\Vdsignal(\dtime)$ depends on $\Vsignal$ at multiple time points.}
+\[
+\Vdsignal = \transfer(\Vsignal,\Vstate,\VSstate,\env)
+\]
 
-The relation between the state $\state$ and the signal depends on properties of the physical environment as well as properties of the sensor. The result is that often the signal from one sensor is insufficient to produce a good estimate $\estate$. By carefully combining the signals from several sensors, it is possible to generate a good estimate.
-
-We denote the signals generated by sensor $i$ at time $\ctime$ as $\signal_i(\ctime)$. We assume that each sensor is equipped with a computer and with a communication channel. The focus of our work is on algorithms that transform signal sequences to other sequences and send/receive such sequences. The final product of this communication and computation is one or more estimates $\estate(\ctime)$.
-
-%\yoav{Once again, I am ignoring the difference between $\ctime$ and $\dtime$. We should probably say something about it, Piya?}
-
-\iffalse
-For example, the signal captured by a microphone located a few feet away from a speaker in a reverberating room will record a highly distorted signal. The distortion is a result of echoes, reverberation at resonance frequencies, as well as noise and sounds from other sources. This signal is typically not very useful for either reproduction (
-\fi
-\subsection{Examples}
+We now give a few specific examples of tasks. We will elaborate on some of these tasks below
 \begin{enumerate}
-    \item {\bf Localization:} Peter's work using seismic sensor network to detect cars and train using Graph Signal processing\cite{riahi2017}. The "Sloocalization" paper on localizing passive RFID tags by integrating over a very long time.
-    \item {\bf Anomaly detection} using a network of cameras and or microphones for low communication and low energy detection of anomalous events. Examples: cameras monitoring a highway. Microphone on factory floors. Smart-homes for the elderly living alone. Building security.
+    \item {\bf Target Localization:}  Figure~\ref{fig:prototypicalSensorNetwork} depicts an archetypal target localization task. In this case the locations of the sensors $\VSstate$ and the state of the environment $\env$ are assumed to be fixed. A typical additional assumption, which is represented in the transfer function $\transfer$, is that strongest signal corresponds to the straight line of transmission between the target and the sensors. It is well known that placing sensors far from each other provides the most accurate localization. However, achieving this accuracy with bounded communication between the sensors remains a challenge.
+    \item {\bf Signal reconstruction} Voice based systems such as speakerphones, and voice activated computers, need to reconstruct the speech signal. Microphone arrays are sensor networks where the sensor is a microphone. Accurately reproducing the speech signal when there is more than one speaker is an open challenge. In this problem the location of the sensors is known, the goal is to reproduce the raw signal $\Vsignal$ where the environment $\env$ is unknown and the transfer function $\transfer$ is complex (reverberating environment).
     
-    An interesting part here is creating a model for what is normal with little or now intervention. Can we create a sketch of the signal which would be useful for defining the "normal" and distinguishing it from the abnormal?
+    
+    \item {\bf Optimizing sensor placement:} The accuracy of target localization depends on the location of the target and of the sensors. While the location of the target is not under our control, the location of the sensors is. Methods for optimizing the locations of the sensors will be described in Section~{sec:sensor-placement.}
+    
+    \item{\bf Mapping the environment} Sometime the goal of the system is to estimate the environment $\env$. One example is to use Radar, Sonar or Lidar to create a 2D or 3D representation of the environment for a smart car. Another example, coming from seismology is to use controlled vibration sources and many acceleration sensors to map the subterranean earth. In these settings the locations of the sensors $\VSstate$ and the targets $\Vstate$ (called transmitters in this context) is fixed and known, as is the raw (transmitted) signal $\Vsignal$. The goal is to deduce $\env$ from the collected signal $\Vdsignal$. (Peter, does this make sense to you, can you use this formulation in your sections about tomography and dictionaries?)
+    
+    \item {\bf Monitoring} In many situations the goal of the sensor network is to track the environment, identify trends and detect anomalies. Examples include: Security systems, systems for monitoring patients or the elderly, highway monitoring and factory floor monitoring. Many of these environments are too complex to estimate a fully detailed representation. Instead, we suggest building a statistical model which captures the major degrees of freedom of the environment and the way they relate to major clocks such as time of day and day of week.  The challange here is to learn such a model in an unsupervised or weakly supervised way. Kernels, noise-shaping quantization, and sketching methods can be used here. (Rayan, does this make sense? Can you make it more coherent?)
+    
 \end{enumerate}
 
 \iffalse
@@ -99,7 +115,7 @@ These prompts are intended as starting points for sections in the proposal descr
 \end{itemize}
 \fi
 
-\section{Difference based communication}
+\section{Difference based communication (Yoav)}
 We propose a general framework for designing and analyzing sensor networks. Suppose we have two sensors two sensors whose task is to track state of target whose trajectory is defined by $\state(t)$. Suppose the sensors use a dynamic model to predict future states. For the sake of concreteness, suppose a Newtonian model of motion is used which predicts constant velocity of the target unless a disruptive force acts on it.
 
 Let $\estate_1(t),\estate_2(t)$ be the estimates of the target location for each sensor. {\em In addition, each sensor maintains an estimate of the estimate of the other sensor.} $\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of the velocity of the location of the target according to the signal it measures, but it does not update it's estimate of the other's estimate.  If the two estimate are close to each other $\estate_i(t) \approx \estate_{i,j}(t)$ then sensor $i$ sends no information to sensor $j$. On the other hand, if $\estate_i(t)$ is far from $\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor 
@@ -172,7 +188,6 @@ Mathematically the space-time measurements collected at the $m$th sensing elemen
 y_m (t) = \sum_{i=1}^{K} \phi (\mathbf{d}_m,\theta_i,t) + w_m(t), \quad 1\leq m\leq M
 \end{equation}
 where $w_m(t)$ is the additive noise. Here $\mathbf{d}_m\in \mathbb{R}^3$ denotes the location of the $m$th sensor and the function $\phi(.)$ characterizes the measurement model (often referred to as the point-spread function in the context of imaging) that depends on the physical laws governing wave propagation, and properties of the medium. Depending on the application and model assumptions, the function $\phi(.)$ can be linear, non-linear, and potentially, even non-convex. However, it can be {\em partially designed} by choice of senor locations $\mathbf{d}_m$. This will be a key enabler towards obtaining compressed sketches of measurements (or reducing the number of sensing units) while preserving the ability to reliably infer the parameter $\theta_i, 1\leq i\leq K$.\\
-\yoav{We should define, in the introduction, some repeating terms, including compressed sensing and sketches. Maybe also more technical terms such as kernel, low rank matrices and low magnitude vectors/matrices.}
 
 The basic model assumes targets as point sources, but in many situations, they are distributed. \piya{Perhaps Peter can help characterize this model, since SONAR deals with such targets}. 
 
@@ -213,11 +228,14 @@ Hence, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  =
 %\yoav{I think this is a very interesting question. Especially when the best subset depends on the location of the source.}\rayan{agree!}
 \item {\em Beyond Point Target Localization: Using Priors and Sparsity} In many applications such as camera networks, the quantities of interest are not the low-level measurements acquired at the CCD sensors, but the processed images $I_t$. In such cases, we need to obtain a compressive sketch of the image $A (I_t)$ via the sketching operator $A (.)$ using low dimensional representation (over unions of subspaces or manifolds). In addition to conventional sparsity and low-rank priors, one can also utilize (partial) knowledge of the prior distribution of the images $I_t\sim~\mathcal{D}$. Utilizing these priors can lead to more effective compression for a given level of sparsity. {\color{red} [To be written..]}  
 \end{enumerate}
-{\color{red} These tasks can be further integrated with the binary embedding based sketching ideas proposed by Rayan and Alex.}
+\piya{These tasks can be further integrated with the binary embedding based sketching ideas proposed by Rayan and Alex.}
+\rayan{Agree!}
 \end{itemize}
 
 \section{Fast binary embeddings... (Saab, Cloninger,...)}
 %\yoav{Please describe the algorithm (at least the outline)}
+\rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
+
 
 Often, distributed systems have severe bandwidth and energy constraints that necessitate extremely
 coarse, e.g., binary, quantization of their measurements (e.g, \cite{fang2014sparse,boufounos20081}). Simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others.
@@ -228,9 +246,12 @@ Co-PI Saab has recently  extended this observation  beyond signal reconstruction
     q_i &= \sign(y_i+u_{i-1})\\
     u_i &= u_{i-1} + y_i -q_i,
 \end{align}
-\yoav{How does one create an estimate of $y_i$ from $q_i$?}
+where the state-variable sequence $u_i$ is initialized via, e.g., $u_0=0$. In matrix-vector notation, this yields the relationship \begin{equation}y=Du+q\label{eq:SD_state}\end{equation}  between the measurement vector, the state variables, and the resulting quantization, with $D$ being the $m\times m$ first-order difference matrix. Crucially both for the analysis and for practical implementation, this scheme is \emph{stable}, that is, \begin{equation}\|y\|_\infty \leq c_1 \implies \|u\|_\infty \leq c_2,\label{eq:stability}\end{equation}
+for dimension independent constants $c_1,c_2$.
 
-where the state-variable sequence $u_i$ is initialized via, e.g., $u_0=0$. In matrix-vector notation, this yields the relationship $y=Du+q$  between the measurement vector, the state variables, and the resulting quantization, with $D$ being the $m\times m$ first-order difference matrix. Crucially both for the analysis and for practical implementation, this scheme is \emph{stable}, that is, $$\|y\|_\infty \leq c_1 \implies \|u\|_\infty \leq c_2,$$ for dimension independent constants $c_1,c_2$. More generally, other \emph{stable} noise-shaping quantizers act sequentially on the measurements $y_i$, %via carefully chosen functions $\rho,$
+\yoav{How does one create an estimate of $y_i$ from $q_i$?}\rayan{see the blue text}{\color{blue}
+
+For example, in the context of compressed sensing \cite{}, where the signals $x$ are sparse and the measurements are of the form $y = Ax$, one may recover an estimate $\hat{x}$ of $x$ from $q$ by solving an optimization problem  that encourages, say, sparsity, with the constraint that $\|D^{-1}(A\hat{x}-q)\|_\infty \leq c_2$. The constraint is critical; it ensures that the solution $\hat{x}$ respects the quantizer by satisfying \eqref{eq:SD_state}  and \eqref{eq:stability}}. More generally, other \emph{stable} noise-shaping quantizers act sequentially on the measurements $y_i$, %via carefully chosen functions $\rho,$
 %\begin{align}
 %q_i = \sign(\rho(y_i, u_i,u_{i-1},...,u_{i-r}))
 %u_i = 
@@ -247,7 +268,7 @@ For a  matrix $A\in\R^{m\times n}$, and a noise-shaping quantizer $Q$, as above,
 g: \mathcal{T} &\to \{\pm 1\}^m\nonumber\\
 x &\mapsto q=Q(Ax).\nonumber
 \end{align}
-\rayan{Perhaps we need a section where we introduce background material like the  Johnson-Lindenstrauss lemma?}
+%\rayan{Perhaps we need a section where we introduce background material like the  Johnson-Lindenstrauss lemma?}
 
 In particular, when $A$ is a fast Johnson-Lindenstrauss matrix (e.g., \cite{}), the constructed embeddings support fast computation, and despite their highly quantized non-linear nature, they perform as well as linear Johnson-Lindenstrauss methods up to an additive error that decays exponentially (for $\beta$ quantizers) or polynomially (for $\Sigma\Delta$ quantizers)  in $m$. 
 %\yoav{When exponentially and when polynomially?}
@@ -288,7 +309,7 @@ for any structure in the signals. Further, assume that the measurement
 operator, accounting for all the measurements at all the sensors, is
 given by $\transfer:\mathbb{R}^d \to \mathbb{R}^m$, \yoav{I am
   assuming that $A$ is equal to the transfer function $\phi$ as described in
-  the framework section and by Piya?}. In
+  the framework section and by Piya?} \rayan{possibly, if the transfer function includes design elements of the sensor}. In
 the case of distributed sensing systems, we can assume each sensor
 collects/computes a portion, $\transfer_i Y \in \mathbb{R}^{m_i}$, of
 $\transfer Y \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$) and the corresponding portion
@@ -298,7 +319,7 @@ collaborate to estimate a  quantity of interest,
 such as the state of the target, 
 $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
 
-\begin{equation}
+\begin{equation}\label{eq:binaryembedding}
 x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
 \mapsto Q(Ax) =\left[ \begin{array}{c} Q(A_1 x) \\ \vdots \\ Q(A_k x) \end{array}\right] \mapsto f(Q(Ax))\approx g(x)
@@ -308,8 +329,8 @@ x
 %\rayan{ Seems like in a model like this we could talk about Privacy (though I am not an expert on this -- any takers?} 
 
 
-\subsection{Compressed Statistics}
-\rayan{need a clear statement summarizing our goals here}
+\subsection{Statistics on Binarized Sketching of Complex Measurements}
+%\rayan{need a clear statement summarizing our goals here}
 %\rayan{we need to unify the notation here. $g$ is being used differently than the previous section}
 %\yoav{This sections needs more hand-holding of the reader. The way it is written assumed detailed prior knowledge. The more basic method - using unquantized kernels, needs some more explanation}.
 
@@ -328,29 +349,39 @@ quantizer. Alternatively, the sensor could measure the non-linear
 function directly prior to quantization.
 
 \subsubsection*{Background and Motivation}
-\yoav{This section need to be re-written in a way that will make the
-  connection to sensor networks clear. I don't know what are ``mean
-  embeddings''. Can you describe them? I would focus on universal
-  kernels unless there are good reason to talk about kernels that are
-  not univrsal.}
+%\yoav{This section need to be re-written in a way that will make the connection to sensor networks clear. I don't know what are ``mean embeddings''. Can you describe them? I would focus on universal kernels unless there are good reason to talk about kernels that are not univrsal.}
 
-There is a large body of literature around using a kernel $K:\mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}$ to define statistical distances through what's called \emph{mean embeddings} \cite{muandet2017kernel}.  A mean embedding $\mu_p:\mathbb{R}^d\rightarrow \mathcal{H}$ of a probability distribution $p$ is computed as
+Statistical distances, or accurately measuring distances between distributions, arise in a large number of applications.  With sensors, one example where these distances would be important is in testing the hypothesis of whether two sensors have measured the same underlying distribution.  An example of this would be for acoustic sensors, where each sensor collects the local power spectral density of a signal.  Each sensor $i$ now has a set of high dimensional data $X_i\mathbb{R}^d$, and the question is whether $X_1$ and $X_2$ are distributionally the same, up to a time shift.  After constructing a kernel $K: \mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}^d_+$ to define similarity between any two points, and ignoring communication constraints, a simple statistic to construct for a point $z\in X_1$ is a difference of kernel means over the two data sets $\frac{1}{|X_1|}\sum_{x\in X_1} K(z,x) - \frac{1}{|X_2|}\sum_{x\in X_2} K(z,x)$.  If $X_1$ and $X_2$ came from the same distribution, then this statistic would be unbiased at $z\in X_i$, otherwise there would be a bias for particular $z$.  Thus, computing the mean square error over all $z\in X_1\cup X_2$ yields a statistic that would be close to 0 if $X_1,X_2\sim p$, and would be biased if $X_1\sim p$ and $X_2\sim q$ for $p\neq q$.  This is a well studied statistic known as kernel Maximum Mean Discrepancy \cite{}.  In what follows, we will describe the mathematical framework and guarantees established, and propose methods for dealing with communication and computation constraints in this framework through randomized sketching and binary embeddings.  We will also detail a larger set of sensor problems that can be addressed in this framework.
+
+%\alex{To Add: Have acoustic sensors and ways to compute similarity of acoustics with kernel (maybe say general, but say sensor is collecting distribution of data).  For each window, generate energy distribution.  See if sensors are hearing the same distribution of sound, even if time shifted.  Sketching complex measurements, refer inside for compressed statistics}
+
+Generally, the approach described above is measuring the distance between the distributions' \emph{mean embeddings} \cite{muandet2017kernel}.  A mean embedding of a distribution $\mu_p:\mathbb{R}^d\rightarrow \mathcal{H}$ of a probability distribution $p$ is computed as
 \begin{align*}
     \mu_p(z) := \mathbb{E}_{x\sim p} \big[K(z,x)\big].
 \end{align*}
-\yoav{what is $\mathcal{H}?$. It seems to me that if the kernel $K$
-  maps into $R$ then $\mu_p$ should also map into $R$}
+Effectively, mean embedding is mapping the distribution $p$ to a point in the Reproducing Kernel Hilbert Space $\mathcal{H}$ that is induced by the kerrnel $K$.
+%\yoav{what is $\mathcal{H}?$. It seems to me that if the kernel $K$ maps into $R$ then $\mu_p$ should also map into $R$}
+
+%Consider the problem of meausing similary between data collected from sensor 1 and from sensor 2, and ask the question whether both sensors collected data from the same distribution.  Pool all data into $S_1\cup S_2$ and define the kernel measuring all pairwise similarities $K = \begin{bmatrix} K_{11} & K_{12}\\K_{21} & K_{22} \end{bmatrix}$.  
+%$MMD(S_1,S_2) = \sum_{x,x'\in S_1} K_{11}(x,x') + \sum_{y,y'\in S_2} K_{22}(y,y')$ - 2\sum_{x\in S_1,y\in S_2} K_{12}(x,y)$
 
 
 When $K$ is a \emph{universal} kernel (e.g. Gaussian, linear correlation) \cite{micchelli2006universal}, then the mean embedding satisfies a key property that $\|\mu_p - \mu_q\|_\mathcal{H}$ %(\rayan{define $\mathcal{H}$}) 
-is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This effectively means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  One key property is that, if we are only given $n$ finite samples $X\sim p$ and $Y\sim q$ to compute the empirical mean embeddings $\widehat{\mu}_X$ and $\widehat{\mu}_Y$, and we compute the mean embedding at all $z\in X\cup Y$, then $\|\widehat{\mu}_X - \widehat{\mu}_Y\|_2 \rightarrow \|\mu_p - \mu_q\|$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.
+is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This effectively means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  One key property is that, if we are only given $n$ finite samples $X\sim p$ and $Y\sim q$ to compute the empirical mean embeddings $\widehat{\mu}_X$ and $\widehat{\mu}_Y$, and we compute the mean embedding at all $z\in X\cup Y$, then $\|\widehat{\mu}_X - \widehat{\mu}_Y\|_2 \rightarrow \|\mu_p - \mu_q\|$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.  A statistical interpretation of the mean embedding distance is that  it computes a mean shift alternative test on the eigenfunctions of $K$ rather than in the original space $\mathbb{R}^d$, and that two distributions having matching means in the eigenfunction space is equivalent to the distributions having all moments matching in $\mathbb{R}^d$.  A large benefit of the mean embeddings is that this calculation can be done without explicitly computing the eigendecomposition of $K$.
 
-However, statistics of this type suffer from a number of issues under computation and communication bottlenecks, as they requires storing and communicating all points in $X\cup Y$.
-{\color{blue} In particular, computing $\hat{\mu}(z)$ at any one point $z$ requires evaluating the Kernel at all points in $X\cup Y$, which can be prohibitively expensive.}
+
+However, statistics of this type suffer from a number of issues under computation and communication bottlenecks, as they requires storing and communicating all points in $X\cup Y$.  In particular, computing $\hat{\mu}(z)$ at any one point $z$ requires evaluating the kernel at all points in $X\cup Y$, which can be prohibitively expensive.
 This has motivated computational speed ups presented in \cite{cheng2017two} of undersampling $z\in S\subset X\cup Y$ under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed, as well as notions of kernel compression via randomized sketching \cite{gribonval2017compressive}.  However, even these approaches still require communication of a number of points between sensors, or passing double precision complex valued summary statistics.  
 
+
+
 \subsubsection*{Goals}
-Our overarching goal is to reduce the communication constraints by utilizing both sketching and binarization through use of $g(x) = f(Q(A(x)))$  {\color{blue} so that rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute and communicate $(Q(Ax))\in \{\pm 1\}^m$, with $m\ll d$, or $f(Q(Ax))$}. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  We aim to prove that this low complexity vector still converges to a type of mean embedding, and to provide a rigorous analysis of the statistical power, convergence rates, and minimal detectable separation criteria between the distributions.  Below we highlight the benefit of this approach in a number of different sensor problems.
+Our overarching goal is to reduce the communication constraints by utilizing both sketching and binarization 
+%of the map introduced in \eqref{eq:binaryembedding}.
+through use of $g(x) = f(Q(A(x)))$.   
+The idea is that, rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute and communicate $Q(Ax)\in \{\pm 1\}^m$, with $m\ll d$, or $f(Q(Ax))$. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  
+For sensor networks, we can either compare between sensors by embedding each sensors' data through $g(X_i) = f(Q(A(X_i)))$ for a common $A$ at each sensor, or have the sensors work collaboratively across a common set of points by building a concatenated sketching from data across all sensors $g(X) = \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
+We aim to prove that this low complexity vector still converges to a type of mean embedding, and to provide a rigorous analysis of the statistical power, convergence rates, and minimal detectable separation criteria between the distributions.  Below we highlight the benefit of this approach in a number of different sensor problems. 
 
 \begin{itemize}
 \item Two Sample Testing: 
@@ -358,21 +389,18 @@ Our overarching goal is to reduce the communication constraints by utilizing bot
 %\yoav{Do you mean "storing" or "communicating" the points. The second is what  seems more relevant here, but I don't understand what is communicated.}
 %A modern approach to two sample testing, Kernel Maximum Mean Discrepancy \cite{Gretton 2012}, defines distances  between distributions by mapping each distribution to a Reproducing Kernel Hilbert Space through a smooth kernel $K$, and has existing results regarding consistency and power of the test.  However, construction of $K$ can be memory intensive, which motivated computational speed ups presented in \cite{Cheng, Cloninger, Coifman 2017} under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  Unfortunately these results cannot be efficiently implemented under power and communication bandwidth constraints, as they require passing individual data points between sensors.  
 %Our goal is to eliminate these bottlenecks through the use of binarized embeddings like $g(x)$, which has the additional benefit of building a sketching of the data for appropriate choice of $A$.  
-In the context of sensors, the two sample problem can be summarized as follows: a network of sensors collects the data set $X\sim p$ at some time (or location), and data set $Y\sim q$ at a later time (or different location), and the goal is to determine whether $X$ and $Y$ were distributed similarly.  To address this, we will analyze the binarized statistic $$\left\|\frac{1}{n}\sum_{x\in \mathcal{X}} g(x) - \frac{1}{m}\sum_{y\in \mathcal{Y}} g(y)\right\|,$$
+In the context of sensors, the two sample problem can be summarized as follows: each sensor collects a data set $X_i\sim p_i$, and the goal is to determine whether the $X_i$ were distributed similarly.  %Each sensor's data is given a binarized mean embedding $g_i(x)$
+To address this, we will analyze the binarized statistic $$\left\|\frac{1}{n}\sum_{x\in X_1} g(x) - \frac{1}{m}\sum_{y\in X_2} g(y)\right\|,$$
 %{\color{blue}Should we say this instead: we will construct functions $f$, so that $$\left\|\frac{1}{n}\sum_{x\in \mathcal{X}} f(Q(Ax)) - \frac{1}{m}\sum_{y\in \mathcal{Y}} f(Q(Ay))\right\|,$$}
 %(\rayan{and its finite sample approximation?}), 
-under appropriate norm, and seek to characterize the minimal conditions under which a deviation between $p$ and $q$ can be detected.   The approach requires characterizing the types of deviations $p - q$ that can be detected, namely those for which $$\left\|\int e^{-\|x-y\|^2/\sigma^2} (p(y) - p(y)) dy \right\| > \epsilon,$$ as well as the rates at which these deviations can be detected.
+under appropriate norm, and seek to characterize the minimal conditions under which a deviation between $p_1$ and $p_2$ can be detected.   The approach requires characterizing the types of deviations $p_1 - p_2$ that can be detected, namely those for which $$\left\|\int e^{-\|x-y\|^2/\sigma^2} (p_1(y) - p_2(y)) dy \right\| > \epsilon,$$ as well as the rates at which these deviations can be detected.
 %a deviation of the type $\int K(x,y) (p_1(y) - p_2(y)) dy$ can be detected by $\mathbb{E} g(x)$\rayan{We probably need to clarify this sentence}.
 The communication benefit of such a statistic is that the sensors need
 only transmit the mean of $g(x)$, rather than all the individual
-points.  Additional mathematical questions arise in the setting that
-different sensors collect non-overlapping features from $X$, as this
-creates a banded embedding matrix $A$.
+points.  %Additional mathematical questions arise in the setting that different sensors collect non-overlapping features from $X$, as this creates a banded embedding matrix $A$.
 
 \alex{Could expand on this, or reference other comments in proposal and a few papers about this for JL embeddings}
-\yoav{I would like to see a more self-contained description, rather
-  than an expansion. While I agree with the goals, I have no idea how
-  the described math can be used to achieve those goals.}
+%\yoav{I would like to see a more self-contained description, rather than an expansion. While I agree with the goals, I have no idea how the described math can be used to achieve those goals.}
 
 %\yoav{Rather than describing the existing approach at the end, I would start with it and say, we plan to extend this approach ...}
 %The approach builds on the existing literature of kernel Maximum Mean Discrepancy \cite{Gretton 2012} and the computational speed ups presented in \cite{Cheng, Cloninger, Coifman 2017} under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed. 
@@ -383,40 +411,84 @@ creates a banded embedding matrix $A$.
 %As the number of samples $n\rightarrow \infty$, MMD is shown to detect any nonzero deviation $\|p-q\|_\infty$ when $\mathcal{F}$ is a Reproducing Kernel Hilbert Space \cite{Skolkoph}.  However, the method requires $\mathbb{O}(n^2)$ storage.
 \rayan{let's refine this discussion a little -- I have some ideas here}
 
-\item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   There exists a mean embedding approach to change point analysis \cite{Bach 2008} which uses the kernel Fisher discriminant ratio to measure the homogeneity between time segments of the process.  However, this once again requires storage of all points over the length of the detection window and communication of those points across sensors for both computing the window mean and variance. It also suffers from an inability to begin computing the change point statistic until all points in the window have been collected.  We aim to introduce the binarized sketching framework to produce an efficient computation to the kernel mean as in two sample testing, as well as a fast construction of a low rank approximation to the kernel covariance matrix.  We will derive it's new limiting distribution under the null model of no change, as well as the consistency under the alternative distribution when a change does occur.  
+\item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   Unlike the two sample context in which we were testing whether the sensors detected the same distribution, here we can use the sensors collaboratively by constructing the concatenated sketching matrix $g(X) = \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
+There exists a mean embedding approach to change point analysis \cite{Bach 2008} which uses the kernel Fisher discriminant ratio and mean embedding to measure the homogeneity between time segments of the process.  However, this once again requires storage of all points over the length of the detection window and communication of those points across sensors for both computing the window mean and variance. It also suffers from an inability to begin computing the change point statistic until all points in the window have been collected.  We aim to introduce the binarized sketching framework to produce an efficient computation to the kernel mean as in two sample testing, as well as a fast construction of a low rank approximation to the kernel covariance matrix.  We will derive it's new limiting distribution under the null model of no change, as well as the consistency under the alternative distribution when a change does occur.  
 
 \item Multiple Sensor Common Factor Identification: A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  Under a linear model, algorithms such as Canonical Correlation Analysis \cite{} act on multiple streams of simultaneously collected data $X_i(t)$ to filter noise and recover highly correlated linear projections from two the data sets.
 Recently, a kernel CCA technique called alternating diffusion \cite{Talmon Lederman} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and two nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$, and samples $s((x_i,y_i^{(1)}, y_i^{(2)}))$ for $(x_i,y_i^{(1)}, y_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  Due to sensor location or modality, sensor 1 collects data points $S_1 = s((x_i,y_i^{(1)}, \xi))$ and sensor 2 collecting data points $S_2 = s((x_i,\zeta,y_i^{(2)}))$.  Then roughly speaking, for some assumptions on $s$ and for $K_1: S_1\times S_1 \rightarrow \mathbb{R}$ and $K_2:S_2\times S_2 \rightarrow \mathbb{R}$, Talmon and Wu \cite{Talmon Wu} proved $(K_1 K_2)^t$ is the diffusion kernel on $\mathcal{M}$ only.   This is a very beneficial feature, as it means that one can compute kernel statistics for distributions defined on $\mathcal{M}$ only, independent of the nuisance features that may differ between sensors due only to modality or location.
 
 
-However, this requires communication of all $n$ points across sensors to compute the kernel product.  We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx g_i(S_i) g_i(S_i)^*$.  As the key feature of alternating diffusion is computing the inner product matrix $g_1(S_1)^* g_2(S_2)$, which has dimension $d<n$ and is also low rank.  This implies it is possible to sketch $g_1(S_1)$ (resp. $g_2(S_2)$) with a small set of vectors $v_j$ (resp. $w_k$) and only communicate vectors $g_1(S_1)^* v_j$ (resp. $w_k^* g_2(S_2)$) such that $\mathbb{E}_{j,k}[g_1(S_1)^* v_j w_k^* g_2(S_2)] \approx g_1(S_1)^* g_2(S_2)$.  The amplification of the common factors observed by both sensors can serve to boost the power of the two sample and change point statistics on the shared observable manifold $\mathcal{M}$, as well as other compressed statistics that can be computed \cite{Griboval}.
+However, this requires communication of all $n$ points across sensors to compute the kernel product.  We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx g(S_i) g(S_i)^*$.  As the key feature of alternating diffusion is computing the inner product matrix $g(S_1)^* g(S_2)$, which has dimension $d<n$ and is also low rank.  This implies it is possible to sketch $g(S_1)$ (resp. $g(S_2)$) with a small set of vectors $v_j$ (resp. $w_k$) and only communicate vectors $g(S_1)^* v_j$ (resp. $w_k^* g(S_2)$) such that $\mathbb{E}_{j,k}[g(S_1)^* v_j w_k^* g(S_2)] \approx g(S_1)^* g(S_2)$.  The amplification of the common factors observed by both sensors can serve to boost the power of the two sample and change point statistics on the shared observable manifold $\mathcal{M}$, as well as other compressed statistics that can be computed \cite{Griboval}.
 %\yoav{This last item looks very interesting, but I don't understand it ... is it related to the problem I suggested of finding the offset of highest correlation for two similar signals?}
+\item \rayan{Put in classification \begin{itemize}
+    \item Idea 1: Training reduced to computing averages $\mu_j$, over the data of say $Q(\cos(A x+b))$ for each class $x\sim\mathcal{X}_j$. Classification reduced to computing $\mu_y=Q(\cos(Ay+b))$ and finding the closest $\mu_j$ to $\mu_y$. In a sense, this is like 2-sample testing, but with a point mass at $y$. Advantages: Each sensor only keeps the averages relevant to its own portion of $Q(\cos(Ax))$ for $x$ in training set, and later for $y$ to be classified. Each sensor can compute its own piece of the inner product $\langle \mu_j, \mu_y \rangle$, you are ultimately averaging bits, so memory needed at each sensor grows like $m_i\times \log(P)$ where $P$ is the total number of points and $m_i$ is the size of the sketch at each sensor... The idea is that $m_i\ll d$ and $\log(P) \ll P$ so you save a ton on storage/communication. 
+    
+    \item Idea 2: Exploit the hierarchical/distributed nature of the bits produced by binary embeddings. Requires more thought...
+\end{itemize} 
+and clustering: Analogous to the above...}
 \end{itemize}
 
 \section{Localization of weak sources (Peter)}
 
-\yoav{Peter, I would like to see some discussion of using using sensor
-  networks to estimate the transfer function, which, I think, is a
-  main part of your past work.}
+\yoav{This section describes a well known technique, you can be brief and give a textbook reference. It would be good if you could expand on the last part: "pushing computation to the sensor nodes.}
 
-Detecting weak sources within a sensor network with or without a fusion center. The network could consist of sensors with know location, partially unknown or unknown positions.
+The focus here is detecting weak sources within a sensor network without a fusion center. To observe weak sources, as much information as possible should be used. Thus, at first there is no attempt to reduce the information in the data by sketching or special sensor arrangements. The network could consist of sensors with know location, partially unknown or unknown positions.
 
-
-\subsection{With a fusion center}
-The propagation path from a given source location would here represent multiple propagation paths in a non-uniform media. The frequency domain transfer function from a source location to $N$ receivers ${\bf a}$. Assuming $K$ uncorrelated sources of complex amplitude $\bf s$ the received signal is 
+The propagation path from a given source location would here represent multiple propagation paths in a non-uniform media. The frequency domain transfer function from a source location to $N$ receivers ${\bf a}$. Assuming $K$ uncorrelated sources of complex amplitude ${\bf s}$ at spatial location ${\bf x}_k$, the received signal ${\bf y}\in {\cal R}^N$ on $N$ receivers is 
 \begin{equation}
 {\bf y}={\bf A}{\bf s}+{\bf n},
 \end{equation}
-where ${\bf A}=[{\bf a}_1, \dots {\bf a}_k ]$  and $\bf n$ is uncorrelated noise. 
-Forming the ensemble mean over multiple snapshots 
+where ${\bf A}=[{\bf a}_1, \ldots {\bf a}_K ]$  and $\bf n$ is uncorrelated noise. 
+The sources might be located in the near field and  composed of many propagation paths. Examples of many propagation paths from a single source could be waves from  
+1) a source in a house propagating though the air and though the wall.
+2) a cell phone signal with a direct path, a reflected path or refracted path.
+3) a car radiating noise though the air and though the ground.
+Further, the sensors are not placed in a regular order, but where practical and maybe with unknown location. Thus the elements in ${\bf a}_k$ are unknown.
+
+\yoav{What is the relationship between $a_k$ and $x_k$?}
+
+To make observations of weak sources we observe $L$ snapshots  assuming  stationarity ${\bf Y}=[{\bf y}_1 \ldots {\bf y}_L]$.
+We can here form the sample covariance matrix (SCM)
+\begin{equation}
+{\bf S} ={\bf Y}{\bf Y}^H/L
+\end{equation}
+and form the the normalized SCM $\hat{\bf S}$ or coherence with elements
+\begin{equation}
+{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
+\end{equation}
+
+\yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
+
+Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
 \begin{equation}
 {\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
 \end{equation}
-\yoav{What is ${\cal E}$?  What is the meaning of ${\bf y} {\bf y}^H$
-  is it an inner or outer product? }
 
-\subsection{Without a fusion center}
-Here the processing is done locally at each node.
+The array signal processing literature is ample with processing of this type, especially with the structure of the $\bf A$ matrix partially known. In this work we will focus on pushing the computations to the sensor nodes and thus only observing part of SCM.
+
+\subsection{Graph signal processing approach without a fusion center}
+Here the processing is done locally at each node. A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM at once, i.e., using a fusion center. 
+When the coherence $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM can then be used localize the source more precisely.
+
+To extract very weak signals with a well estimated and robust SCM is needed. Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods\cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could either be communicated further to a wider set of nodes.
+
+Robust signal processing methods\cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. A qualitatively robust estimator is characterized by an IF that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
+
+\subsection{Tomography}
+\yoav{I believe you are talking here about tomography, or reconstructing the environment. Can you write a paragraph of introduction, what is the problem? What is the desired solution?}
+Sparse modeling assumes that signals can be reconstructed using a few (sparse) vectors, called atoms, from a potentially large set of atoms, called a dictionary. Recent ocean acoustics works utilizing sparse modeling is beamforming\cite{Xenaki2014}, matched field processing \cite{Gemba2017}, and geoacoustic inversion \cite{gerstoft2018}. One challenge in sparse modeling is finding the best dictionary for sparsely representing specific signals. Such dictionaries can be composed of wavelets, or the discrete cosine transform (DCT). These predefined dictionaries perform well for many signals. However, using a form of unsupervised machine learning, called dictionary learning, optimal dictionaries can be learned directly from specific data\cite{mallat1999}. It has been shown that learned dictionaries outperform generic dictionaries when sufficient signal examples are available. Machine learning, and specifically dictionary learning, have recently obtained compelling results in ocean acoustics cite{Bianco2017} and seismology\cite{kong2018}. 
+
+\Yoav{The simplest type of Dictionary learning is learning a codebook for Vector Quantization. Dictionaries are different than VQ if they combine (add) multiple vectors to represent a singe location in the signal. Is there a chance that VQ methods might work?}
+
+
+\yoav{I don't understand the following three paragraphs, can you give some technical details? Formulas?}
+In current work, we have developed a machine learning-based travel time tomography method called locally sparse travel time tomography (LST)\cite{bianco2018}. In LST, small scale local features contained in small rectangular groups of pixels, called patches, in an overall slowness (inverse  speed) map are constrained using a sparse model. Further, the sparsifying dictionary is adapted to the specific slowness data using dictionary learning. Larger scale, or global features spanning the  map, are constrained with least-squares regularization. Unlike conventional tomography, in which model features are forced to be exclusively smooth or discontinuous, the LST approach permits smooth and discontinuous local features via dictionary learning. 
+
+
+Whereas many machine learning techniques in geoscience\cite{kong2018}, are reliant on large amounts of training data, LST requires none. In LST we adopt the adaptive dictionary learning paradigm from image denoising \cite{elad2010} and medical imaging\cite{ravishankar2011}, in which dictionaries are learned directly from patches of the corrupted image. In LST, slowness dictionaries are learned from patches of a least squares regularized inversion, and are then used to reconstruct a sparsity-constrained slowness image. Assuming sufficiently dense ray sampling, the dictionary is initially unknown and is learned in parallel with the inversion. LST obtains high resolution by assuming that small patches of discrete slowness maps are repetitions of few elemental patterns from a dictionary of patterns. These patterns, which are described by the atoms in the dictionaries, are extracted from the data by dictionary learning. The increase in performance for synthetic slownesses relative to competing methods, are demonstrated for  ambient noise tomography\cite{bianco2018}. 
+
+Assuming that the travel paths between sensors has been estimated\cite{sabra2005,gerstoft2006} We here propose the future development of machine learning-based tomography methods in ocean acoustics. Such methods will help to more fully-exploit both existing hydrophone and environmental data, as well as very dense sampling from future arrays with many sensors. Such large scale, mobile, and deformable arrays, will use ambient noise processing \cite{sabra2005}, to obtain very dense and rich data sets. We propose for future work to: (1) further develop a dictionary learning-based travel time tomography \cite{bianco2018}, accounting for uncertainty in the measurements and physics; (2) formulate the dictionary learning-based approach as CNN via CSC; and (3) apply this CSC tomography framework to  data assimilation, to obtain higher-resolution estimates of water column parameters over conventional methods. We further propose to develop  (5) acoustic event detection methods that leverage recent advances in machine learning.
+
 
 \subsection{Spatio-temporal fields}
 
