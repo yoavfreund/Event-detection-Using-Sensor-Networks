@@ -1,0 +1,12 @@
+\section{Introduction}
+Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into {\bf knowledge} (a representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the acquired {\bf knowledge}.
+
+\rayan{I think we need to edit this a little. The first and second paragraphs feel disconnected from each other.}
+
+The design of the sensors is dominated by considerations of sensitivity and resolution (temporal and spatial).  The goal is to detect the smallest, faintest and most transient signals,
+by exploiting priors on the physical model of signal acquisition, and the geometry of signal representation. Computation is used to reduce raw data into an internal representation and then into actions. 
+
+These days the leading architecture of reactive systems is wireless sensor networks. Sensor networks consist of large numbers of small independent units, each with sensors, computation and wireless communication. Such systems are constrained by power and communication bandwidth. 
+
+One important consequence of these constraints is {\em pushing computation to the edge}. Instead of communicating the raw information from each sensor to a central computer, each sensor unit locally computes summaries, or sketches, which are shorter and therefore cheaper to communicate. This also reduces the computation load on the units that receive the information.
+

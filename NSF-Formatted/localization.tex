@@ -1,0 +1,76 @@
+\section{Target Localization using minimal number of sensors}
+\yoav{Piya, can you use the notation I defined in the framework
+  section? Also I would like to merge this  subsection and the
+  following one, which describes sensing geometry and the goal of
+  minimizing the number of sensors.}
+A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain parameters $\theta_i\in\mathbb{C}^P, i=1,\ldots,K$ from $K$ targets of interest in the environment by acquiring signals emitted by them. 
+
+\yoav{This describes a more general framework, using $\mathbb{C}^P$ (does that mean each coordinate is complex?). What is gained from this generality? maybe drop the general notation? Also how does high resolution/super-resolution fit here? If you have worked on such problem, I suggest you devote a paragraph and cite, rather than just mentioning in passing.} 
+
+As an example, consider a network consisting of active radar units (for example, those mounted on autonomous vehicles) attempting to create a map of the environment. In this case, $K$ can denote the total number of pedestrians, bicyclist's and other cars and $\theta_i\in\mathbb{R}^3$ for the $i$th target will consist of its location $\mathbf{x}_i=[x_i,y_i]^T$ and velocity $(v_i)$ parameters, i.e.
+\begin{equation} \theta_i = [ x_i, y_i, vx_i ,vy_i]^T, \quad 1\leq i\leq K  
+\end{equation} 
+\yoav{Shouldn't $K$ be estimated?}
+%\rayan{It could also be 3 dimensional :), as can position}
+Mathematically the space-time measurements collected at the $m$th sensing element can be described as \begin{equation} 
+y_m (t) = \sum_{i=1}^{K} \phi (\mathbf{d}_m,\theta_i,t) + w_m(t), \quad 1\leq m\leq M
+\end{equation}
+where $w_m(t)$ is the additive noise. Here $\mathbf{d}_m\in \mathbb{R}^3$ denotes the location of the $m$th sensor and the function $\phi(.)$ characterizes the measurement model (often referred to as the point-spread function in the context of imaging) that depends on the physical laws governing wave propagation, and properties of the medium. Depending on the application and model assumptions, the function $\phi(.)$ can be linear, non-linear, and potentially, even non-convex. However, it can be {\em partially designed} by choice of senor locations $\mathbf{d}_m$. This will be a key enabler towards obtaining compressed sketches of measurements (or reducing the number of sensing units) while preserving the ability to reliably infer the parameter $\theta_i, 1\leq i\leq K$.\\
+
+The basic model assumes targets as point sources, but in many situations, they are distributed. \piya{Perhaps Peter can help characterize this model, since SONAR deals with such targets}. 
+
+The main objective is to obtain estimates $\hat\theta_i, 1\leq i\leq K$ of the parameters of interest ($\theta_i$) using {\em minimal number of measurements/minimizing the number of sensing elements}. These estimates essentially are some appropriate functions of the spatio-temporal measurements $Y_T = \{y_m(t),  1\leq m\leq M, 1\leq t\leq T \}$, i.e., \begin{equation}
+\hat{\theta_i}(T) = g_i (Y_T) 
+\end{equation} 
+%\subsection*{Central Objective and Role of Sensing Geometry (Piya)}
+In many scenarios, the parameters of interest can be reliably inferred from the {\em correlation of the measurements}. In other words, the correlation of the measurements act as a sufficient statistic for the parameters to be inferred. Depending on the application, the correlation matrix can be spatial (when the source signals are stationary), or spatio-temporal (when the temporal dynamics need to be tracked, such as for change-point detection). In these cases, we can effectively summarize the large amount of raw sensor measurements by only retaining and communicating their correlation. 
+\yoav{The way I was thinking about it, each sensor has only one signal. In a one scenario, the quantity of interest is the "time delay of arrival" or the time shift of one signal relative to another that would maximize the correlation. Is there anything known about computing this time delay without communicating the whole time series?}
+
+\noindent{\bf Spatial Correlation and Localization:} Suppose we compute the spatial correlation between $y_m(t)$ and $y_n(t)$  by averaging over $T$ time samples (the signals are assumed to be stationary over this interval) \footnote{Reasonable to do so when the source signals are stationary and emit independent signals. This is the common practice in source localization using antenna arrays. We can also use more sophisticated regularized estimation of correlation.}
+\begin{equation}
+r_{m,n} (T) = \frac{1}{T}\sum_{t=1}^{T} y_m (t) y^*_n (t) 
+\end{equation} 
+We can summarize the self and cross correlation between $M$ time-series measurements (collected at $M$ sensors) using these $M^2$ correlation values (collected in the form of a correlation matrix $R_T$). Owing to the geometry of the measurements, these correlation values directly depend on the sensor locations $\mathbf{d}_m$  (via the mapping $\phi(.)$). Hence, it is natural to ask 
+\begin{enumerate}
+\item Can we exploit the geometry of the measurement model to further compress the  correlation matrix $R_T$? What is the role of sensor geometry in this case? We should still be able reliably infer $\theta_i, i=1,2,\ldots, K$ from such a compressed sketch.
+\item How large should $M$ be (in comparison to $K$) ?
+\end{enumerate}
+
+
+\section{Localization of weak sources (Peter)}
+
+\yoav{Can the description of SCM be folded into Piya's introduction?}
+
+The focus here is detecting weak sources within a sensor network without a fusion center. To observe weak sources, as much information as possible should be used. Thus, at first there is no attempt to reduce the information in the data by sketching or special sensor arrangements. The network could consist of sensors with know location, partially unknown or unknown positions.
+
+The propagation path from a given source location would here represent multiple propagation paths in a non-uniform media. The frequency domain transfer function from a source location to $N$ receivers ${\bf a}$. Assuming $K$ uncorrelated sources of complex amplitude ${\bf s}$ at spatial location ${\bf x}_k$, the received signal ${\bf y}\in {\cal R}^N$ on $N$ receivers is 
+\begin{equation}
+{\bf y}={\bf A}{\bf s}+{\bf n},
+\end{equation}
+where ${\bf A}=[{\bf a}_1, \ldots {\bf a}_K ]$  and $\bf n$ is uncorrelated noise. 
+The sources might be located in the near field and  composed of many propagation paths. Examples of many propagation paths from a single source could be waves from  
+1) a source in a house propagating though the air and though the wall.
+2) a cell phone signal with a direct path, a reflected path or refracted path.
+3) a car radiating noise though the air and though the ground.
+Further, the sensors are not placed in a regular order, but where practical and maybe with unknown location. Thus the elements in ${\bf a}_k$ are unknown.
+
+\yoav{What is the relationship between $a_k$ and $x_k$?}
+
+To make observations of weak sources we observe $L$ snapshots  assuming  stationarity ${\bf Y}=[{\bf y}_1 \ldots {\bf y}_L]$.
+We can here form the sample covariance matrix (SCM)
+\begin{equation}
+{\bf S} ={\bf Y}{\bf Y}^H/L
+\end{equation}
+and form the the normalized SCM $\hat{\bf S}$ or coherence with elements
+\begin{equation}
+{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
+\end{equation}
+
+\yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
+
+Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
+\begin{equation}
+{\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
+\end{equation}
+
+The array signal processing literature is ample with processing of this type, especially with the structure of the $\bf A$ matrix partially known. In this work we will focus on pushing the computations to the sensor nodes and thus only observing part of SCM.
