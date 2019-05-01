@@ -1,16 +1,26 @@
-\section{Fast binary embeddings... (Saab, Cloninger,...)}
-\yoav{Rayan and Alex, please link your sections to one or more of the
-  specific tasks above. Feel free to add other tasks, but these should
-  be specific real world applications, not just mathematical frameworks.}
-\rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
+\section{Fast binary embeddings and  statistics on binary sketches}
+%\yoav{Rayan and Alex, please link your sections to one or more of the
+ % specific tasks above. Feel free to add other tasks, but these should
+  %be specific real world applications, not just mathematical frameworks.}
+%\rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
+\rayan{under construction - need a better title!}
 
-Consider an application where a network of sensors' goal is to detect whether a major change in the status of the system being observed has occurred. In such a setting, each sensor may collect, in an ongoing way, large amounts of data. However, communicating all this data across all the sensors to perform this statistical task may be prohibitively expensive and tremendously wasteful. Similarly, consider the (e.g., anomaly detection) setting where one may wish to determine whether data being collected at two sensors, or at two sets of sensors is similar (e.g., drawn from the same distribution), without communicating all the data across sensors. One way to alleviate the large communication costs associated with such problems is for each sensor to maintain only a binarized (or low bit-depth) sketch that is sufficient to perform the required statistical task (\cite{Gribonval, Jacques}). It is a main goal of this section to develop both algorithmic tools and rigorous theoretical analysis for this framework. 
+Consider an application where a sensor, or a network of sensors monitoring a system aims to detect whether a major change in the status of the system has occurred. In such a setting sensors may collect large amounts of data in an ongoing way. However, communicating all this data across all the sensors to perform this statistical change-detection task may be prohibitively expensive and tremendously wasteful. Similarly, consider the (e.g., anomaly detection) related setting where one may wish to determine whether data being collected at two sensors, or at two sets of sensors is similar (i.e., drawn from the same distribution), without communicating all the data across sensors. Imagine if such tasks could be accomplished by having each sensor maintain and communicate only one vector whose entries are of low bit-depth, i.e., taking on one of very few values, and then perform a simple computation using to solve the problem. One goal of this proposal is to devise and study methods for obtaining such low bit-depth sketches in the context of performing statistical tasks, and to study their computational complexity and  performance guarantees. To that end, we will first provide some relevant background, both on compressive statistics \cite{gribonval2017compressive, } \rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.
+
+
+%One way to alleviate the large communication costs associated with such problems is for each sensor to maintain only one vector-valued function of all the data it has collected.  
+
+%binarized (or low bit-depth) sketch that is sufficient to perform the required statistical task (\cite{Gribonval, Jacques}). Indeed, a sketch in this context is ideally a low-dimensional function of the sensor measurements whose size does not increase as more data is collected, while its accuracy does. 
+
+%It is a main goal of this section to develop both algorithmic tools and rigorous theoretical analysis for this framework. 
 
 %\rayan{working on this}
 %Indeed, distributed systems often have severe bandwidth and energy constraints that necessitate only sketching (i.e., keeping a parsimonious representation) the data being sensed. Further, to minimize the computational and storage costs associated with such sketches, one may revert to 
+
+% (e.g, \cite{fang2014sparse,boufounos20081}). Additionally, simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others.
+\subsection{Background and Prior Work: Quantization and Binary Embeddings}
 We will rely on extremely
-coarse, e.g., binary, quantization of the data-sketches. In addition to minimizing storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) these methods have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). % (e.g, \cite{fang2014sparse,boufounos20081}). Additionally, simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others.
-\subsection{Background and Prior Work}Indeed a growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new}), has focused on signal reconstruction from coarsely quantized compressive measurements. One important theme that emerges from this line of work  is that if one collects more coarsely quantized measurements than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down.
+coarse, e.g., binary, quantization of the data-sketches. In addition to minimizing storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) these methods have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. Indeed a growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new}), has focused on signal reconstruction from coarsely quantized compressive measurements. One important theme that emerges from this line of work  is that if one collects more coarsely quantized measurements than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down.
 
 Co-PI Saab has recently  extended this observation  beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast}  $A: \R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss (i.e., distance preserving) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{stuff} or $\beta$ \cite{stuff} quantizer). In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $y_i$. For example, the simplest noise-shaping quantization scheme, the so-called greedy $1$st order $\Sigma\Delta$ scheme, is given, for $i=1,...,m$, by 
 \begin{align}
@@ -20,9 +30,9 @@ Co-PI Saab has recently  extended this observation  beyond signal reconstruction
 where the state-variable sequence $u_i$ is initialized via, e.g., $u_0=0$. In matrix-vector notation, this yields the relationship \begin{equation}y=Du+q\label{eq:SD_state}\end{equation}  between the measurement vector, the state variables, and the resulting quantization, with $D$ being the $m\times m$ first-order difference matrix. Crucially both for the analysis and for practical implementation, this scheme is \emph{stable}, that is, \begin{equation}\|y\|_\infty \leq c_1 \implies \|u\|_\infty \leq c_2,\label{eq:stability}\end{equation}
 for dimension independent constants $c_1,c_2$.
 
-\yoav{How does one create an estimate of $y_i$ from $q_i$?}\rayan{see the blue text}{\color{blue}
+%\yoav{How does one create an estimate of $y_i$ from $q_i$?}\rayan{see the blue text}{\color{blue}
 
-For example, in the context of compressed sensing \cite{}, where the signals $x$ are sparse and the measurements are of the form $y = Ax$, one may recover an estimate $\hat{x}$ of $x$ from $q$ by solving an optimization problem  that encourages, say, sparsity, with the constraint that $\|D^{-1}(A\hat{x}-q)\|_\infty \leq c_2$. The constraint is critical; it ensures that the solution $\hat{x}$ respects the quantizer by satisfying \eqref{eq:SD_state}  and \eqref{eq:stability}}. More generally, other \emph{stable} noise-shaping quantizers act sequentially on the measurements $y_i$, %via carefully chosen functions $\rho,$
+For example, in the context of compressed sensing \cite{donoho2006compressed,candes2006stable}, where the signals $x$ are sparse and the measurements are of the form $y = Ax$, one may recover a very accurate estimate $\hat{x}$ of $x$ from the one-bit measurements $q$ by solving an optimization problem  that encourages, say, sparsity, with the constraint that $\|D^{-1}(A\hat{x}-q)\|_\infty \leq c_2$. The constraint is critical; it ensures that the solution $\hat{x}$ respects the quantizer by satisfying \eqref{eq:SD_state}  and \eqref{eq:stability}. More generally, other \emph{stable} noise-shaping quantizers act sequentially on the measurements $y_i$, %via carefully chosen functions $\rho,$
 %\begin{align}
 %q_i = \sign(\rho(y_i, u_i,u_{i-1},...,u_{i-r}))
 %u_i = 
@@ -52,12 +62,14 @@ Above, $\eta(m)$ decays polynomially fast in $m$ (when $\mathcal{Q}$ is a $\Sigm
 \[ m \gtrsim \frac{\log^4 n}{\alpha^2}\cdot\frac{\omega(\mathcal{T})^2}{\rad(\mathcal{T})^2} \quad \implies \quad \big|d_{\widetilde{V}}(g(x), g(\tilde{x})) - \|x - \tilde{x}\|_2\big| \leq \max(\sqrt{\alpha},\alpha) \rad(\mathcal{T}) + c\eta(m)\]
 where $\eta(m)$ is as before and where $\rad(\mathcal{T})$ and $\omega(\mathcal{T})$ denote  the Euclidean radius of  $\mathcal{T}$ and its Gaussian width (which roughly scales with the average radius of $\mathcal{T}$, so that intrinsically low-dimensional sets have a small Gaussian width). %, defined in Section \ref{sec:math_prelim}.
  In short, with \emph{very few measurements} compared to the ambient dimension of the signals, one can very efficiently (roughly at the cost of a fast Fourier transform) obtain low-dimensional binary sketches of the data. These sketches approximately preserve all pairwise distances in the original set and the distances in the embedded space can be computed efficiently.  
-\rayan{may have to edit this depending on how the themes in the proposal evolve}
+%\rayan{may have to edit this depending on how the themes in the proposal evolve}
 
-While signal reconstruction is not a major focus of our work, the promising results obtained in that context, and particularly in the context of binary embeddings, lead us to believe that the above techniques can be generalized to other tasks. 
+While signal reconstruction is not a major focus of this section, the promising results obtained in that context, and also in the context of binary embeddings, lead us to believe that the above techniques can be generalized to other tasks. 
 %\yoav{I would differentiate between reconstruction, which corresponds to the lossy compression and compression methods whose output is designed to make particular types of inferences at the receiver end, rather than reconstruction. such as change detection, localization, statistical hypothesis testing. I think the former takes us into well trodden areas which have been studied in information theory, while the latter is much more of an open field. I recommend we focus on the latter.}
 %\rayan{I agree. Reconstruction was intended as an example of a task that traditionally suffers from coarse quantization if care is not taken in designing the quantization algorithms, not as a focus of the proposal.}
-Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
+
+
+\rayan{I like this paragraph :), we should find a home for it.} Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
 
 \subsection{Models}
   
@@ -132,7 +144,7 @@ Generally, the approach described above is measuring the distance between the di
 \begin{align*}
     \mu_p(z) := \mathbb{E}_{x\sim p} \big[K(z,x)\big].
 \end{align*}
-Effectively, mean embedding is mapping the distribution $p$ to a point in the Reproducing Kernel Hilbert Space $\mathcal{H}$ that is induced by the kerrnel $K$.
+Effectively, mean embedding is mapping the distribution $p$ to a point in the Reproducing Kernel Hilbert Space $\mathcal{H}$ that is induced by the kernel $K$.
 %\yoav{what is $\mathcal{H}?$. It seems to me that if the kernel $K$ maps into $R$ then $\mu_p$ should also map into $R$}
 
 %Consider the problem of meausing similary between data collected from sensor 1 and from sensor 2, and ask the question whether both sensors collected data from the same distribution.  Pool all data into $S_1\cup S_2$ and define the kernel measuring all pairwise similarities $K = \begin{bmatrix} K_{11} & K_{12}\\K_{21} & K_{22} \end{bmatrix}$.  
@@ -199,5 +211,29 @@ However, this requires communication of all $n$ points across sensors to compute
     \item Idea 2: Exploit the hierarchical/distributed nature of the bits produced by binary embeddings. Requires more thought...
 \end{itemize} 
 and clustering: Analogous to the above...}
+\item \rayan{under heavy construction} Theoretical considerations: Random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{RR2008} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, y) = \exp(-\|x - y\|_2^2/2$). They considered $\phi(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$ and showed a concentration of measure \cite{} result for $$\sup_{x, y\in\mathcal{X}}|\langle \phi(x), \phi(y)\rangle - k(x, y)| = \sup_{x, y\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, y\rangle + b_i) - k(x, y)|$$
+by using an $\epsilon$-net argument. The result was later improved by Sriperumbudur and Szabo \cite{SS2015} using Dudley's inequality \cite{}. Still, the above results' dependence on the data's geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{DKS2011}, Le, Sarlos, and Smola \cite{LSS2013, LSS2014} considered a structured random matrix $A$ to speed up RFFs. The structured matrix they proposed satisfied $A= SHG\Pi HB,$
+where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. With this construction \cite{LSS2014} claimed a concentration result analogous to that of \cite{RR2008} using an $\epsilon$-net argument, and they \emph{conjectured} that $H$ can be replaced by any orthogonal matrix and reported numerical evidence showing that random partial Fourier matrices also gave a comparable results. There is not much theoretical work for this setting.
+
+\textit{Questions.} This is a great example of nonlinear + structured random measurements. We need to understand the empirical process:
+\[
+	\mathbb{P}\left(\sup_{(x, y)\in\mathcal{X}\times\mathcal{Y}} \left|\frac{2}{m}\sum\cos(Ax)\cos(Ay) - k(x, y)\right| \geq t\right),
+\]
+where $A$ is a structured random matrix.
+
+In general, we can study 
+\begin{equation}\label{ep}
+	\mathbb{P}\left(\sup_{(f, g)\in\mathcal{F}\times\mathcal{G}} \left|\frac{2}{m}\sum f(a_i)g(a_i) - \mathbb{E}[fg]\right| \geq t\right).
+\end{equation}
+The empirical process (\ref{ep}) has been studied by Mendelson \cite{Mendelson} when $f$ and $g$ are sub-gaussian, using the generic chaining method.
+
+Understanding (\ref{ep}) is also helpful for us when we incorporate quantization.
+
+
+{Quantize RFFs}
+The first work was introduced by Raginsky and Lazebnik \cite{RL2009} in which they quantized RFFs $Q(\phi(x)) = Q(\sqrt{\frac{2}{m}}\cos(Ax + b))$ where $Q$ is a dither quantization. They showed that we could quantize and use hamming distance of these quantized data to approximate a (complicated) function of the Gaussian kernel.
+
+\textit{Questions.} Consider noise-shaping quantization methods for RFFs. Then we need to understand (\ref{ep}). Note that there is also recent work by Re and co-authors \cite{Zhang2018}
+
 \end{itemize}
 
