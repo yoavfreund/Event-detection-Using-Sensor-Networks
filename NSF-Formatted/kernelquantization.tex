@@ -1,11 +1,17 @@
-\section{Fast binary embeddings and  statistics on binary sketches}
+\section{Statistics on Binarized Sketching of Complex Measurements}
+%\section{Fast binary embeddings and  statistics on binary sketches}
 %\yoav{Rayan and Alex, please link your sections to one or more of the
  % specific tasks above. Feel free to add other tasks, but these should
   %be specific real world applications, not just mathematical frameworks.}
 %\rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
 \rayan{under construction - need a better title!}
 
-Consider an application where a sensor, or a network of sensors monitoring a system aims to detect whether a major change in the status of the system has occurred. In such a setting sensors may collect large amounts of data in an ongoing way. However, communicating all this data across all the sensors to perform this statistical change-detection task may be prohibitively expensive and tremendously wasteful. Similarly, consider the (e.g., anomaly detection) related setting where one may wish to determine whether data being collected at two sensors, or at two sets of sensors is similar (i.e., drawn from the same distribution), without communicating all the data across sensors. Imagine if such tasks could be accomplished using the following simple paradigm. First, each sensor maintains, and when necessary communicates, only one summary vector, or sketch, of all the data it collected. To ease storage and communication costs, the entries of the sketch are quantized to low bit-depth, i.e., they take on one of very few values. Finally, the statistical task us performed via a simple computation using the summary vectors transmitted by the sensors. One goal of this proposal is to devise and study methods for obtaining such low bit-depth sketches in the context of performing statistical tasks, and to study their computational complexity and  performance guarantees. To that end, we will first provide some relevant background, both on compressive statistics \cite{gribonval2017compressive, } \rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.
+
+Consider an application where a sensor, or a network of sensors monitoring a system aims to detect whether a major change in the status of the system has occurred. In such a setting sensors may collect large amounts of data in an ongoing way. However, communicating all this data across all the sensors to perform this statistical change-detection task may be prohibitively expensive and tremendously wasteful. Similarly, consider the (e.g., anomaly detection) related setting where one may wish to determine whether data being collected at two sensors, or at two sets of sensors is similar (i.e., drawn from the same distribution), without communicating all the data across sensors. The ideal solutions for such tasks would be having each sensor maintain and communicate only one vector whose entries are of low bit-depth, i.e., taking on one of very few values, and then perform a simple computation on the communicated vectors to solve the problem. One goal of this proposal is to devise and study methods for obtaining such low bit-depth sketches in the context of performing statistical tasks, and to study their computational complexity and  performance guarantees. To that end, we will first provide some relevant background, both on kernel and compressive statistics \cite{gretton2012kernel,gribonval2017compressive} 
+%\rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, 
+as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.
+
+
 
 
 %One way to alleviate the large communication costs associated with such problems is for each sensor to maintain only one vector-valued function of all the data it has collected.  
@@ -23,7 +29,9 @@ Consider an application where a sensor, or a network of sensors monitoring a sys
 We will rely on extremely
 coarse, e.g., binary, quantization of the data-sketches. In addition to minimizing storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) these methods have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. A growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new, daubechies2015deterministic}), has focused on signal reconstruction from coarsely quantized measurements. \emph{One important theme that emerges from this line of work  is that if one collects more coarsely quantized (even 1-bit) measurements  than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down as a function of the number of measurements.} This theme has held true in a wide range of signal and measurement contexts, including bandlimited functions \cite{daubechies2015deterministic}, finite frame expansions \cite{iwen2013near},  and compressed sensing of approximately sparse vectors \cite{SaabIEEEIT, saab2018quantization}, low-rank matrices \cite{LybrandSaab2018}, and manifold valued signals \cite{iwen2019new}.
 
-Co-PI Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that pairwise distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss (i.e., distance preserving) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer). In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. For example, the simplest noise-shaping quantization scheme, the so-called greedy $1$st order $\Sigma\Delta$ scheme, is given, for $i=1,...,m$, by 
+Co-PI Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that pairwise distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss (i.e., distance preserving) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer). In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. 
+\alex{May be able to remove some of the description of 1st order and only focus on general, if need to reduce space.}
+For example, the simplest noise-shaping quantization scheme, the so-called greedy $1$st order $\Sigma\Delta$ scheme, is given, for $i=1,...,m$, by 
 \begin{align}
     \q_i &= \sign(\y_i+\uu_{i-1})\\
     \uu_i &= \uu_{i-1} + \y_i -\q_i,
@@ -72,74 +80,16 @@ While signal reconstruction is not a major focus of this section, the promising 
 %\rayan{I agree. Reconstruction was intended as an example of a task that traditionally suffers from coarse quantization if care is not taken in designing the quantization algorithms, not as a focus of the proposal.}
 
 
-\rayan{I like this paragraph :), we should find a home for it.} Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
-
-\subsection{Models} \rayan{This feels like a framework rather than a model, what do you think Alex? }
-  
-Suppose signals of interest are modeled as $Y\in \mathcal{X} \subset
-\mathbb{R}^d$, where $\mathcal{X}$ could be a finite set, i.e., a
-point cloud, or an infinite set (e.g., a compact manifold, or the set
-of all sparse vectors).
-\yoav{In the discussion so far, the time $t$
-  has a special role. Is $t$ one of the $d$ coordinates or is it an
-  extra coordinate. In other words, should we use $Y(t)$ ?}
-
-Alternatively, we may model signals as random vectors drawn according
-to some distribution, i.e., $Y\sim~\mathcal{D}$ ofer $R^d$
-\yoav{assuming that the signal for a single time point is generated by
-  and IID draw from a fixed distribution seem unnatural in the context
-  of a sensor network, where the state of the environment $\theta(t)$
-  changes according to some dynamics.} where $\mathcal{D}$ accounts
-for any structure in the signals. Further, assume that the measurement
-operator, accounting for all the measurements at all the sensors, is
-given by $\transfer:\mathbb{R}^d \to \mathbb{R}^m$, \yoav{I am
-  assuming that $A$ is equal to the transfer function $\phi$ as described in
-  the framework section and by Piya?} \rayan{possibly, if the transfer function includes design elements of the sensor}. In
-the case of distributed sensing systems, we can assume each sensor
-collects/computes a portion, $\transfer_i Y \in \mathbb{R}^{m_i}$, of
-$\transfer Y \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$) and the corresponding portion
-of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm
-1\}^m $ maps the measurements to bits. The sensors then must
-collaborate to estimate a  quantity of interest,
-such as the state of the target, 
-$\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
-
-\begin{equation}\label{eq:binaryembedding}
-x 
-%\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
-\mapsto Q(Ax) =\left[ \begin{array}{c} Q(A_1 x) \\ \vdots \\ Q(A_k x) \end{array}\right] \mapsto f(Q(Ax))\approx g(x)
-\end{equation}
 
 
-%\rayan{ Seems like in a model like this we could talk about Privacy (though I am not an expert on this -- any takers?} 
 
-
-\subsection{Statistics on Binarized Sketching of Complex Measurements}
-%\rayan{need a clear statement summarizing our goals here}
-%\rayan{we need to unify the notation here. $g$ is being used differently than the previous section}
-%\yoav{This sections needs more hand-holding of the reader. The way it is written assumed detailed prior knowledge. The more basic method - using unquantized kernels, needs some more explanation}.
-
-
-The type of information that can be derived from $f(Q(Ax))$ depends on
-the choice of measurement operator $A_i$ at each sensor, as well as
-the quantization scheme.  For several of the tasks below, we will
-design $f$, $A$, and $Q$ so that $\langle f(Q(Ax)), f(Q(Ay))\rangle$
-approximates the Gaussian kernel $\langle g(x), g(y) \rangle =
-e^{-\|x-y\|_2^2/\sigma^2}$.  As a first step, we will show that this
-can be achieved by appropriately quantizing $cos(2\pi \langle w, \cdot
-\rangle)$ for random choices of $w$ \cite{rahimi2008random}. To
-achieve this in practice, each physical sensor could collect one or
-more linear measurements $\langle \omega, \cdot \rangle$, and then the
-(e.g., cosine) non-linearity could be implemented as part of the
-quantizer. Alternatively, the sensor could measure the non-linear
-function directly prior to quantization.
-
-\subsubsection*{Background and Motivation}
+\subsection{Background and Prior Work: Kernel Statistics}
+%\subsubsection*{Background and Motivation}
 %\yoav{This section need to be re-written in a way that will make the connection to sensor networks clear. I don't know what are ``mean embeddings''. Can you describe them? I would focus on universal kernels unless there are good reason to talk about kernels that are not univrsal.}
 
 Statistical distances, or accurately measuring distances between distributions, arise in a large number of applications.  For sensors, these are important quantities for monitoring and tracking.
 %one example where these distances would be important is in testing the hypothesis of whether two sensors have measured the same underlying distribution.  
-An example of this would be for acoustic sensors, where each sensor collects the local power spectral density of a signal.  Each sensor $i$ now has a set of high dimensional data $\mathbf{Y_i}=\{\dsignal_i(t)\}_{t=t_0}^{t_n}\subset \mathbb{R}^d$, and the question is whether $\mathbf{Y_1}$ and $\mathbf{Y_2}$ are distributionally the same, up to a time shift.  After constructing a kernel $K: \mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}^d_+$ to define similarity between any two points, and ignoring communication constraints, a simple statistic to construct for a point $z \in \mathbf{Y_i}$ is a difference of kernel means over the two data sets $\frac{1}{n}\sum_{x\in \mathbf{Y_1}} K(z,x) - \frac{1}{n}\sum_{x\in \mathbf{Y_2}} K(z,x)$.  If $\mathbf{Y_1}$ and $\mathbf{Y_2}$ came from the same distribution, then this statistic would be unbiased at $z\in \mathbf{Y_i}$, otherwise there would be a bias for particular $z$.  Thus, computing the mean square error over all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$ yields a statistic that would be close to 0 if $\mathbf{Y_1},\mathbf{Y_2}\sim p$, and would be biased if $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ for $p\neq q$.  This is a well studied statistic known as kernel Maximum Mean Discrepancy \cite{}.  In what follows, we will describe the mathematical framework and guarantees established, and propose methods for dealing with communication and computation constraints in this framework through randomized sketching and binary embeddings.  We will also detail a larger set of sensor problems that can be addressed in this framework.
+An example of this would be for acoustic sensors, where each sensor collects the local power spectral density of a signal.  Each sensor $i$ now has a set of high dimensional data $\mathbf{Y_i}=\{\dsignal_i(t)\}_{t=t_0}^{t_n}\subset \mathbb{R}^d$, and the question is whether $\mathbf{Y_1}$ and $\mathbf{Y_2}$ are distributionally the same, up to a time shift.  After constructing a kernel $K: \mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}^d_+$ to define similarity between any two points, and ignoring communication constraints, a simple statistic to construct for a point $z \in \mathbf{Y_i}$ is a difference of kernel means over the two data sets $\frac{1}{n}\sum_{x\in \mathbf{Y_1}} K(z,x) - \frac{1}{n}\sum_{x\in \mathbf{Y_2}} K(z,x)$.  If $\mathbf{Y_1}$ and $\mathbf{Y_2}$ came from the same distribution, then this statistic would be unbiased at $z\in \mathbf{Y_i}$, otherwise there would be a bias for particular $z$.  Thus, computing the mean square error over all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$ yields a statistic that would be close to 0 if $\mathbf{Y_1},\mathbf{Y_2}\sim p$, and would be biased if $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ for $p\neq q$.  This is a well studied statistic known as kernel Maximum Mean Discrepancy \cite{gretton2012kernel}.  In what follows, we will describe the mathematical framework and guarantees established, and propose methods for dealing with communication and computation constraints in this framework through randomized sketching and binary embeddings, as well as how to establish guarantees of convergence under non-i.i.d. sampling situations such as time series data.  We will also detail a larger set of sensor problems that can be addressed in this framework.
 
 %\alex{To Add: Have acoustic sensors and ways to compute similarity of acoustics with kernel (maybe say general, but say sensor is collecting distribution of data).  For each window, generate energy distribution.  See if sensors are hearing the same distribution of sound, even if time shifted.  Sketching complex measurements, refer inside for compressed statistics}
 
@@ -159,18 +109,111 @@ is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuo
 
 
 However, statistics of this type suffer from a number of issues under computation and communication bottlenecks, as they requires storing and communicating all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$.  In particular, computing $\hat{\mu}(z)$ at any one point $z$ requires evaluating the kernel at all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$, which can be prohibitively expensive.
-This has motivated computational speed ups presented in \cite{cheng2017two} of undersampling $z\in S\subset \mathbf{Y_1}\cup \mathbf{Y_2}$ under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed, as well as notions of kernel compression via randomized sketching \cite{gribonval2017compressive}.  However, even these approaches still require communication of a number of points between sensors, or passing double precision complex valued summary statistics.  
+This has motivated computational speed ups presented by co-PI Cloninger in \cite{cheng2017two} of undersampling $z\in S\subset \mathbf{Y_1}\cup \mathbf{Y_2}$ under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  There is a similar vein of computation speed up accomplished through kernel compression via randomized sketching \cite{gribonval2017compressive}.  However, even these approaches still require communication of a number of points between sensors, or passing double precision complex valued summary statistics.  
 
 
-\subsubsection*{Goals}
-\rayan{Alex: I think the first goal should probably be to prove that we can approximate the Kernel very well with the quantized sketches. See the last paragraph I threw in to this section as a very rough draft of the mathematical challenge here.}
 
-\alex{Need to continue notation change, but waiting to confirm first}
+
+
+
+
+\subsection{Framework}% \rayan{This feels like a framework rather than a model, what do you think Alex? }
+
+
+\rayan{I like this paragraph :), we should find a home for it.} Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
+  
+Suppose signals of interest are represented as $N$ points $x[j] \in \mathbf{X}\subset \mathbb{R}^d$ %$Y\in \mathcal{X} \subset \mathbb{R}^d$, 
+for $j\in\{1,...,N\}$,
+where $\mathbf{X}$ could be a finite set, i.e., a
+point cloud, or an infinite set (e.g., a compact manifold, or the set
+of all sparse vectors).  If the data is collected as a time series, then $x[j] = x(t_j)$.
+%\yoav{In the discussion so far, the time $t$ has a special role. Is $t$ one of the $d$ coordinates or is it an extra coordinate. In other words, should we use $Y(t)$ ?}
+%Alternatively, we may model signals as random vectors drawn according
+%to some distribution, i.e., $Y\sim~\mathcal{D}$ ofer $R^d$
+%\yoav{assuming that the signal for a single time point is generated by  and IID draw from a fixed distribution seem unnatural in the context of a sensor network, where the state of the environment $\theta(t)$ changes according to some dynamics.} 
+%where $\mathcal{D}$ accounts for any structure in the signals. 
+Further, assume that the measurement operator, accounting for all the digitization and measurements at all the sensors, is given by $\transfer:\mathbb{R}^d \to \mathbb{R}^m$, 
+%\yoav{I am assuming that $A$ is equal to the transfer function $\transfer$ as described in the framework section and by Piya?} \rayan{possibly, if the transfer function includes design elements of the sensor}. 
+In the case of distributed sensing systems, we can assume each sensor collects/computes a portion, $\transfer_i \mathbf{X} \in \mathbb{R}^{m_i}$, of $\transfer \mathbf{X} \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$).
+%Further, assume that points are paired across sensors, so the full collection of data can be concatenated as $\mathbf{Y} = \begin{bmatrix} \mathbf{Y}_i \end{bmatrix}_{i=1}^m$.  In other words, $\mathbf{Y}[j]$
+%The corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to estimate a  quantity of interest, such as the state of the target,  $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
+The corresponding signal at sensor $i$, $Y_i = \transfer_i \mathbf{X}$ can then be quantized via ${Q}(\transfer_i \mathbf{X})$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{q_i} $ that maps the measurements to bits.  The full quantization map of all sensors can be represented as
+\begin{equation}\label{eq:binaryembedding}
+x 
+%\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
+\mapsto Q(\transfer x) =\left[ \begin{array}{c} Q(\transfer_1 x) \\ \vdots \\ Q(\transfer_k x) \end{array}\right] \mapsto f(Q(\transfer x))\approx g(x)
+\end{equation}
+
+
+
+
+\subsection{Proposed Work: Binary Embeddings of Nonlinear Similarity Measures}
+The type of information that can be derived from $f(Q(\transfer x))$ depends on
+the choice of measurement operator $\transfer_i$ at each sensor, as well as
+the quantization scheme.  In \cite{huynh2018fast}, Co-PI Saab constructed the quantization scheme $f$, $\transfer$, and $Q$ so that 
+$\|g(x) - g(y)\|\approx \|x-y\|_2$.  For several of the statistical tasks below, we require construction of the quantization scheme to approximate more complex relationships between $x,y$.  We here propose the development of a new set quantization schemes that incorporate nonlinear measurements of the data $x$.  In particular, we aim to design 
+%For several of the tasks below, we will
+%design 
+$f$, $\transfer$, and $Q$ so that $\langle f(Q(\transfer x)), f(Q(\transfer y))\rangle$
+approximates the Gaussian kernel $\langle g(x), g(y) \rangle =
+e^{-\|x-y\|_2^2/\sigma^2}$.  As a first step, we will show that this
+can be achieved by appropriately quantizing $cos(2\pi \langle w, \cdot
+\rangle)$ for random choices of $w$ \cite{rahimi2008random}. To
+achieve this in practice, each physical sensor could collect one or
+more linear measurements $\langle \omega, \cdot \rangle$, and then the
+non-linearity (e.g., cosine) could be implemented as part of the
+quantizer. Alternatively, the sensor could measure the non-linear
+function directly prior to quantization.
+
+
+\item \rayan{under heavy construction} Theoretical considerations: Random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{RR2008} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, y) = \exp(-\|x - y\|_2^2/2$). They considered $\transfer(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$ and showed a concentration of measure \cite{} result for $$\sup_{x, y\in\mathcal{X}}|\langle \transfer(x), \transfer(y)\rangle - k(x, y)| = \sup_{x, y\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, y\rangle + b_i) - k(x, y)|$$
+by using an $\epsilon$-net argument. The result was later improved by Sriperumbudur and Szabo \cite{SS2015} using Dudley's inequality \cite{}. Still, the above results' dependence on the data's geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{DKS2011}, Le, Sarlos, and Smola \cite{LSS2013, LSS2014} considered a structured random matrix $A$ to speed up RFFs. The structured matrix they proposed satisfied $A= SHG\Pi HB,$
+where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. With this construction \cite{LSS2014} claimed a concentration result analogous to that of \cite{RR2008} using an $\epsilon$-net argument, and they \emph{conjectured} that $H$ can be replaced by any orthogonal matrix and reported numerical evidence showing that random partial Fourier matrices also gave a comparable results. There is not much theoretical work for this setting.
+
+\textit{Questions.} This is a great example of nonlinear + structured random measurements. We need to understand the empirical process:
+\[
+	\mathbb{P}\left(\sup_{(x, y)\in\mathcal{X}\times\mathcal{Y}} \left|\frac{2}{m}\sum\cos(Ax)\cos(Ay) - k(x, y)\right| \geq t\right),
+\]
+where $A$ is a structured random matrix.
+
+In general, we can study 
+\begin{equation}\label{ep}
+	\mathbb{P}\left(\sup_{(f, g)\in\mathcal{F}\times\mathcal{G}} \left|\frac{2}{m}\sum f(a_i)g(a_i) - \mathbb{E}[fg]\right| \geq t\right).
+\end{equation}
+The empirical process (\ref{ep}) has been studied by Mendelson \cite{Mendelson} when $f$ and $g$ are sub-gaussian, using the generic chaining method.
+
+Understanding (\ref{ep}) is also helpful for us when we incorporate quantization.
+
+
+{Quantize RFFs}
+The first work was introduced by Raginsky and Lazebnik \cite{RL2009} in which they quantized RFFs $Q(\transfer(x)) = Q(\sqrt{\frac{2}{m}}\cos(Ax + b))$ where $Q$ is a dither quantization. They showed that we could quantize and use hamming distance of these quantized data to approximate a (complicated) function of the Gaussian kernel.
+
+\textit{Questions.} Consider noise-shaping quantization methods for RFFs. Then we need to understand (\ref{ep}). Note that there is also recent work by Re and co-authors \cite{Zhang2018}
+
+
+%\rayan{ Seems like in a model like this we could talk about Privacy (though I am not an expert on this -- any takers?} 
+
+
+\subsection{Proposed Work: Quantized Statistics}
+%Statistics on Binarized Sketching of Complex Measurements}
+%\rayan{need a clear statement summarizing our goals here}
+%\rayan{we need to unify the notation here. $g$ is being used differently than the previous section}
+%\yoav{This sections needs more hand-holding of the reader. The way it is written assumed detailed prior knowledge. The more basic method - using unquantized kernels, needs some more explanation}.
+
+
+
+
+
+
+%\subsubsection*{Goals}
+%\rayan{Alex: I think the first goal should probably be to prove that we can approximate the Kernel very well with the quantized sketches. See the last paragraph I threw in to this section as a very rough draft of the mathematical challenge here.}
+
+%\alex{Need to continue notation change, but waiting to confirm first}
 Our overarching goal is to reduce the communication constraints by utilizing both sketching and binarization 
 %of the map introduced in \eqref{eq:binaryembedding}.
-through use of $g(x) = f(Q(A(x)))$.   
-The idea is that, rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute and communicate $Q(Ax)\in \{\pm 1\}^m$, with $m\ll d$, or $f(Q(Ax))$. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  
-For sensor networks, we can either compare between sensors by embedding each sensors' data through $g(X_i) = f(Q(A(X_i)))$ for a common $A$ at each sensor, or have the sensors work collaboratively across a common set of points by building a concatenated sketching from data across all sensors $g(X) = \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
+through use of $g(x) = f(Q(\transfer(x)))$.   
+The idea is that, rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute $Q(\transfer x)\in \{\pm 1\}^m$ with $m\ll d$, and communicate $f(Q(\transfer x))$. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  
+For sensor networks, we can either compare between sensors by embedding each sensors' data through $g(\mathbf{Y}_i) = f(Q(\transfer_i \mathbf{X}))$ when $\transfer_i$ at each sensor are constructed using the same random measurement operator (though there may be differences due to sensor location, obstructions, etc).  A separate comparison is to have the sensors work collaboratively across a common set of points by building a concatenated sketching from data across all sensors $g(\mathbf{Y}) = \begin{bmatrix}f(Q(\transfer_1(\mathbf{X}))), & ... & f(Q(\transfer_k(\mathbf{X}))) \end{bmatrix}$.
 We aim to prove that this low complexity vector still converges to a type of mean embedding, and to provide a rigorous analysis of the statistical power, convergence rates, and minimal detectable separation criteria between the distributions.  Below we highlight the benefit of this approach in a number of different sensor problems. 
 
 \begin{itemize}
@@ -179,8 +222,8 @@ We aim to prove that this low complexity vector still converges to a type of mea
 %\yoav{Do you mean "storing" or "communicating" the points. The second is what  seems more relevant here, but I don't understand what is communicated.}
 %A modern approach to two sample testing, Kernel Maximum Mean Discrepancy \cite{Gretton 2012}, defines distances  between distributions by mapping each distribution to a Reproducing Kernel Hilbert Space through a smooth kernel $K$, and has existing results regarding consistency and power of the test.  However, construction of $K$ can be memory intensive, which motivated computational speed ups presented in \cite{Cheng, Cloninger, Coifman 2017} under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  Unfortunately these results cannot be efficiently implemented under power and communication bandwidth constraints, as they require passing individual data points between sensors.  
 %Our goal is to eliminate these bottlenecks through the use of binarized embeddings like $g(x)$, which has the additional benefit of building a sketching of the data for appropriate choice of $A$.  
-In the context of sensors, the two sample problem can be summarized as follows: each sensor collects a data set $X_i\sim p_i$, and the goal is to determine whether the $X_i$ were distributed similarly.  %Each sensor's data is given a binarized mean embedding $g_i(x)$
-To address this, we will analyze the binarized statistic $$\left\|\frac{1}{n}\sum_{x\in X_1} g(x) - \frac{1}{m}\sum_{y\in X_2} g(y)\right\|,$$
+In the context of sensors, the two sample problem can be summarized as follows: each sensor collects a data set $\mathbf{Y}_i\sim p_i$, and the goal is to determine whether the $\mathbf{Y}_i$ were distributed similarly.  %Each sensor's data is given a binarized mean embedding $g_i(x)$
+To address this, we will analyze the binarized statistic $$\left\|\frac{1}{n}\sum_{x\in \mathbf{Y}_1} g(x) - \frac{1}{m}\sum_{y\in \mathbf{Y}_2} g(y)\right\|,$$
 %{\color{blue}Should we say this instead: we will construct functions $f$, so that $$\left\|\frac{1}{n}\sum_{x\in \mathcal{X}} f(Q(Ax)) - \frac{1}{m}\sum_{y\in \mathcal{Y}} f(Q(Ay))\right\|,$$}
 %(\rayan{and its finite sample approximation?}), 
 under appropriate norm, and seek to characterize the minimal conditions under which a deviation between $p_1$ and $p_2$ can be detected.   The approach requires characterizing the types of deviations $p_1 - p_2$ that can be detected, namely those for which $$\left\|\int e^{-\|x-y\|^2/\sigma^2} (p_1(y) - p_2(y)) dy \right\| > \epsilon,$$ as well as the rates at which these deviations can be detected.
@@ -201,10 +244,11 @@ points.  %Additional mathematical questions arise in the setting that different 
 %As the number of samples $n\rightarrow \infty$, MMD is shown to detect any nonzero deviation $\|p-q\|_\infty$ when $\mathcal{F}$ is a Reproducing Kernel Hilbert Space \cite{Skolkoph}.  However, the method requires $\mathbb{O}(n^2)$ storage.
 \rayan{let's refine this discussion a little -- I have some ideas here}
 
-\item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   Unlike the two sample context in which we were testing whether the sensors detected the same distribution, here we can use the sensors collaboratively by constructing the concatenated sketching matrix $g(X) = \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
+\item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   Unlike the two sample context in which we were testing whether the sensors detected the same distribution, here we can use the sensors collaboratively by constructing the concatenated sketching matrix $g(\mathbf{Y})$.
+%= \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
 There exists a mean embedding approach to change point analysis \cite{Bach 2008} which uses the kernel Fisher discriminant ratio and mean embedding to measure the homogeneity between time segments of the process.  However, this once again requires storage of all points over the length of the detection window and communication of those points across sensors for both computing the window mean and variance. It also suffers from an inability to begin computing the change point statistic until all points in the window have been collected.  We aim to introduce the binarized sketching framework to produce an efficient computation to the kernel mean as in two sample testing, as well as a fast construction of a low rank approximation to the kernel covariance matrix.  We will derive it's new limiting distribution under the null model of no change, as well as the consistency under the alternative distribution when a change does occur.  
 
-\item Multiple Sensor Common Factor Identification: A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  Under a linear model, algorithms such as Canonical Correlation Analysis \cite{} act on multiple streams of simultaneously collected data $X_i(t)$ to filter noise and recover highly correlated linear projections from two the data sets.
+\item Multiple Sensor Common Factor Identification: A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  Under a linear model, algorithms such as Canonical Correlation Analysis \cite{} act on multiple streams of simultaneously collected data $\dsignal_i(t)$ to filter noise and recover highly correlated linear projections from two the data sets.
 Recently, a kernel CCA technique called alternating diffusion \cite{Talmon Lederman} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and two nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$, and samples $s((x_i,y_i^{(1)}, y_i^{(2)}))$ for $(x_i,y_i^{(1)}, y_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  Due to sensor location or modality, sensor 1 collects data points $S_1 = s((x_i,y_i^{(1)}, \xi))$ and sensor 2 collecting data points $S_2 = s((x_i,\zeta,y_i^{(2)}))$.  Then roughly speaking, for some assumptions on $s$ and for $K_1: S_1\times S_1 \rightarrow \mathbb{R}$ and $K_2:S_2\times S_2 \rightarrow \mathbb{R}$, Talmon and Wu \cite{Talmon Wu} proved $(K_1 K_2)^t$ is the diffusion kernel on $\mathcal{M}$ only.   This is a very beneficial feature, as it means that one can compute kernel statistics for distributions defined on $\mathcal{M}$ only, independent of the nuisance features that may differ between sensors due only to modality or location.
 
 
@@ -216,29 +260,7 @@ However, this requires communication of all $n$ points across sensors to compute
     \item Idea 2: Exploit the hierarchical/distributed nature of the bits produced by binary embeddings. Requires more thought...
 \end{itemize} 
 and clustering: Analogous to the above...}
-\item \rayan{under heavy construction} Theoretical considerations: Random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{RR2008} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, y) = \exp(-\|x - y\|_2^2/2$). They considered $\phi(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$ and showed a concentration of measure \cite{} result for $$\sup_{x, y\in\mathcal{X}}|\langle \phi(x), \phi(y)\rangle - k(x, y)| = \sup_{x, y\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, y\rangle + b_i) - k(x, y)|$$
-by using an $\epsilon$-net argument. The result was later improved by Sriperumbudur and Szabo \cite{SS2015} using Dudley's inequality \cite{}. Still, the above results' dependence on the data's geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{DKS2011}, Le, Sarlos, and Smola \cite{LSS2013, LSS2014} considered a structured random matrix $A$ to speed up RFFs. The structured matrix they proposed satisfied $A= SHG\Pi HB,$
-where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. With this construction \cite{LSS2014} claimed a concentration result analogous to that of \cite{RR2008} using an $\epsilon$-net argument, and they \emph{conjectured} that $H$ can be replaced by any orthogonal matrix and reported numerical evidence showing that random partial Fourier matrices also gave a comparable results. There is not much theoretical work for this setting.
 
-\textit{Questions.} This is a great example of nonlinear + structured random measurements. We need to understand the empirical process:
-\[
-	\mathbb{P}\left(\sup_{(x, y)\in\mathcal{X}\times\mathcal{Y}} \left|\frac{2}{m}\sum\cos(Ax)\cos(Ay) - k(x, y)\right| \geq t\right),
-\]
-where $A$ is a structured random matrix.
-
-In general, we can study 
-\begin{equation}\label{ep}
-	\mathbb{P}\left(\sup_{(f, g)\in\mathcal{F}\times\mathcal{G}} \left|\frac{2}{m}\sum f(a_i)g(a_i) - \mathbb{E}[fg]\right| \geq t\right).
-\end{equation}
-The empirical process (\ref{ep}) has been studied by Mendelson \cite{Mendelson} when $f$ and $g$ are sub-gaussian, using the generic chaining method.
-
-Understanding (\ref{ep}) is also helpful for us when we incorporate quantization.
-
-
-{Quantize RFFs}
-The first work was introduced by Raginsky and Lazebnik \cite{RL2009} in which they quantized RFFs $Q(\phi(x)) = Q(\sqrt{\frac{2}{m}}\cos(Ax + b))$ where $Q$ is a dither quantization. They showed that we could quantize and use hamming distance of these quantized data to approximate a (complicated) function of the Gaussian kernel.
-
-\textit{Questions.} Consider noise-shaping quantization methods for RFFs. Then we need to understand (\ref{ep}). Note that there is also recent work by Re and co-authors \cite{Zhang2018}
 
 \end{itemize}
 
