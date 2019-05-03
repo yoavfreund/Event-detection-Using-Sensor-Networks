@@ -1,12 +1,56 @@
 \section{Introduction}
-Any agent, be it a human, an animal or a robot, has to react to it's environment to take advantage of opportunities and to avoid dangers. The transformation of events to reaction can be partitioned into three steps: {\bf(1)} {\bf physical events} are transformed by sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf raw data} into {\bf knowledge} (a representation of the environment), and {\bf (3)} an {\bf action} is chosen based on the acquired {\bf knowledge}.
+Any agent, be it a human, an animal or a robot, has to react to it's
+environment to take advantage of opportunities and to avoid
+dangers. The transformation of events to reaction can be partitioned
+into three steps: {\bf(1)} {\bf physical events} are transformed by
+sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf
+  raw data} into {\bf knowledge} (a representation of the
+environment), and {\bf (3)} an {\bf action} is chosen based on the
+acquired {\bf knowledge}.
 
-\rayan{I think we need to edit this a little. The first and second paragraphs feel disconnected from each other.}
+\rayan{I think we need to edit this a little. The first and second
+  paragraphs feel disconnected from each other.}
+\yoav{Rayan. I agree. See if the paragraph I added improves the flow. 
+  Feel free to edit.}
 
-The design of the sensors is dominated by considerations of sensitivity and resolution (temporal and spatial).  The goal is to detect the smallest, faintest and most transient signals,
-by exploiting priors on the physical model of signal acquisition, and the geometry of signal representation. Computation is used to reduce raw data into an internal representation and then into actions. 
+When detecting and localizing physical there are significant
+advantages to using several sensors placed at different
+locations. That is why we humans have {\em two} eyes and {\em two}
+ears. Our two eyes provide our vision with depth, while our two ears
+enable us localize the direction from which sound is arriving. These
+abilities are based on {\em comparing} the signals arriving from the
+two eyes or the two eyes, and the comparing signals requires {\em
+  communication} between the sensors.
 
-These days the leading architecture of reactive systems is wireless sensor networks. Sensor networks consist of large numbers of small independent units, each with sensors, computation and wireless communication. Such systems are constrained by power and communication bandwidth. 
+Moving from natural to artificial sensors. One is often interested in
+detecting and tracking events in larger areas, such as a house or a
+city. In such cases there is an additional reason to deploying
+multiple sensors: sensors typically have a finite range. Therefore the
+number of sensors we need is proportional to the area we wish to
+cover.
 
-One important consequence of these constraints is {\em pushing computation to the edge}. Instead of communicating the raw information from each sensor to a central computer, each sensor unit locally computes summaries, or sketches, which are shorter and therefore cheaper to communicate. This also reduces the computation load on the units that receive the information.
+The result of these trends is a rapidly increasing deployment of
+{\em  sensor networks}. These are composed
+of a large number of sensors, connected by a communication network.
+
+The design of individual sensors is dominated by considerations of
+sensitivity and resolution (temporal and spatial).  The goal is to
+detect the smallest, faintest and most transient signals, by
+exploiting priors on the physical model of signal propagation and
+information on the location of the sensors. Computation is carried out
+on each sensor to identify significant events and to correlated them
+with events identified on other sensors.
+
+These days the leading architecture of reactive systems is wireless
+sensor networks. Sensor networks consist of large numbers of small
+independent units, each with sensors, computation and wireless
+communication. Such systems are constrained by power and communication
+bandwidth.
+
+One important consequence of these constraints is {\em pushing
+  computation to the edge}. Instead of communicating the raw
+information from each sensor to a central computer, each sensor unit
+locally computes summaries, or sketches, which are shorter and
+therefore cheaper to communicate. This also reduces the computation
+load on the units that receive the information.
 

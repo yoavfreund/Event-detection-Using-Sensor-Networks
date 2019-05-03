@@ -1,8 +1,47 @@
-\section{Tell me something new (Yoav)}
-We propose a general framework for designing and analyzing sensor networks. Suppose we have two sensors two sensors whose task is to track state of target whose trajectory is defined by $\state(t)$. Suppose the sensors use a dynamic model to predict future states. For the sake of concreteness, suppose a Newtonian model of motion is used which predicts constant velocity of the target unless a disruptive force acts on it.
+\section{Tell me something new}
 
-Let $\estate_1(t),\estate_2(t)$ be the estimates of the target location for each sensor. {\em In addition, each sensor maintains an estimate of the estimate of the other sensor.} $\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of the velocity of the location of the target according to the signal it measures, but it does not update it's estimate of the other's estimate.  If the two estimate are close to each other $\estate_i(t) \approx \estate_{i,j}(t)$ then sensor $i$ sends no information to sensor $j$. On the other hand, if $\estate_i(t)$ is far from $\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor 
-$i$ to sensor $j$. Thus if the target is moving in constant speed, uninterrupted, there is not communication between the sensors.
+Consider a video system for monitoring a highway. Lets say that the
+highway is 100 miles long and that we have a 5 cameras per mile,
+i.e. 500 cameras. Each camera generates a large raw data stream, on
+the order of 100MB per second. Using video compression this stream can
+be brought down to XXMB/sec. Totalling XXXMB/sec. A commong approach
+is to send all of this data to a centralized site where a team of
+analysts monitor it to identify accidents, road hazards etc.
+
+Several issues should be noted:
+\begin{itemize}
+\item A high bandwidth channel is needed to transmit the information
+  to the center. If this channel is wireless, this transmission will
+  be costly in terms of energy and available bandwidth.
+\item Manually monitoring 500 video channels a significant task for
+  the analysts. AI methods can be used to aid in that task, our goal
+  is to perform this AI on the camera, rather than in the centralized
+  site.
+\item Under normal conditions, highway traffic is highly
+  predictable. Only unpredictable situations such as an accident, an
+  object on the road or a speeding car warrant the transmission of
+  high-resolution images.
+\end{itemize}
+
+We propose a general framework for designing sensor networks for
+anomaly detection called ``tell me something new''~\cite{TMSN}. In
+this approach, sensors analyze the data they collect, and send message
+to the center only when it estimates that this information is
+significantly different than what the center will predict without the
+information.
+
+Let $\estate_1(t),\estate_2(t)$ be the estimates of the target
+location for each sensor. {\em In addition, each sensor maintains an
+  estimate of the estimate of the other sensor.}
+$\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of
+the velocity of the location of the target according to the signal it
+measures, but it does not update it's estimate of the other's
+estimate.  If the two estimate are close to each other $\estate_i(t)
+\approx \estate_{i,j}(t)$ then sensor $i$ sends no information to
+sensor $j$. On the other hand, if $\estate_i(t)$ is far from
+$\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor $i$
+to sensor $j$. Thus if the target is moving in constant speed,
+uninterrupted, there is not communication between the sensors.
 
 The basic idea here is that a sensor sends out information only if
 that information cannot be predicted by the receiver. Similar ideas
