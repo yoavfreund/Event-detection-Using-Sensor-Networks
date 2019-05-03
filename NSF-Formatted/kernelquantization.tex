@@ -117,7 +117,7 @@ and for prescribed distortion $\alpha$
 Above, $\eta(m)$ decays polynomially fast in $m$ (when $\mathcal{Q}$ is a $\Sigma\Delta$ quantizer), or exponentially fast (when $\mathcal{Q}$ is a distributed noise shaping quantizer). %In fact, we prove a more general version of the above result, which applies to infinite sets $\mathcal{T}$. 
 %\medskip
 {Additionally, when $\mathcal{T}$ is arbitrary (with possibly infinite cardinality, e.g., a compact manifold)} \cite{huynh2018fast} show that with high probability  and for prescribed distortion $\alpha$
-\[ m \gtrsim \frac{\log^4 n}{\alpha^2}\cdot\frac{\omega(\mathcal{T})^2}{\rad(\mathcal{T})^2} \quad \implies \quad \big|d_{\widetilde{V}}(g(\x), g(\tilde{\x})) - \|\x - \tilde{\x}\|_2\big| \leq \max(\sqrt{\alpha},\alpha) \rad(\mathcal{T}) + c\eta(m)\]
+\[ m \gtrsim \frac{\log^4 n}{\alpha^4}\cdot\frac{\omega(\mathcal{T})^2}{\rad(\mathcal{T})^2} \quad \implies \quad \big|d_{\widetilde{V}}(g(\x), g(\tilde{\x})) - \|\x - \tilde{\x}\|_2\big| \leq \alpha \rad(\mathcal{T}) + c\eta(m)\]
 where $\eta(m)$ is as before and where $\rad(\mathcal{T})$ and $\omega(\mathcal{T})$ denote  the Euclidean radius of  $\mathcal{T}$ and its Gaussian width (which roughly scales with the average radius of $\mathcal{T}$, so that intrinsically low-dimensional sets have a small Gaussian width). %, defined in Section \ref{sec:math_prelim}.
  
  \emph{In short, with \emph{very few measurements} compared to the ambient dimension of the signals, one can very efficiently (roughly at the cost of a fast Fourier transform) obtain low-dimensional binary sketches of the data. These sketches approximately preserve all pairwise distances in the original set and the distances in the embedded space can be computed efficiently.  }
@@ -166,9 +166,7 @@ This has motivated computational speed ups presented by co-PI Cloninger in \cite
 
 
 \subsection{Framework}% \rayan{This feels like a framework rather than a model, what do you think Alex? }
-
-
-\rayan{I like this paragraph :), we should find a home for it.} Our goal  is to present a complete, theoretically rigorous, framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
+ Our goal  is to present a complete, theoretically rigorous framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
   
 Suppose signals of interest are represented as $N$ points $x[j] \in \mathbf{X}\subset \mathbb{R}^d$ %$Y\in \mathcal{X} \subset \mathbb{R}^d$, 
 for $j\in\{1,...,N\}$,
@@ -185,7 +183,7 @@ Further, assume that the measurement operator, accounting for all the digitizati
 In the case of distributed sensing systems, we can assume each sensor collects/computes a portion, $\transfer_i \mathbf{X} \in \mathbb{R}^{m_i}$, of $\transfer \mathbf{X} \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$).
 %Further, assume that points are paired across sensors, so the full collection of data can be concatenated as $\mathbf{Y} = \begin{bmatrix} \mathbf{Y}_i \end{bmatrix}_{i=1}^m$.  In other words, $\mathbf{Y}[j]$
 %The corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to estimate a  quantity of interest, such as the state of the target,  $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
-The corresponding signal at sensor $i$, $Y_i = \transfer_i \mathbf{X}$ can then be quantized via ${Q}(\transfer_i \mathbf{X})$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{q_i} $ that maps the measurements to bits.  The full quantization map of all sensors can be represented as
+The corresponding signal at sensor $i$, $Y_i = \transfer_i \mathbf{X}$ can then be quantized via ${Q}(\transfer_i \mathbf{X})$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits.  The full quantization map of all sensors can be represented as
 \begin{equation}\label{eq:binaryembedding}
 x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
@@ -199,11 +197,11 @@ x
 The type of information that can be derived from $f(Q(\transfer x))$ depends on
 the choice of measurement operator $\transfer_i$ at each sensor, as well as
 the quantization scheme.  In \cite{huynh2018fast}, Co-PI Saab constructed the quantization scheme $f$, $\transfer$, and $Q$ so that 
-$\|g(x) - g(y)\|\approx \|x-y\|_2$.  For several of the statistical tasks below, we require construction of the quantization scheme to approximate more complex relationships between $x,y$.  We here propose the development of a new set quantization schemes that incorporate nonlinear measurements of the data $x$.  In particular, we aim to design 
+$\|g(x) - g(y)\|\approx \|x-y\|_2$.  For several of the statistical tasks below, we require construction of the quantization scheme to approximate more complex relationships between $x,y$.  We here propose the development of a new set of quantization schemes that incorporate nonlinear measurements of the data $x$.  In particular, we aim to design 
 %For several of the tasks below, we will
 %design 
 $f$, $\transfer$, and $Q$ so that $\langle f(Q(\transfer x)), f(Q(\transfer y))\rangle$
-approximates the Gaussian kernel $\langle g(x), g(y) \rangle =
+approximates the, e.g., Gaussian kernel $\langle g(x), g(y) \rangle =
 e^{-\|x-y\|_2^2/\sigma^2}$.  As a first step, we will show that this
 can be achieved by appropriately quantizing $cos(2\pi \langle w, \cdot
 \rangle)$ for random choices of $w$ \cite{rahimi2008random}. To
@@ -214,7 +212,8 @@ quantizer. Alternatively, the sensor could measure the non-linear
 function directly prior to quantization.
 
 
-\rayan{under heavy construction} Theoretical considerations: Random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{RR2008} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, y) = \exp(-\|x - y\|_2^2/2$). They considered $\transfer(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$ and showed a concentration of measure \cite{} result for $$\sup_{x, y\in\mathcal{X}}|\langle \transfer(x), \transfer(y)\rangle - k(x, y)| = \sup_{x, y\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, y\rangle + b_i) - k(x, y)|$$
+\subsection{Proposed Work: Theoretical Foundation}
+\rayan{under heavy construction: edit and possibly move to proposed work section} Theoretical considerations: Random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{RR2008} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, y) = \exp(-\|x - y\|_2^2/2$). They considered $\transfer(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$ and showed a concentration of measure \cite{} result for $$\sup_{x, y\in\mathcal{X}}|\langle \transfer(x), \transfer(y)\rangle - k(x, y)| = \sup_{x, y\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, y\rangle + b_i) - k(x, y)|$$
 by using an $\epsilon$-net argument. The result was later improved by Sriperumbudur and Szabo \cite{SS2015} using Dudley's inequality \cite{}. Still, the above results' dependence on the data's geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{DKS2011}, Le, Sarlos, and Smola \cite{LSS2013, LSS2014} considered a structured random matrix $A$ to speed up RFFs. The structured matrix they proposed satisfied $A= SHG\Pi HB,$
 where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. With this construction \cite{LSS2014} claimed a concentration result analogous to that of \cite{RR2008} using an $\epsilon$-net argument, and they \emph{conjectured} that $H$ can be replaced by any orthogonal matrix and reported numerical evidence showing that random partial Fourier matrices also gave a comparable results. There is not much theoretical work for this setting.
 
@@ -290,7 +289,7 @@ points.  %Additional mathematical questions arise in the setting that different 
 %    MMD(X,Y;\mathcal{F}) = \sup_{f\in \mathcal{F}} \left| \mathbb{E}_{x\in \mathcal{X}} f(x) - \mathbb{E}_{y\in \mathcal{Y}} f(y) \right|.
 %\end{equation}
 %As the number of samples $n\rightarrow \infty$, MMD is shown to detect any nonzero deviation $\|p-q\|_\infty$ when $\mathcal{F}$ is a Reproducing Kernel Hilbert Space \cite{Skolkoph}.  However, the method requires $\mathbb{O}(n^2)$ storage.
-\rayan{let's refine this discussion a little -- I have some ideas here}
+%\rayan{let's refine this discussion a little -- I have some ideas here}
 
 \item Change Point Detection: A variant of the two sample testing problem is change point detection, in which the data is streaming $X(t)$ according to some underlying stochastic process.  At some time $t^*$, the distribution of the stochastic process changes from one distribution to another, and the issue is how quickly after $t^*$ this change can be detected.   Unlike the two sample context in which we were testing whether the sensors detected the same distribution, here we can use the sensors collaboratively by constructing the concatenated sketching matrix $g(\mathbf{Y})$.
 %= \begin{bmatrix}f(Q(A_1(X))), & ... & f(Q(A_M(X))) \end{bmatrix}$.
