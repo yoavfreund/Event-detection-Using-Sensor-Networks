@@ -14,16 +14,16 @@ acquired {\bf knowledge}.
   Feel free to edit.}
 
 When detecting and localizing physical there are significant
-advantages to using several sensors placed at different
-locations. That is why we humans have {\em two} eyes and {\em two}
-ears. Our two eyes provide our vision with depth, while our two ears
-enable us localize the direction from which sound is arriving. These
-abilities are based on {\em comparing} the signals arriving from the
-two eyes or the two eyes, and the comparing signals requires {\em
+advantages to using multiple sensors at different
+locations. That is why mammals usually have {\em two} eyes and {\em two}
+ears. Two eyes provide depth perception, while two ears
+provide directionality. These
+abilities are based on {\em comparing} the signals arriving at multiple sensors. 
+Comparing signals requires, in turn, {\em
   communication} between the sensors.
 
 Moving from natural to artificial sensors. One is often interested in
-detecting and tracking events in larger areas, such as a house or a
+detecting and tracking events over a large area, such as a house or a
 city. In such cases there is an additional reason to deploying
 multiple sensors: sensors typically have a finite range. Therefore the
 number of sensors we need is proportional to the area we wish to
@@ -44,13 +44,16 @@ with events identified on other sensors.
 These days the leading architecture of reactive systems is wireless
 sensor networks. Sensor networks consist of large numbers of small
 independent units, each with sensors, computation and wireless
-communication. Such systems are constrained by power and communication
+communication. These systems are constrained by power and communication
 bandwidth.
 
 One important consequence of these constraints is {\em pushing
-  computation to the edge}. Instead of communicating the raw
-information from each sensor to a central computer, each sensor unit
+  computation to the edge}. The traditional approach is that the raw data is transmitted from each sensor to a central computer where all computation is done. This approach, while easy to conceptualize, is very inefficient in its utilization of resources, in particular energy, communication bandwidth and computation resources.
+  
+  Modern sensor networks push more communication and computation to the {\em edge} of the network, i.e. the sensor unit. Each sensor unit
 locally computes summaries, or sketches, which are shorter and
-therefore cheaper to communicate. This also reduces the computation
-load on the units that receive the information.
+therefore cheaper to communicate. Sketches are propagated locally and combined with each other to construct a representation of the events in the environment. 
+
+This approach scales much better and conserves energy and communication bandwidth. On the other hand, it requires new distributed algorithms for computing and combining sketches. It is these challenges which we plan to address in the proposed work.
+
 
