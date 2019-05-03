@@ -8,12 +8,10 @@ sensors into {\bf raw data}, {\bf (2)} Computation transforms the {\bf
 environment), and {\bf (3)} an {\bf action} is chosen based on the
 acquired {\bf knowledge}.
 
-\rayan{I think we need to edit this a little. The first and second
-  paragraphs feel disconnected from each other.}
-\yoav{Rayan. I agree. See if the paragraph I added improves the flow. 
-  Feel free to edit.}
+%\rayan{I think we need to edit this a little. The first and second paragraphs feel disconnected from each other.}
+%\yoav{Rayan. I agree. See if the paragraph I added improves the flow.  Feel free to edit.}
 
-When detecting and localizing physical there are significant
+When detecting and localizing physical events there are significant
 advantages to using multiple sensors at different
 locations. That is why mammals usually have {\em two} eyes and {\em two}
 ears. Two eyes provide depth perception, while two ears
@@ -34,7 +32,7 @@ The result of these trends is a rapidly increasing deployment of
 of a large number of sensors, connected by a communication network.
 
 The design of individual sensors is dominated by considerations of
-sensitivity and resolution (temporal and spatial).  The goal is to
+sensitivity and resolution, both temporal and spatial.  The goal is to
 detect the smallest, faintest and most transient signals, by
 exploiting priors on the physical model of signal propagation and
 information on the location of the sensors. Computation is carried out
@@ -42,7 +40,7 @@ on each sensor to identify significant events and to correlated them
 with events identified on other sensors.
 
 These days the leading architecture of reactive systems is wireless
-sensor networks. Sensor networks consist of large numbers of small
+sensor networks consisting of large numbers of small
 independent units, each with sensors, computation and wireless
 communication. These systems are constrained by power and communication
 bandwidth.
@@ -50,7 +48,7 @@ bandwidth.
 One important consequence of these constraints is {\em pushing
   computation to the edge}. The traditional approach is that the raw data is transmitted from each sensor to a central computer where all computation is done. This approach, while easy to conceptualize, is very inefficient in its utilization of resources, in particular energy, communication bandwidth and computation resources.
   
-  Modern sensor networks push more communication and computation to the {\em edge} of the network, i.e. the sensor unit. Each sensor unit
+Due to these constraints,  modern sensor networks must push more communication and computation to the {\em edge} of the network, i.e. the sensor unit. Each sensor unit
 locally computes summaries, or sketches, which are shorter and
 therefore cheaper to communicate. Sketches are propagated locally and combined with each other to construct a representation of the events in the environment. 
 
