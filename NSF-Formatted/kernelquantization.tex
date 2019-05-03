@@ -1,13 +1,61 @@
-\section{Statistics on Binarized Sketching of Complex Measurements}
+\section{Quantized Sketchs of Complex Signals}
 %\section{Fast binary embeddings and  statistics on binary sketches}
-%\yoav{Rayan and Alex, please link your sections to one or more of the
- % specific tasks above. Feel free to add other tasks, but these should
-  %be specific real world applications, not just mathematical frameworks.}
-%\rayan{{\bf Hi All: Please don't edit this section until after our meeting. Alex and Rayan are working on this. Comments welcome of course.}}
 \rayan{under construction - need a better title!}
+\yoav{How about this one?}
+
+Consider a monitoring application of the type described
+in~\ref{item:monitoring}.  Here a network of sensors is used to
+monitor an area or a system. As an example, consider a network of
+cameras that are used to monitor a highway. The goal of the camera
+network is to provide a real-time summary of the status of the highway
+and detect critical events such as accidents, obstacles on the
+highway, or speeding cars. One approach to this problem is to transmit
+all video streams to a central location and process them there. This
+approach is expensive both in terms of the required communication
+bandwidth and the computational resources needed in the central
+location.
+
+A common partical approach is to compress the videos before sending
+them and decompress them in the central location. This approach will
+typically provide a 10-100 fold improvement in therm of communication
+bandwidth but will increase the computational load on the center.
+Lossy compression solves a reconstruction problem: how to encode a
+video stream in such a way as to allow the original stream to be
+reconstructed in a way would be visually indistinguishable from the
+original video. In contrast, the information we need to retain in the
+monitoring task is more specific and thus opens the possibility that
+the encoding can be much smaller than the one generated for lossy
+compression.
+
+Specifically, we consider the task of detecting the difference between
+two distributions. The difference can be a result of spatial
+differences -- two sensors that are at different locations, or it can be
+temporal -- two samples drawn from the same sensor at different times.
 
 
-Consider an application where a sensor, or a network of sensors monitoring a system aims to detect whether a major change in the status of the system has occurred. In such a setting sensors may collect large amounts of data in an ongoing way. However, communicating all this data across all the sensors to perform this statistical change-detection task may be prohibitively expensive and tremendously wasteful. Similarly, consider the (e.g., anomaly detection) related setting where one may wish to determine whether data being collected at two sensors, or at two sets of sensors is similar (i.e., drawn from the same distribution), without communicating all the data across sensors. The ideal solutions for such tasks would be having each sensor maintain and communicate only one vector whose entries are of low bit-depth, i.e., taking on one of very few values, and then perform a simple computation on the communicated vectors to solve the problem. One goal of this proposal is to devise and study methods for obtaining such low bit-depth sketches in the context of performing statistical tasks, and to study their computational complexity and  performance guarantees. To that end, we will first provide some relevant background, both on kernel and compressive statistics \cite{gretton2012kernel,gribonval2017compressive} 
+Our approach is based on quantized sketches.
+\yoav{I hope this gives a good transition. I leave it to you guys to
+  explain sketches and how the error of quantization can be controlled}
+\iffalse
+across all the sensors to perform this
+statistical change-detection task may be prohibitively expensive and
+tremendously wasteful. Similarly, consider the (e.g., anomaly
+detection) related setting where one may wish to determine whether
+data being collected at two sensors, or at two sets of sensors is
+similar (i.e., drawn from the same distribution), without
+communicating all the data across sensors. The ideal solutions for
+such tasks would be having each sensor maintain and communicate only
+one vector whose entries are of low bit-depth, i.e., taking on one of
+very few values, and then perform a simple computation on the
+communicated vectors to solve the problem. One goal of this proposal
+is to devise and study methods for obtaining such low bit-depth
+sketches in the context of performing statistical tasks, and to study
+their computational complexity and performance guarantees.
+\fi
+To that
+end, we will first provide some relevant background, both on kernel
+and compressive statistics
+\cite{gretton2012kernel,gribonval2017compressive}
 %\rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, 
 as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.
 
