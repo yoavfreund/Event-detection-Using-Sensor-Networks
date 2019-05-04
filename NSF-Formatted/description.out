@@ -1,16 +1,21 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Framework}{}% 2
-\BOOKMARK [1][-]{section.3}{Target Localization using minimal number of sensors}{}% 3
-\BOOKMARK [1][-]{section.4}{Localization of weak sources \(Peter\)}{}% 4
-\BOOKMARK [1][-]{section.5}{Passive narrow-band multi-target localization \(Piya\)}{}% 5
-\BOOKMARK [2][-]{subsection.5.1}{Graph signal processing approach without a fusion center}{section.5}% 6
-\BOOKMARK [2][-]{subsection.5.2}{Tomography}{section.5}% 7
-\BOOKMARK [1][-]{section.6}{Statistics on Binarized Sketching of Complex Measurements}{}% 8
-\BOOKMARK [2][-]{subsection.6.1}{Background and Prior Work: Quantization and Binary Embeddings}{section.6}% 9
-\BOOKMARK [2][-]{subsection.6.2}{Background and Prior Work: Kernel Statistics}{section.6}% 10
-\BOOKMARK [2][-]{subsection.6.3}{Framework}{section.6}% 11
-\BOOKMARK [2][-]{subsection.6.4}{Proposed Work: Binary Embeddings of Nonlinear Similarity Measures}{section.6}% 12
-\BOOKMARK [2][-]{subsection.6.5}{Proposed Work: Quantized Statistics}{section.6}% 13
-\BOOKMARK [1][-]{section.7}{Tell me something new}{}% 14
-\BOOKMARK [1][-]{section.8}{results from previous grants}{}% 15
-\BOOKMARK [2][-]{subsection.8.1}{Sampling and quantization theorems for modern data acquisition}{section.8}% 16
+\BOOKMARK [1][-]{section.3}{Target Localization Using Minimal Number of Sensors}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Correlation-Based Passive Localization and Geometry of Sensing:}{section.3}% 4
+\BOOKMARK [1][-]{section.4}{Localization of weak sources \(Peter\)}{}% 5
+\BOOKMARK [1][-]{section.5}{Passive Narrow-band Multi-Target Localization With Distributed Sensors \(Piya\)}{}% 6
+\BOOKMARK [2][-]{subsection.5.1}{Background and Prior Work: Difference Set-Inspired Designs:}{section.5}% 7
+\BOOKMARK [2][-]{subsection.5.2}{Proposed Research: Correlation-Aware Sensor Selection for Distributed Sensing}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.3}{Graph signal processing approach without a fusion center}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.4}{Tomography}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.5}{Tomography}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Quantized Sketchs of Complex Signals}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{Background and Prior Work: Quantization and Binary Embeddings}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.2}{Background and Prior Work: Kernel Statistics}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.3}{Framework}{section.6}% 15
+\BOOKMARK [2][-]{subsection.6.4}{Proposed Work: Binary Embeddings of Nonlinear Similarity Measures}{section.6}% 16
+\BOOKMARK [2][-]{subsection.6.5}{Proposed Work: Theoretical Foundation}{section.6}% 17
+\BOOKMARK [2][-]{subsection.6.6}{Proposed Work: Quantized Statistics}{section.6}% 18
+\BOOKMARK [1][-]{section.7}{Tell me something new}{}% 19
+\BOOKMARK [1][-]{section.8}{results from previous grants}{}% 20
+\BOOKMARK [2][-]{subsection.8.1}{Sampling and quantization theorems for modern data acquisition}{section.8}% 21
