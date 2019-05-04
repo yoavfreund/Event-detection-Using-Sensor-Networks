@@ -1,6 +1,32 @@
+\begin{figure}[t]
+\centering
+\includegraphics[width=6cm]{figs/patch.png} 
+\caption{2D velocity image corresponds to  map divided into pixels (dashed boxes). The square image patch $i$ contains $n$ pixels. $W_1$ and $W_2$ are the vertical and horizontal dimensions of the image (in pixels), which give $I$ unique patches. Sensors are shown as red x's and the ray paths between the sensors are shown as blue lines.}
+\label{fig:patchMap}
+\end{figure}
+\subsection{Tomography}
+%\yoav{I believe you are talking here about tomography, or reconstructing the environment. Can you write a paragraph of introduction, what is the problem? What is the desired solution?}
+we develop separately two slowness models, deemed the \textit{global} and \textit{local} models,  and briefly discuss dictionaries for sparse modeling. The global model considers the larger scale or global features and relates travel times to slowness. The local model considers smaller scale or more localized features with sparse modeling. 
+
+In the global model, slowness pixels (see Fig.~\ref{fig:patchMap}(a)) are represented by the vector $\mathbf{s'=s}_\mathrm{g}+\mathbf{s}_0\in\mathbb{R}^{N}$, where $\mathbf{s}_0$ is reference slownesses and $\mathbf{s}_\mathrm{g}$ is perturbations from the reference, here referred to as the {\it global slowness}, with $N=W_1W_2$. Similarly, the travel times of the $M$ rays are given as $\mathbf{t'=t+t}_0$, where $\mathbf{t}$ is the travel time perturbation and $\mathbf{t}_0$ is the reference travel time. The tomography matrix $\mathbf{A}\in\mathbb{R}^{M\times N}$ gives the discrete path lengths of $M$ straight-rays through $N$ pixels (see Fig.\ \ref{fig:patchMap}(a)). Thus  $\mathbf{t}$ and $\mathbf{s}_\mathrm{g}$ are related by the linear measurement model
+%
+%\begin{linenomath*}
+\begin{equation}
+\mathbf{t}=\mathbf{As}_\mathrm{g}+\epsilon,
+\label{eq:linearTraveltime}
+\end{equation}
+%\end{linenomath*}
+%
+where $\mathbf{\epsilon}\in\mathbb{R}^M$ is Gaussian noise $\mathcal{N}(\mathbf{0},\sigma_\epsilon^2\bf{I})$, with mean $\mathbf{0}$ and covariance $\sigma_\epsilon^2\bf{I}$. We estimate the perturbations, with $\mathbf{s}_0$ and $\mathbf{t}_0=\mathbf{A}\mathbf{s}_0$ known. We call (\ref{eq:linearTraveltime}) the \textit{global model}, as it captures the large-scale features that span the discrete map and generates $\mathbf{t}$. 
+
+\begin{itemize}
+\item If using EM signals where the wave speed does not vary much the above formulation could be modified to do attenuation tomography.
+
+\item For unknown sensor location, only a graph of the sensor response is obtained. 
+\end{itemize}
 \subsection{Tomography}
 \yoav{I believe you are talking here about tomography, or reconstructing the environment. Can you write a paragraph of introduction, what is the problem? What is the desired solution?}
-Sparse modeling assumes that signals can be reconstructed using a few (sparse) vectors, called atoms, from a potentially large set of atoms, called a dictionary. Recent ocean acoustics works utilizing sparse modeling is beamforming\cite{Xenaki2014}, matched field processing \cite{Gemba2017}, and geoacoustic inversion \cite{gerstoft2018}. One challenge in sparse modeling is finding the best dictionary for sparsely representing specific signals. Such dictionaries can be composed of wavelets, or the discrete cosine transform (DCT). These predefined dictionaries perform well for many signals. However, using a form of unsupervised machine learning, called dictionary learning, optimal dictionaries can be learned directly from specific data\cite{mallat1999}. It has been shown that learned dictionaries outperform generic dictionaries when sufficient signal examples are available. Machine learning, and specifically dictionary learning, have recently obtained compelling results in ocean acoustics cite{Bianco2017} and seismology\cite{kong2018}. 
+Sparse modeling assumes that signals can be reconstructed using a few (sparse) vectors, called atoms, from a potentially large set of atoms, called a dictionary. Recent ocean acoustics works utilizing sparse modeling is beamforming\cite{Xenaki2014}, matched field processing \cite{Gemba2017}, and geoacoustic inversion \cite{gerstoft2018}. One challenge in sparse modeling is finding the best dictionary for sparsely representing specific signals. Such dictionaries can be composed of wavelets, or the discrete cosine transform (DCT). These predefined dictionaries perform well for many signals. However, using a form of unsupervised machine learning, called dictionary learning, optimal dictionaries can be learned directly from specific data\cite{mallat1999}. It has been shown that learned dictionaries outperform generic dictionaries when sufficient signal examples are available. Machine learning, and specifically dictionary learning, have recently obtained compelling results in ocean acoustics \cite{Bianco2017} and seismology\cite{kong2018}. 
 \rayan{I might be able to throw in some text about learning fast dictionaries, i.e., dictionaries learned from the data, but that also admit fast transforms like FFTs. Peter, Yoav, what do you think?}
 
 \yoav{I don't understand the following three paragraphs, can you give some technical details? Formulas?}
