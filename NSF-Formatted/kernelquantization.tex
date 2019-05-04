@@ -1,10 +1,10 @@
 \section{Quantized Sketchs of Complex Signals}
 %\section{Fast binary embeddings and  statistics on binary sketches}
-\rayan{under construction - need a better title!}
-\yoav{How about this one?}
+%\rayan{under construction - need a better title!}
+%\yoav{How about this one?}
 
 Consider a monitoring application of the type described
-in~\ref{item:monitoring}.  Here a network of sensors is used to
+in~\ref{sec:examples}.  Here a network of sensors is used to
 monitor an area or a system. As an example, consider a network of
 cameras that are used to monitor a highway. The goal of the camera
 network is to provide a real-time summary of the status of the highway
@@ -31,11 +31,18 @@ Specifically, we consider the task of detecting the difference between
 two distributions. The difference can be a result of spatial
 differences -- two sensors that are at different locations, or it can be
 temporal -- two samples drawn from the same sensor at different times.
-
-
 Our approach is based on quantized sketches.
-\yoav{I hope this gives a good transition. I leave it to you guys to
-  explain sketches and how the error of quantization can be controlled}
+%\yoav{I hope this gives a good transition. I leave it to you guys to
+ % explain sketches and how the error of quantization can be controlled}
+ It is a main goal of this section to develop both algorithmic tools and rigorous theoretical analysis for this framework, as well as examine the types of statistical questions that can be addressed. 
+To that
+end, we will first provide some relevant background, both on kernel
+and compressive statistics
+\cite{gretton2012kernel,gribonval2017compressive,cheng2017two}
+%\rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, 
+as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.  
+ 
+ 
 \iffalse
 across all the sensors to perform this
 statistical change-detection task may be prohibitively expensive and
@@ -52,12 +59,7 @@ is to devise and study methods for obtaining such low bit-depth
 sketches in the context of performing statistical tasks, and to study
 their computational complexity and performance guarantees.
 \fi
-To that
-end, we will first provide some relevant background, both on kernel
-and compressive statistics
-\cite{gretton2012kernel,gribonval2017compressive}
-%\rayan{Alex, what do you think? Do we need background on compressive statistics here, or on a need-to-use basis?}, 
-as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT,saab2018quantization,huynh2018fast}.
+
 
 
 
@@ -77,7 +79,7 @@ as well as quantization and binary embeddings \cite{jacques2013robust,SaabIEEEIT
 We will rely on extremely
 coarse, e.g., binary, quantization of the data-sketches. In addition to minimizing storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) these methods have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. A growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new, daubechies2015deterministic}), has focused on signal reconstruction from coarsely quantized measurements. \emph{One important theme that emerges from this line of work  is that if one collects more coarsely quantized (even 1-bit) measurements  than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down as a function of the number of measurements.} This theme has held true in a wide range of signal and measurement contexts, including bandlimited functions \cite{daubechies2015deterministic}, finite frame expansions \cite{iwen2013near},  and compressed sensing of approximately sparse vectors \cite{SaabIEEEIT, saab2018quantization}, low-rank matrices \cite{LybrandSaab2018}, and manifold valued signals \cite{iwen2019new}.
 
-Co-PI Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that pairwise distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss (i.e., distance preserving) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer). In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. 
+Co-PI Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that pairwise distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss \cite{} (i.e., distance preserving linear) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer). \iffalse In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. 
 \alex{May be able to remove some of the description of 1st order and only focus on general, if need to reduce space.}
 For example, the simplest noise-shaping quantization scheme, the so-called greedy $1$st order $\Sigma\Delta$ scheme, is given, for $i=1,...,m$, by 
 \begin{align}
@@ -90,14 +92,15 @@ where the state-variable sequence $\uu_i$ is initialized via, e.g., $\uu_0=0$. I
 %\yoav{How does one create an estimate of $y_i$ from $q_i$?}\rayan{see the blue text}{\color{blue}
 
 %For example, in the context of compressed sensing \cite{donoho2006compressed,candes2006stable}, where the signals $x$ are sparse and the measurements are of the form $y = Ax$, one may recover a very accurate estimate $\hat{x}$ of $x$ from the one-bit measurements $q$ by solving an optimization problem  that encourages, say, sparsity, with the constraint that $\|D^{-1}(A\hat{x}-q)\|_\infty \leq c_2$. The constraint is critical; it ensures that the solution $\hat{x}$ respects the quantizer by satisfying \eqref{eq:SD_state}  and \eqref{eq:stability}. 
-More generally, other \emph{stable} noise-shaping quantizers act sequentially on the measurements $\y_i$, %via carefully chosen functions $\rho,$
+\fi 
+Generally, \emph{stable} noise-shaping quantizers act sequentially on the measurements $\y_i$, %via carefully chosen functions $\rho,$
 %\begin{align}
 %q_i = \sign(\rho(y_i, u_i,u_{i-1},...,u_{i-r}))
 %u_i = 
 %\end{align}
 %for carefully 
 and yield 
-$$ \q=\y - H\uu,$$ where $H$ is a lower-triangular matrix associated with the scheme. Quantizers of interest include
+$$ \q=\y - H\uu.$$ Here $H$ is a lower-triangular matrix associated with the scheme and $\uu$ is a vector of state-variables $(u_1,...,u_m)$, initialized via $u_i=0, i\leq 0$ and updated sequentially so that $u_j$ is a function of $q_i, y_i, u_i,$ for a subset of indices $i < j$. Quantizers of interest include
 stable $r$th-order (with $r\geq 1$) $\Sigma\Delta$ schemes  \cite{daubechies2003approximating} where  $\q= \y - D^r \uu$, and distributed-$\beta$ encoding schemes \cite{chou2016distributed} where $H$ is block diagonal with identical lower-triangular blocks $G$, given by $G_{i,i}=1, G_{i+1,i}=-\beta$, and $G_{i,j}=0$ otherwise.
 
 With these quantization schemes playing a prominent role, in  \cite{huynh2018fast} co-PI Saab  constructed approximately isometric (i.e., distance preserving) embeddings between the metric space  $(\mathcal{T}, \|\cdot\|_2)$ and the binary  cube $\{-1,+1\}^m$ endowed with the pseudometric
@@ -137,27 +140,27 @@ While signal reconstruction is not a major focus of this section, the promising 
 
 Statistical distances, or accurately measuring distances between distributions, arise in a large number of applications.  For sensors, these are important quantities for monitoring and tracking.
 %one example where these distances would be important is in testing the hypothesis of whether two sensors have measured the same underlying distribution.  
-An example of this would be for acoustic sensors, where each sensor collects the local power spectral density of a signal.  Each sensor $i$ now has a set of high dimensional data $\mathbf{Y_i}=\{\dsignal_i(t)\}_{t=t_0}^{t_n}\subset \mathbb{R}^d$, and the question is whether $\mathbf{Y_1}$ and $\mathbf{Y_2}$ are distributionally the same, up to a time shift.  After constructing a kernel $K: \mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}^d_+$ to define similarity between any two points, and ignoring communication constraints, a simple statistic to construct for a point $z \in \mathbf{Y_i}$ is a difference of kernel means over the two data sets $\frac{1}{n}\sum_{x\in \mathbf{Y_1}} K(z,x) - \frac{1}{n}\sum_{x\in \mathbf{Y_2}} K(z,x)$.  If $\mathbf{Y_1}$ and $\mathbf{Y_2}$ came from the same distribution, then this statistic would be unbiased at $z\in \mathbf{Y_i}$, otherwise there would be a bias for particular $z$.  Thus, computing the mean square error over all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$ yields a statistic that would be close to 0 if $\mathbf{Y_1},\mathbf{Y_2}\sim p$, and would be biased if $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ for $p\neq q$.  This is a well studied statistic known as kernel Maximum Mean Discrepancy \cite{gretton2012kernel}.  In what follows, we will describe the mathematical framework and guarantees established, and propose methods for dealing with communication and computation constraints in this framework through randomized sketching and binary embeddings, as well as how to establish guarantees of convergence under non-i.i.d. sampling situations such as time series data.  We will also detail a larger set of sensor problems that can be addressed in this framework.
+An example of this would be for acoustic sensors, where each sensor collects the local power spectral density of a signal.  Each sensor $i$ now has a set of high dimensional data $\mathbf{Y_i}=\{\dsignal_i(t)\}_{t=t_0}^{t_n}\subset \mathbb{R}^d$, and the question is whether $\mathbf{Y_1}$ and $\mathbf{Y_2}$ are distributionally the same, up to a time shift.  After constructing a kernel $K: \mathbb{R}^d\times \mathbb{R}^d \rightarrow \mathbb{R}_+$ to define similarity between any two points, and ignoring communication constraints, a simple statistic to construct for a point $z \in \mathbf{Y_i}$ is a difference of kernel means over the two data sets $\frac{1}{n}\sum_{x\in \mathbf{Y_1}} K(z,x) - \frac{1}{n}\sum_{x\in \mathbf{Y_2}} K(z,x)$.  If $\mathbf{Y_1}$ and $\mathbf{Y_2}$ came from the same distribution, then this statistic would be unbiased at $z\in \mathbf{Y_i}$, otherwise there would be a bias for particular $z$.  Thus, computing the mean square error over all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$ yields a statistic that would be close to 0 if $\mathbf{Y_1},\mathbf{Y_2}\sim p$, and would be biased if $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ for $p\neq q$.  This is a well studied statistic known as kernel Maximum Mean Discrepancy \cite{gretton2012kernel}.  In what follows, we will describe the mathematical framework and guarantees established, and propose methods for dealing with communication and computation constraints in this framework through randomized sketching and binary embeddings, as well as how to establish guarantees of convergence under non-i.i.d. sampling situations such as time series data.  We will also detail a larger set of sensor problems that can be addressed in this framework.
 
 %\alex{To Add: Have acoustic sensors and ways to compute similarity of acoustics with kernel (maybe say general, but say sensor is collecting distribution of data).  For each window, generate energy distribution.  See if sensors are hearing the same distribution of sound, even if time shifted.  Sketching complex measurements, refer inside for compressed statistics}
 
-Generally, the approach described above is measuring the distance between the distributions' \emph{mean embeddings} \cite{muandet2017kernel}.  A mean embedding of a distribution $\mu_p:\mathbb{R}^d\rightarrow \mathcal{H}$ of a probability distribution $p$ is computed as
+Generally, the approach described above measures the distance between the distributions' \emph{mean embeddings} \cite{muandet2017kernel}.  A mean embedding of a distribution $\mu_p:\mathbb{R}^d\rightarrow \mathbb{R}_+$ of a probability distribution $p$ is computed as
 \begin{align*}
     \mu_p(z) := \mathbb{E}_{x\sim p} \big[K(z,x)\big].
 \end{align*}
-Effectively, mean embedding is mapping the distribution $p$ to a point in the Reproducing Kernel Hilbert Space $\mathcal{H}$ that is induced by the kernel $K$.
+Effectively, the mean embedding $\mu_p\in\mathcal{H}$ indexed by $p$ is a unique point in the Reproducing Kernel Hilbert Space $\mathcal{H}$ that is induced by the kernel $K$.
 %\yoav{what is $\mathcal{H}?$. It seems to me that if the kernel $K$ maps into $R$ then $\mu_p$ should also map into $R$}
 
 %Consider the problem of meausing similary between data collected from sensor 1 and from sensor 2, and ask the question whether both sensors collected data from the same distribution.  Pool all data into $S_1\cup S_2$ and define the kernel measuring all pairwise similarities $K = \begin{bmatrix} K_{11} & K_{12}\\K_{21} & K_{22} \end{bmatrix}$.  
 %$MMD(S_1,S_2) = \sum_{x,x'\in S_1} K_{11}(x,x') + \sum_{y,y'\in S_2} K_{22}(y,y')$ - 2\sum_{x\in S_1,y\in S_2} K_{12}(x,y)$
 
 
-When $K$ is a \emph{universal} kernel (e.g. Gaussian, linear correlation) \cite{micchelli2006universal}, then the mean embedding satisfies a key property that $\|\mu_p - \mu_q\|_\mathcal{H}$ %(\rayan{define $\mathcal{H}$}) 
-is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This effectively means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  One key property is that, if we are only given $n$ finite samples $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ to compute the empirical mean embeddings $\widehat{\mu}_X$ and $\widehat{\mu}_Y$, and we compute the mean embedding at all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$, then $\|\widehat{\mu}_\mathbf{Y_1} - \widehat{\mu}_\mathbf{Y_2}\|_2 \rightarrow \|\mu_p - \mu_q\|$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.  A statistical interpretation of the mean embedding distance is that  it computes a mean shift alternative test on the eigenfunctions of $K$ rather than in the original space $\mathbb{R}^d$, and that two distributions having matching means in the eigenfunction space is equivalent to the distributions having all moments matching in $\mathbb{R}^d$.  A large benefit of the mean embeddings is that this calculation can be done without explicitly computing the eigendecomposition of $K$.
+When $K$ is a \emph{universal} kernel (e.g. Gaussian) \cite{micchelli2006universal}, then the mean embedding satisfies a key property that $\|\mu_p - \mu_q\|_\mathcal{H}$ %(\rayan{define $\mathcal{H}$}) 
+is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This effectively means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  One key property is that, if we are only given $n$ finite samples $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ to compute the empirical mean embeddings $\widehat{\mu}_X$ and $\widehat{\mu}_Y$, and we compute the mean embedding at all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$, then $\|\widehat{\mu}_\mathbf{Y_1} - \widehat{\mu}_\mathbf{Y_2}\|_2 \rightarrow \|\mu_p - \mu_q\|_\mathcal{H}$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.  A statistical interpretation of the mean embedding distance is that it computes a difference of means test on the eigenfunctions of $K$ rather than in the original space $\mathbb{R}^d$.  This means that two distributions having matching means in the eigenfunction space is equivalent to the distributions having all moments matching in $\mathbb{R}^d$.  A large benefit of the mean embeddings is that this calculation can be done without explicitly computing the eigendecomposition of $K$.
 
 
-However, statistics of this type suffer from a number of issues under computation and communication bottlenecks, as they requires storing and communicating all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$.  In particular, computing $\hat{\mu}(z)$ at any one point $z$ requires evaluating the kernel at all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$, which can be prohibitively expensive.
-This has motivated computational speed ups presented by co-PI Cloninger in \cite{cheng2017two} of undersampling $z\in S\subset \mathbf{Y_1}\cup \mathbf{Y_2}$ under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  There is a similar vein of computation speed up accomplished through kernel compression via randomized sketching \cite{gribonval2017compressive}.  However, even these approaches still require communication of a number of points between sensors, or passing double precision complex valued summary statistics.  
+However, statistics of this type suffer from a number of issues under computation and communication bottlenecks, as they require storing and communicating all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$.  In particular, computing $\hat{\mu}(z)$ at any one point $z$ requires evaluating the kernel at all points in $\mathbf{Y_1}\cup \mathbf{Y_2}$, which can be prohibitively expensive.
+This has motivated the computational speed up presented by co-PI Cloninger in \cite{cheng2017two} via undersampling $z\in S\subset \mathbf{Y_1}\cup \mathbf{Y_2}$ under the condition that a kernel matrix $K$ can be decomposed as $K\approx RR^T$ for $R$ that can be efficiently accessed.  There is a similar vein of computation speed up accomplished through kernel compression via randomized sketching \cite{gribonval2017compressive}.  However, even these approaches still require communication of a number of points between sensors, or passing double precision complex valued summary statistics.  
 
 
 
@@ -166,24 +169,24 @@ This has motivated computational speed ups presented by co-PI Cloninger in \cite
 
 
 \subsection{Framework}% \rayan{This feels like a framework rather than a model, what do you think Alex? }
- Our goal  is to present a complete, theoretically rigorous framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the afore-mentioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
+ Our goal  is to present a complete, theoretically rigorous framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the aforementioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
   
-Suppose signals of interest are represented as $N$ points $x[j] \in \mathbf{X}\subset \mathbb{R}^d$ %$Y\in \mathcal{X} \subset \mathbb{R}^d$, 
+Suppose signals of interest are represented as $N$ vectors $\mathbf{x}[j] \in \mathbf{X}\subset \mathbb{R}^d$ %$Y\in \mathcal{X} \subset \mathbb{R}^d$, 
 for $j\in\{1,...,N\}$,
 where $\mathbf{X}$ could be a finite set, i.e., a
 point cloud, or an infinite set (e.g., a compact manifold, or the set
-of all sparse vectors).  If the data is collected as a time series, then $x[j] = x(t_j)$.
+of all sparse vectors).  If the data is collected as a time series, then $\mathbf{x}[j] = \mathbf{x}(t_j)$.
 %\yoav{In the discussion so far, the time $t$ has a special role. Is $t$ one of the $d$ coordinates or is it an extra coordinate. In other words, should we use $Y(t)$ ?}
 %Alternatively, we may model signals as random vectors drawn according
 %to some distribution, i.e., $Y\sim~\mathcal{D}$ ofer $R^d$
 %\yoav{assuming that the signal for a single time point is generated by  and IID draw from a fixed distribution seem unnatural in the context of a sensor network, where the state of the environment $\theta(t)$ changes according to some dynamics.} 
 %where $\mathcal{D}$ accounts for any structure in the signals. 
-Further, assume that the measurement operator, accounting for all the digitization and measurements at all the sensors, is given by $\transfer:\mathbb{R}^d \to \mathbb{R}^m$, 
+Further, assume that the measurement operator, accounting for all the digitization and measurements at all the sensors, is given by $\transfer:\mathbb{R}^d \to \mathbb{R}^m$. 
 %\yoav{I am assuming that $A$ is equal to the transfer function $\transfer$ as described in the framework section and by Piya?} \rayan{possibly, if the transfer function includes design elements of the sensor}. 
-In the case of distributed sensing systems, we can assume each sensor collects/computes a portion, $\transfer_i \mathbf{X} \in \mathbb{R}^{m_i}$, of $\transfer \mathbf{X} \in \mathbb{R}^m$ (so that $\sum_i{m_i}=m$).
+In the case of distributed sensing systems, we can assume each sensor collects/computes a portion, $\transfer_i \mathbf{X} \subset \mathbb{R}^{m_i}$, of $\transfer \mathbf{X} \subset \mathbb{R}^m$ (so that $\sum_i{m_i}=m$).
 %Further, assume that points are paired across sensors, so the full collection of data can be concatenated as $\mathbf{Y} = \begin{bmatrix} \mathbf{Y}_i \end{bmatrix}_{i=1}^m$.  In other words, $\mathbf{Y}[j]$
 %The corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to estimate a  quantity of interest, such as the state of the target,  $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
-The corresponding signal at sensor $i$, $Y_i = \transfer_i \mathbf{X}$ can then be quantized via ${Q}(\transfer_i \mathbf{X})$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits.  The full quantization map of all sensors can be represented as
+The corresponding signal at sensor $i$, $\mathbf{Y}_i = \transfer_i \mathbf{X}$ can then be quantized via ${Q}(\transfer_i \mathbf{X})$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits.  The full quantization map of all sensors can be represented as
 \begin{equation}\label{eq:binaryembedding}
 x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
