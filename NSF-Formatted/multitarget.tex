@@ -2,6 +2,7 @@
 \yoav{How is this problem different from the problem of finding the
   best placement for the sensors in order to maximize the accuracy of
   localization, ignoring communication bendwidth? }
+  \piya{Majority of existing sensor selection problems (based on submodular optimization, or solving subset selection problem subject to maximum tolerable error bounds) utilize a linear model, where the measurements are {\em linear functions} of the quantity of interest. Target localization is inherently non-linear since the information is contained in phase. Moreover, these algorithms do not give theoretical guarantee on the minimum number of required sensors.}
 
 With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
 

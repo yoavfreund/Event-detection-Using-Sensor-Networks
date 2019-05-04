@@ -3,14 +3,16 @@
   section? Also I would like to merge this  subsection and the
   following one, which describes sensing geometry and the goal of
   minimizing the number of sensors.}
+  \piya{yes, done.}
 A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain (possibly time varying) parameters $\Theta(\tau)$ from certain targets (or sources) of interest in the environment by acquiring signals emitted by them. The methodologies proposed in this proposal will be primarily developed for passive sensing, although they can also be integrated into an active sensing scenario if the sensors are also allowed to actively emit signals for localizing targets.
 
-\yoav{This describes a more general framework, using $\mathbb{C}^P$ (does that mean each coordinate is complex?). What is gained from this generality? maybe drop the general notation? Also how does high resolution/super-resolution fit here? If you have worked on such problem, I suggest you devote a paragraph and cite, rather than just mentioning in passing. } 
+\yoav{This describes a more general framework, using $\mathbb{C}^P$ (does that mean each coordinate is complex?). What is gained from this generality? maybe drop the general notation? Also how does high resolution/super-resolution fit here? If you have worked on such problem, I suggest you devote a paragraph and cite, rather than just mentioning in passing. } \piya{I removed the complex notation. I will talk about super-resolution under review of difference sets - coming soon!}
 
 As an example, consider a network consisting of active radar units (for example, those mounted on autonomous vehicles) attempting to create a map of the environment. In this case, $K$ can denote the total number of pedestrians, bicyclist's and other cars and $\theta_i\in\mathbb{R}^3$ for the $i$th target will consist of its location $\mathbf{x}_i=[x_i,y_i]^T$ and velocity $(v_i)$ parameters, i.e. 
 \begin{equation} \Theta = [K, \{x_i, y_i, vx_i ,vy_i\}_{i=1}^K]^T 
 \end{equation} 
 \yoav{Shouldn't $K$ be estimated?}
+\piya{Yes, $K$ is now a parameter}
 %\rayan{It could also be 3 dimensional :), as can position}
 Mathematically the space-time measurements collected at the $m$th sensing element can be described as \begin{equation} 
 y_m (t) = \sum_{i=1}^{K} \phi (\mathbf{d}_m,\theta_i,t) + w_m(t), \quad 1\leq m\leq M
@@ -27,6 +29,7 @@ In passive localization, $\hat{\Theta}(T)$ is typically a function of the {\em c
 %\subsection*{Central Objective and Role of Sensing Geometry (Piya)}
 \subsection{Correlation-Based Passive Localization and Geometry of Sensing:} In many scenarios, the parameters of interest can be reliably inferred from the {\em correlation of the measurements}. In other words, the correlation of the measurements act as a sufficient statistic for the parameters to be inferred. Depending on the application, the correlation matrix can be spatial (when the source signals are stationary), or spatio-temporal (when the temporal dynamics need to be tracked, such as for change-point detection). In fact, majority of passive sensing and localization techniques heavily rely upon computing cross correlation between sensor measurements to estimate location parameters. In these cases, we can effectively summarize the large amount of raw sensor measurements by only retaining and communicating their correlation. 
 \yoav{The way I was thinking about it, each sensor has only one signal. In a one scenario, the quantity of interest is the "time delay of arrival" or the time shift of one signal relative to another that would maximize the correlation. Is there anything known about computing this time delay without communicating the whole time series?}
+\piya{Since this is passive localization based on narrowband signals (or wideband signals decomposed into narrow frequency bins), the time delay of arrival translates to phase offset across the array. One sensor can localize two targets, but it takes more than two sensors to localize multiple targets}
 
 \noindent{\bf Spatial Correlation and Localization:} Suppose we compute the empirical spatial correlation between $y_m(t)$ and $y_n(t)$  by averaging over $T$ time samples (the signals are assumed to be stationary over this interval) \footnote{Reasonable to do so when the source signals are stationary and emit independent signals. This is the common practice in source localization using antenna arrays. We can also use more sophisticated regularized estimation of correlation.}
 \begin{equation}
