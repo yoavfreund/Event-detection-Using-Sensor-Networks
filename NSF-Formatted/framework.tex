@@ -20,9 +20,9 @@ The targets generate signals, which we call the {\em raw} signals. We denote the
 
 The transfer function $\transfer$ defines the way by which the raw signals $\Vsignal$ are transformed into the digitized signals $\Vdsignal$. This function represents both the point transfer function of the physical environment,
 the analog-to-digital transformation of the physical signal into a discrete time physical signal, and the noise that is added through this process. The transformation is defined by:\footnote{Note that the transfer function $\transfer$ operates on the whole sequences, not just on the sequence at a single time $\ctime$. That is because signal propagation takes time, so $\Vdsignal(\dtime)$ depends on $\Vsignal$ at multiple time points.}
-\[
-\Vdsignal = \transfer(\Vsignal,\Vstate,\VSstate,\env)
-\]
+\begin{equation}
+\Vdsignal = \transfer(\Vsignal,\Vstate,\VSstate,\env)\label{eq:transfer}
+\end{equation}
 Many of the problems we plan to tackle in this proposal are inverse
 computation problems. We assume that some aspects of the physical
 space are known, i.e. we know a subset of
