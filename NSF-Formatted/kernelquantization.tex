@@ -189,29 +189,29 @@ Henceforth, the map at sensor $i$, $\widetilde\transfer_i$, will be a slight mod
 %
 %Further, assume that points are paired across sensors, so the full collection of data can be concatenated as $\mathbf{Y} = \begin{bmatrix} \mathbf{Y}_i \end{bmatrix}_{i=1}^m$.  In other words, $\mathbf{Y}[j]$
 %The corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to estimate a  quantity of interest, such as the state of the target,  $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
-The corresponding signal at sensor $i$, $\mathbf{Y}_i = \widetilde\transfer_i (\mathbf{X})$ can then be quantized via ${Q}(\widetilde\transfer_i (\mathbf{X}))$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits. A function $f$, to be designed, is then applied to the resulting bits, to further compress them while simultaneously retaining enough information to perform, say, a statistical task of interest.  The resulting map of all sensors can be represented as
+The corresponding signal at sensor $i$, $\mathbf{Y}_i = \widetilde\transfer_i (\mathbf{X})$ can then be quantized via ${Q}(\widetilde\transfer_i (\mathbf{X}))$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits. A function $f$, to be designed, is then applied to the resulting bits, to further compress them while simultaneously retaining enough information to perform a (say, statistical) task of interest.  The resulting map of all sensors can be represented as
 \begin{equation}\label{eq:binaryembedding}
 x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
-\mapsto Q(\widetilde\transfer (x)) =\left[ \begin{array}{c} Q(\widetilde\transfer_1 (x)) \\ \vdots \\ Q(\widetilde\transfer_k (x)) \end{array}\right] \mapsto f(Q(\widetilde\transfer (x)))=: g(x).
+\mapsto Q(\widetilde\transfer (\x)) =\left[ \begin{array}{c} Q(\widetilde\transfer_1 (\x)) \\ \vdots \\ Q(\widetilde\transfer_k (\x)) \end{array}\right] \mapsto f(Q(\widetilde\transfer (\x)))=: g(\x).\label{eq:quant_framework}
 \end{equation}
 
 
 
 
 \subsection{Proposed Work: Binary Embeddings of Nonlinear Similarity Measures}
-The type of information that can be derived from $f(Q(\widetilde\transfer (x)))$ depends on
+The type of information that can be derived from $f(Q(\widetilde\transfer (\x)))$ depends on
 the choice of measurement operator $\widetilde\transfer_i$ at each sensor, as well as
-the quantization scheme.  In \cite{huynh2018fast}, Co-PI Saab constructed $f$, $\widetilde\transfer$, and $Q$ so that 
-$\|g(x) - g(y)\|_2\approx \|x-y\|_2$  (see Sec. \ref{sec:quant} for the details).  For several of the statistical tasks below, we require construction of the quantization scheme to approximate more complex relationships between $x,y$.  We here propose developing a new set of quantization schemes that incorporate nonlinear functions of the data $x$.  In particular, using ideas from noise-shaping quantization (see Sec. \ref{sec:quant}) we aim to design 
+the quantization scheme.  In \cite{huynh2018fast}, Co-PI Saab constructed $f$, $\widetilde\transfer$, and $Q$ that all admit fast computation, so that 
+$\|g(\x) - g(\x')\|_2\approx \|\x-\x'\|_2$  (see Sec. \ref{sec:quant} for the details).  For several of the statistical tasks below, we require construction of the quantization scheme to approximate more complex relationships between $\x,\x'$.  We propose developing a new set of quantization schemes that incorporate nonlinear functions of the data $\x$. Using ideas from noise-shaping quantization (Sec. \ref{sec:quant}) we will design 
 %For several of the tasks below, we will
 %design 
-$f$, $\widetilde\transfer$, and $Q$ so that $\langle g(x), g(y) \rangle = \langle f(Q(\widetilde\transfer (x))), f(Q(\widetilde\transfer (y)))\rangle$
-approximates an arbitrary kernel, for example the Gaussian kernel $\langle g(x), g(y) \rangle \approx
-e^{-\|x-y\|_2^2/\sigma^2}$.  As a first step, we will show that this
+$f$, $\widetilde\transfer$, and $Q$ so that $\langle g(\x), g(\x') \rangle = \langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle$
+approximates an arbitrary kernel, for example the Gaussian kernel $\langle g(\x), g(\x') \rangle \approx
+e^{-\|\x-\x'\|_2^2/\sigma^2}$.  First, we will show that this
 can be achieved by appropriately quantizing $cos(2\pi \langle w, \cdot
 \rangle+b)$ for appropriate random choices of $w,b$ \cite{rahimi2008random}. To
-achieve this in practice, each physical sensor could collect one or
+implement this in practice, each physical sensor could collect one or
 more linear measurements $\langle \omega, \cdot \rangle$, and then the
 non-linearity (e.g., cosine) could be implemented as part of the
 quantizer. Alternatively, the sensor could measure the non-linear
@@ -220,13 +220,19 @@ function directly prior to quantization.
 %\subsection{Proposed Work: Theoretical Foundation}
 %\rayan{under heavy construction: edit and possibly move to proposed work section}
 
-To give some context, in the non-quantized setting, random Fourier Features (RFFs) were first introduced by Rahimi and Recht \cite{rahimi2008random} to approximate shift-invariant kernels (e.g., Gaussian kernels $k(x, x') = \exp(-\|x - x'\|_2^2/2$). They considered a class $\mathcal{X}\subset \R^d$ and defined, for $x\in \mathcal{X}$,  $\widetilde\transfer(x) = \sqrt{\frac{2}{m}}\cos(Ax + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$. To show $\langle \transfer(x), \transfer(x')\rangle \approx k(x, x')$, they showed  using an $\epsilon$-net argument that  
-$$\sup_{x, x'\in\mathcal{X}}|\langle \transfer(x), \transfer(x')\rangle - k(x, x')| = \sup_{x, x'\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, x\rangle + b_i)\cos(\langle a_i, x'\rangle + b_i) - k(x, x')|$$
-concentrated around zero \cite{ledoux2001concentration}. Their result was later improved in  \cite{sriperumbudur2015optimal} using Dudley's inequality \cite{ledoux2001concentration}. Still, the above results' dependence on the data's geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{dasgupta2011fast}, Le, Sarlos, and Smola \cite{le2013fastfood} considered a structured random matrix $A$ to speed up RFFs. %The structured matrix they proposed satisfied $A= SHG\Pi HB,$
+To give some context, in the non-quantized setting, random Fourier Features (RFFs) were introduced in \cite{rahimi2008random} to approximate shift-invariant kernels (e.g., $k(\x, \x') = \exp(-\|\x - \x'\|_2^2/2$). For  $\x\in\mathcal{X}\subset \R^d$ \cite{rahimi2008random} set  $\widetilde\transfer(\x) = \sqrt{\frac{2}{m}}\cos(A\x + b)$, where $A$ is a Gaussian matrix and $b$ is a uniform random vector over $[0, 2\pi]$. To show $\langle \transfer(\x), \transfer(\x')\rangle \approx k(\x, \x')$, they showed  (using an $\epsilon$-net argument) that  
+$$\sup_{\x, \x'\in\mathcal{X}}|\langle \transfer(\x), \transfer(\x')\rangle - k(\x, \x')| = \sup_{\x, \x'\in\mathcal{X}}|\frac{2}{m}\sum \cos(\langle a_i, \x\rangle + b_i)\cos(\langle a_i, \x'\rangle + b_i) - k(\x, \x')|$$
+concentrated with high probability around zero \cite{ledoux2001concentration}. Their result was improved in  \cite{sriperumbudur2015optimal} using Dudley's inequality \cite{ledoux2001concentration}. The above results' dependence of $m$ on $\mathcal{X}$'s geometric properties (e.g., its intrinsic dimension) was sub-optimal and the application of Gaussian matrices to large data sets could be prohibitively expensive as they do not admit fast transforms. To address the second issue, inspired by \cite{dasgupta2011fast},  \cite{le2013fastfood} considered a structured random matrix $A$ with a fast matrix-vector multiply, to speed up RFFs. %The structured matrix they proposed satisfied $A= SHG\Pi HB,$
 %where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. 
-For this construction \cite{le2014fastfood} claimed a concentration result analogous to that of \cite{rahimi2008random}, again using an $\epsilon$-net argument.%, and they \emph{conjectured} that $H$ can be replaced by any orthogonal matrix and reported numerical evidence showing that random partial Fourier matrices also gave a comparable results. There is not much theoretical work for this setting.
-\rayan{here}
-\textit{Questions.} This is a great example of nonlinear + structured random measurements. We need to understand the empirical process:
+For this construction \cite{le2014fastfood} claimed a concentration result analogous to that of \cite{rahimi2008random}, again using an $\epsilon$-net argument. As for quantized RFF's, starting with the first work  \cite{raginsky2009locality}, the results so far only show that one can approximate a (complicated) function of the kernel, rather than the kernel itself.
+
+Instead, with an eye towards excellent approximations of the kernel itself, we will use noise-shaping quantization schemes (to promote compressed representations), couple them with fast randomized transforms $A$ (to promote fast computation), and we will design $f$ from \eqref{eq:quant_framework} so that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle = \mathbb{E}( k(\x,\x'))$. We will then show that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle$ concentrates, with high probability, around its mean, the kernel. To that end, we will utilize tools, such as generic chaining \cite{talagrand2006generic}, from high-dimensional probability \cite{vershynin2018high} to allow us to handle the difficulties induced not only by the non-linearities but also by the structured (i.e., not fully independent) random matrices. As an added benefit, we believe our methods will allow us to obtain improved dependence of $m$ on the geometric properties of $\mathcal{X}$, rather than on the ambient dimension.
+
+\iffalse %to control quantities of the form 
+\begin{equation}\label{ep}
+	\mathbb{P}\left(\sup_{(f, g)\in\mathcal{F}\times\mathcal{G}} \left|\frac{2}{m}\sum f(a_i)g(a_i) - \mathbb{E}[fg]\right| \geq t\right).
+\end{equation}
+ \textit{Questions.} This is a great example of nonlinear + structured random measurements. We need to understand the empirical process:
 \[
 	\mathbb{P}\left(\sup_{(x, y)\in\mathcal{X}\times\mathcal{Y}} \left|\frac{2}{m}\sum\cos(Ax)\cos(Ay) - k(x, y)\right| \geq t\right),
 \]
@@ -241,11 +247,8 @@ The empirical process (\ref{ep}) has been studied by Mendelson \cite{Mendelson} 
 Understanding (\ref{ep}) is also helpful for us when we incorporate quantization.
 
 
-{Quantize RFFs}
-The first work was introduced by Raginsky and Lazebnik \cite{RL2009} in which they quantized RFFs $Q(\transfer(x)) = Q(\sqrt{\frac{2}{m}}\cos(Ax + b))$ where $Q$ is a dither quantization. They showed that we could quantize and use hamming distance of these quantized data to approximate a (complicated) function of the Gaussian kernel.
-
 \textit{Questions.} Consider noise-shaping quantization methods for RFFs. Then we need to understand (\ref{ep}). Note that there is also recent work by Re and co-authors \cite{Zhang2018}
-
+\fi
 
 %\rayan{ Seems like in a model like this we could talk about Privacy (though I am not an expert on this -- any takers?} 
 
@@ -311,13 +314,13 @@ Recently, a kernel CCA technique called alternating diffusion \cite{lederman2018
 
 However, this requires communication of all $n$ points across sensors to compute the kernel product.  We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx g(S_i) g(S_i)^*$.  As the key feature of alternating diffusion is computing the inner product matrix $g(S_1)^* g(S_2)$, which has dimension $d<n$ and is also low rank.  This implies it is possible to sketch $g(S_1)$ (resp. $g(S_2)$) with a small set of vectors $v_j$ (resp. $w_k$) and only communicate vectors $g(S_1)^* v_j$ (resp. $w_k^* g(S_2)$) such that $\mathbb{E}_{j,k}[g(S_1)^* v_j w_k^* g(S_2)] \approx g(S_1)^* g(S_2)$.  The amplification of the common factors observed by both sensors can serve to boost the power of the two sample and change point statistics on the shared observable manifold $\mathcal{M}$, as well as other compressed statistics that can be computed \cite{gribonval2017compressive}.
 %\yoav{This last item looks very interesting, but I don't understand it ... is it related to the problem I suggested of finding the offset of highest correlation for two similar signals?}
-\item \rayan{Maybe put in classification \begin{itemize}
+\iffalse\item \rayan{Maybe put in classification \begin{itemize}
     \item Idea 1: Training reduced to computing averages $\mu_j$, over the data of say $Q(\cos(A x+b))$ for each class $x\sim\mathcal{X}_j$. Classification reduced to computing $\mu_y=Q(\cos(Ay+b))$ and finding the closest $\mu_j$ to $\mu_y$. In a sense, this is like 2-sample testing, but with a point mass at $y$. Advantages: Each sensor only keeps the averages relevant to its own portion of $Q(\cos(Ax))$ for $x$ in training set, and later for $y$ to be classified. Each sensor can compute its own piece of the inner product $\langle \mu_j, \mu_y \rangle$, you are ultimately averaging bits, so memory needed at each sensor grows like $m_i\times \log(P)$ where $P$ is the total number of points and $m_i$ is the size of the sketch at each sensor... The idea is that $m_i\ll d$ and $\log(P) \ll P$ so you save a ton on storage/communication. 
     
     \item Idea 2: Exploit the hierarchical/distributed nature of the bits produced by binary embeddings. Requires more thought...
 \end{itemize} 
 and clustering: Analogous to the above...}
-
+\fi
 
 \end{itemize}
 
