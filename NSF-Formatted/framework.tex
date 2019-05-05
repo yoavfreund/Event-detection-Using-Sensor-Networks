@@ -1,10 +1,19 @@
 \section{Framework}
 
-\begin{figure}[b]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.9\columnwidth]{figs/Framework.jpg}
-\caption{An example of a sensor network\label{fig:prototypicalSensorNetwork}. The goal of the network is to track a car. The location of the car as a function of time is $\theta(\ctime)$, and the goal of the network to produce $\estate(\ctime)$. The car emits a sound wave, which we denote by $x(\ctime)$. The sound wave travels through the physical environment and arrives at each sensor $i$, where it is digitized and made into a time sequence $y_i(\dtime)$. The transformation of the signal $x(\ctime)$ into $y_i(\dtime)$ is represented by a transfer function $\phi$. In this car tracking example 
-$y_i(\dtime) = \phi(x(\ctime),\state(\ctime),\Sstate_i(\ctime))$\rayan{$\psi$ is not defined here}. We are seeking an inverse transformation that would map the measurements vector $y_1(\dtime),y_2(\dtime),y_3(\dtime)$ to an estimate of the car location $\estate(\dtime)$}
+\includegraphics[width=0.7\columnwidth]{figs/Framework.jpg}
+\caption{An example of a sensor
+  network\label{fig:prototypicalSensorNetwork}. The goal of the
+  network is to track a car. The location of the car as a function of
+  time is $\theta(\ctime)$, and the goal of the network to produce
+  $\estate(\ctime)$. The car emits a sound wave, which we denote by
+  $x(\ctime)$. The sound wave travels through the physical environment
+  and arrives at $\Sstate_i$ - the location of sensor $i$, where it is digitized and made into a time sequence $y_i(\dtime)$. The transformation of the signal $x(\ctime)$ into $y_i(\dtime)$ is represented by a transfer function $\phi$. In this car tracking example 
+$y_i(\dtime) =
+\phi(x(\ctime),\state(\ctime),\Sstate_i(\ctime))$
+%\rayan{$\psi$ is not  defined here}.
+We are seeking an inverse transformation that would map the measurements vector $y_1(\dtime),y_2(\dtime),y_3(\dtime)$ to an estimate of the car location $\estate(\dtime)$}
 \end{figure}
 
 This proposal combines several related lines of work. To facilitate the exposition, we start by introducing some terminology and notation that will be used throughout. {\bf Figure~\ref{fig:prototypicalSensorNetwork}} describes a simple sensor network that tracks a car using the sound waves the car is emitting.
@@ -98,7 +107,7 @@ We give a few specific examples of tasks. We will elaborate on some of these tas
       this formulation in your sections about tomography and
       dictionaries?)
     
-    \item {\bf Monitoring} In many situations the goal of the sensor
+    \item {\bf Monitoring} \label{item:monitoring} In many situations the goal of the sensor
       network is to track the environment, identify trends and detect
       anomalies. Motivating examples include: Security systems,
       systems for monitoring patients or the elderly, highway
