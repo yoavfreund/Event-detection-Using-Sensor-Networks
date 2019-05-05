@@ -3,28 +3,28 @@
 %\rayan{under construction - need a better title!}
 %\yoav{How about this one?}
 
-Consider a monitoring application of the type described
-in~\ref{sec:examples}.  Here a network of sensors is used to
+Consider a monitoring application as described
+in Sec. ~\ref{sec:examples}.  Here a network of sensors is used to
 monitor an area or a system. As an example, consider a network of
 cameras that are used to monitor a highway. The goal of the camera
 network is to provide a real-time summary of the status of the highway
 and detect critical events such as accidents, obstacles on the
-highway, or speeding cars. One approach to this problem is to transmit
+highway, or speeding cars. One approach  is to transmit
 all video streams to a central location and process them there. This
 approach is expensive both in terms of the required communication
 bandwidth and the computational resources needed in the central
 location.
 
-A common partical approach is to compress the videos before sending
-them and decompress them in the central location. This approach will
-typically provide a 10-100 fold improvement in therm of communication
-bandwidth but will increase the computational load on the center.
+A common practical approach is to compress the videos before sending
+them and decompress them in a central location. This 
+can provide a 10-100 fold improvement in terms of communication
+bandwidth but increases the computational load on the center and sensors.
 Lossy compression solves a reconstruction problem: how to encode a
-video stream in such a way as to allow the original stream to be
-reconstructed in a way would be visually indistinguishable from the
-original video. In contrast, the information we need to retain in the
-monitoring task is more specific and thus opens the possibility that
-the encoding can be much smaller than the one generated for lossy
+video stream to allow reconstruction
+so the reconstructed stream is visually indistinguishable from the
+original. In contrast, the information we must retain in the
+monitoring task is more specific and opens the possibility that
+the encoding can be much smaller than the one  for lossy
 compression.
 
 Specifically, we consider the task of detecting the difference between
@@ -75,11 +75,14 @@ their computational complexity and performance guarantees.
 
 % (e.g, \cite{fang2014sparse,boufounos20081}). Additionally, simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others.
 \subsection{Background and Prior Work: Quantization and Binary Embeddings}\label{sec:quant}
-\rayan{under construction: need to shorten}
+%\rayan{under construction: need to shorten}
 We will rely on extremely
-coarse, e.g., binary, quantization of the data-sketches. In addition to minimizing storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) these methods have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. A growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new, daubechies2015deterministic}), has focused on signal reconstruction from coarsely quantized measurements. \emph{One important theme that emerges from this line of work  is that if one collects more coarsely quantized (even 1-bit) measurements  than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down as a function of the number of measurements.} This theme has held true in a wide range of signal and measurement contexts, including bandlimited functions \cite{daubechies2015deterministic}, finite frame expansions \cite{iwen2013near},  and compressed sensing of approximately sparse vectors \cite{SaabIEEEIT, saab2018quantization}, low-rank matrices \cite{LybrandSaab2018}, and manifold valued signals \cite{iwen2019new}.
+coarse, e.g., binary, quantization of the data-sketches. These methods minimize storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) and have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. A growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new, daubechies2015deterministic}), studies signal reconstruction from coarsely quantized measurements. \emph{One important theme that emerges from this line of work  is that if one collects more coarsely quantized (even 1-bit) measurements  than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down as a function of the number of measurements.} This theme has held true in a wide range of signal and measurement contexts, including bandlimited functions \cite{daubechies2015deterministic}, finite frame expansions \cite{iwen2013near},  and compressed sensing of approximately sparse vectors \cite{SaabIEEEIT, saab2018quantization}, low-rank matrices \cite{LybrandSaab2018}, and manifold valued signals \cite{iwen2019new}.
 
-Co-PI Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that pairwise distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. To be precise, we now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss \cite{} (i.e., distance preserving linear) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. Moreover, $Q:\R^m \to \{\pm 1\}^m$ is a noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer). \iffalse In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. 
+Saab has recently  extended this observation beyond signal reconstruction, to the context of (Euclidean) distance-preserving binary embeddings \cite{huynh2018fast}. Here the goal is to map points in $\R^n$ to the binary cube $\{\pm 1\}^m$, where $m\ll n$, in such a way that  distances in $\R^n$ can be well-approximated by appropriate functions on $\{\pm 1\}^m \times \{\pm 1\}^m$. We now briefly describe this contribution as it is pertinent to our ensuing discussion. In \cite{huynh2018fast},  $A: \mathcal{T}\subset\R^n \to \R^m$ is a \emph{random} Johnson-Lindenstrauss \cite{johnson1984extensions} (i.e., distance preserving linear) map and  $\mathcal{T}\subset \R^n$ is a set of finite or infinite cardinality. $Q:\R^m \to \{\pm 1\}^m$ is a stable noise-shaping quantizer (e.g., a $\Sigma\Delta$ \cite{daubechies2003approximating}, or $\beta$ \cite{chou2016distributed} quantizer)
+%
+%
+\iffalse In their most commonly used form, noise-shaping quantizers act sequentially on the measurements, say $\y_i$. 
 \alex{May be able to remove some of the description of 1st order and only focus on general, if need to reduce space.}
 For example, the simplest noise-shaping quantization scheme, the so-called greedy $1$st order $\Sigma\Delta$ scheme, is given, for $i=1,...,m$, by 
 \begin{align}
@@ -93,40 +96,40 @@ where the state-variable sequence $\uu_i$ is initialized via, e.g., $\uu_0=0$. I
 
 %For example, in the context of compressed sensing \cite{donoho2006compressed,candes2006stable}, where the signals $x$ are sparse and the measurements are of the form $y = Ax$, one may recover a very accurate estimate $\hat{x}$ of $x$ from the one-bit measurements $q$ by solving an optimization problem  that encourages, say, sparsity, with the constraint that $\|D^{-1}(A\hat{x}-q)\|_\infty \leq c_2$. The constraint is critical; it ensures that the solution $\hat{x}$ respects the quantizer by satisfying \eqref{eq:SD_state}  and \eqref{eq:stability}. 
 \fi 
-Generally, \emph{stable} noise-shaping quantizers act sequentially on the measurements $\y_i$, %via carefully chosen functions $\rho,$
+%Generally, \emph{stable} noise-shaping quantizers 
+which act sequentially on the measurements $\y_i$, %via carefully chosen functions $\rho,$
 %\begin{align}
 %q_i = \sign(\rho(y_i, u_i,u_{i-1},...,u_{i-r}))
 %u_i = 
 %\end{align}
 %for carefully 
-and yield 
-$$ \q=\y - H\uu.$$ Here $H$ is a lower-triangular matrix associated with the scheme and $\uu$ is a vector of state-variables $(u_1,...,u_m)$, initialized via $u_i=0, i\leq 0$ and updated sequentially so that $u_j$ is a function of $q_i, y_i, u_i,$ for a subset of indices $i < j$. Quantizers of interest include
+%
+%
+and yields
+$$ \q=\y - H\uu \quad \text{ with }  \quad(\|\y\|_\infty \leq c_1 \implies \|\uu\|_\infty \leq c_2.) $$ Here $H$ is a lower-triangular matrix associated with the scheme and $\uu$ is a vector of state-variables $(u_1,...,u_m)$, initialized via $u_i=0, i\leq 0$ and updated sequentially so that $u_j$ is a function of $q_i, y_i, u_i,$ for a subset of indices $i < j$. Quantizers of interest include
 stable $r$th-order (with $r\geq 1$) $\Sigma\Delta$ schemes  \cite{daubechies2003approximating} where  $\q= \y - D^r \uu$, and distributed-$\beta$ encoding schemes \cite{chou2016distributed} where $H$ is block diagonal with identical lower-triangular blocks $G$, given by $G_{i,i}=1, G_{i+1,i}=-\beta$, and $G_{i,j}=0$ otherwise.
-
 With these quantization schemes playing a prominent role, in  \cite{huynh2018fast} co-PI Saab  constructed approximately isometric (i.e., distance preserving) embeddings between the metric space  $(\mathcal{T}, \|\cdot\|_2)$ and the binary  cube $\{-1,+1\}^m$ endowed with the pseudometric
-$$d_{{V}}(\tilde{\q},\q) := \| {V}(\tilde{\q} -{\q}) \|_2$$
+$d_{{V}}(\tilde{\q},\q) := \| {V}(\tilde{\q} -{\q}) \|_2$
 where $V$ is a carefully constructed matrix.
 For a  matrix $A\in\R^{m\times n}$, and a noise-shaping quantizer $Q$, as above, the algorithm for computing these embeddings is simply given by \begin{align}
-g: \mathcal{T} &\to \{\pm 1\}^m\nonumber\\
-x &\mapsto \q=Q(A\x).\nonumber
+g: \mathcal{T} &\to \{\pm 1\}^m\nonumber\quad \text{where} \quad
+x \mapsto \q=Q(A\x).\nonumber
 \end{align}
 %\rayan{Perhaps we need a section where we introduce background material like the  Johnson-Lindenstrauss lemma?}
 
-In particular, when $A$ is a fast Johnson-Lindenstrauss matrix (e.g., \cite{}), the constructed embeddings support fast computation. Despite their highly quantized non-linear nature, these binary embeddings perform as well as linear Johnson-Lindenstrauss methods! % up to an additive error that decays exponentially (for $\beta$ quantizers) or polynomially (for $\Sigma\Delta$ quantizers)  in $m$. 
+In particular, when $A$ is a fast Johnson-Lindenstrauss matrix (e.g., \cite{ailon2009fast}), \emph{the constructed embeddings support fast computation} and despite their highly quantized non-linear nature, they perform as well as linear Johnson-Lindenstrauss methods! % up to an additive error that decays exponentially (for $\beta$ quantizers) or polynomially (for $\Sigma\Delta$ quantizers)  in $m$. 
 %\yoav{When exponentially and when polynomially?}
 {Indeed, when $\mathcal{T}$ is finite} \cite{huynh2018fast} shows that with high probability %\RSnote{Careful: this should be $p$ not $m$ on the left}, 
-and for prescribed distortion $\alpha$
-\begin{align*} m \gtrsim \frac{\log{(|\mathcal{T}|)} \log^4 n}{\alpha^2} \quad \implies  \quad \big|d_{\widetilde{V}}(g(\x), g(\tilde{\x})) - \|\x - \tilde{\x}\|_2\big| & \leq {\alpha}\|\x - \tilde{\x}\|_2 + c\eta(m), \\ &\quad\text{where} \ \eta(m) \xrightarrow[m \rightarrow \infty]{} 0. \end{align*}
+%and for prescribed distortion $\alpha$
+\begin{align*} m \gtrsim \frac{\log{(|\mathcal{T}|)} \log^4 n}{\alpha^2} \quad \implies  \quad \big|d_{\widetilde{V}}(g(\x), g(\tilde{\x})) - \|\x - \tilde{\x}\|_2\big| & \leq {\alpha}\|\x - \tilde{\x}\|_2 + c\eta(m),  \quad\text{where} \quad \eta(m) \xrightarrow[m \rightarrow \infty]{} 0. \end{align*}
 Above, $\eta(m)$ decays polynomially fast in $m$ (when $\mathcal{Q}$ is a $\Sigma\Delta$ quantizer), or exponentially fast (when $\mathcal{Q}$ is a distributed noise shaping quantizer). %In fact, we prove a more general version of the above result, which applies to infinite sets $\mathcal{T}$. 
 %\medskip
 {Additionally, when $\mathcal{T}$ is arbitrary (with possibly infinite cardinality, e.g., a compact manifold)} \cite{huynh2018fast} show that with high probability  and for prescribed distortion $\alpha$
 \[ m \gtrsim \frac{\log^4 n}{\alpha^4}\cdot\frac{\omega(\mathcal{T})^2}{\rad(\mathcal{T})^2} \quad \implies \quad \big|d_{\widetilde{V}}(g(\x), g(\tilde{\x})) - \|\x - \tilde{\x}\|_2\big| \leq \alpha \rad(\mathcal{T}) + c\eta(m)\]
-where $\eta(m)$ is as before and where $\rad(\mathcal{T})$ and $\omega(\mathcal{T})$ denote  the Euclidean radius of  $\mathcal{T}$ and its Gaussian width (which roughly scales with the average radius of $\mathcal{T}$, so that intrinsically low-dimensional sets have a small Gaussian width). %, defined in Section \ref{sec:math_prelim}.
- 
- \emph{In short, with \emph{very few measurements} compared to the ambient dimension of the signals, one can very efficiently (roughly at the cost of a fast Fourier transform) obtain low-dimensional binary sketches of the data. These sketches approximately preserve all pairwise distances in the original set and the distances in the embedded space can be computed efficiently.  }
+where $\eta(m)$ is as before and  $\rad(\mathcal{T})$ and $\omega(\mathcal{T})$ denote  the Euclidean radius of  $\mathcal{T}$ and its Gaussian width (which roughly scales with the average radius of $\mathcal{T}$, so  intrinsically low-dimensional sets have a small  width). %, defined in Section \ref{sec:math_prelim}.
+ \emph{In short, with \emph{very few measurements} compared to the ambient dimension of the signals, one can very efficiently (roughly at the cost of a fast Fourier transform) obtain low-dimensional binary sketches of the data. These sketches approximately preserve all pairwise distances in the original set and the distances in the embedded space can be computed efficiently.}
 %\rayan{may have to edit this depending on how the themes in the proposal evolve}
-
-While signal reconstruction is not a major focus of this section, the promising results obtained in that context, and also in the context of binary embeddings, lead us to believe that the above techniques can be generalized to other tasks. 
+Signal reconstruction is not a focus of this section, but the promising results obtained in that context, and in the context of binary embeddings, lead us to believe that the above techniques can be generalized to other tasks. 
 %\yoav{I would differentiate between reconstruction, which corresponds to the lossy compression and compression methods whose output is designed to make particular types of inferences at the receiver end, rather than reconstruction. such as change detection, localization, statistical hypothesis testing. I think the former takes us into well trodden areas which have been studied in information theory, while the latter is much more of an open field. I recommend we focus on the latter.}
 %\rayan{I agree. Reconstruction was intended as an example of a task that traditionally suffers from coarse quantization if care is not taken in designing the quantization algorithms, not as a focus of the proposal.}
 
@@ -193,7 +196,7 @@ The corresponding signal at sensor $i$, $\mathbf{Y}_i = \widetilde\transfer_i (\
 \begin{equation}\label{eq:binaryembedding}
 x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
-\mapsto Q(\widetilde\transfer (\x)) =\left[ \begin{array}{c} Q(\widetilde\transfer_1 (\x)) \\ \vdots \\ Q(\widetilde\transfer_k (\x)) \end{array}\right] \mapsto f(Q(\widetilde\transfer (\x)))=: g(\x).\label{eq:quant_framework}
+\mapsto Q(\widetilde\transfer (\x)) =\left[ \begin{array}{c} Q(\widetilde\transfer_1 (\x)) \\ \vdots \\ Q(\widetilde\transfer_k (\x)) \end{array}\right] \mapsto f(Q(\widetilde\transfer (\x)))=: g(\x).%\label{eq:quant_framework}
 \end{equation}
 
 
@@ -226,7 +229,7 @@ concentrated with high probability around zero \cite{ledoux2001concentration}. T
 %where $\Pi$ is 	a permutation matrix, $H$ is the Hadamard matrix, and $S, G, B$ are diagonal random matrices. 
 For this construction \cite{le2014fastfood} claimed a concentration result analogous to that of \cite{rahimi2008random}, again using an $\epsilon$-net argument. As for quantized RFF's, starting with the first work  \cite{raginsky2009locality}, the results so far only show that one can approximate a (complicated) function of the kernel, rather than the kernel itself.
 
-Instead, with an eye towards excellent approximations of the kernel itself, we will use noise-shaping quantization schemes (to promote compressed representations), couple them with fast randomized transforms $A$ (to promote fast computation), and we will design $f$ from \eqref{eq:quant_framework} so that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle = \mathbb{E}( k(\x,\x'))$. We will then show that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle$ concentrates, with high probability, around its mean, the kernel. To that end, we will utilize tools, such as generic chaining \cite{talagrand2006generic}, from high-dimensional probability \cite{vershynin2018high} to allow us to handle the difficulties induced not only by the non-linearities but also by the structured (i.e., not fully independent) random matrices. As an added benefit, we believe our methods will allow us to obtain improved dependence of $m$ on the geometric properties of $\mathcal{X}$, rather than on the ambient dimension.
+Instead, with an eye towards excellent approximations of the kernel itself, we will use noise-shaping quantization schemes (to promote compressed representations), couple them with fast randomized transforms $A$ (to promote fast computation), and we will design $f$ from \eqref{eq:binaryembedding} so that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle = \mathbb{E}( k(\x,\x'))$. We will then show that $\langle f(Q(\widetilde\transfer (\x))), f(Q(\widetilde\transfer (\x')))\rangle$ concentrates, with high probability, around its mean, the kernel. To that end, we will utilize tools, such as generic chaining \cite{talagrand2006generic}, from high-dimensional probability \cite{vershynin2018high} to allow us to handle the difficulties induced not only by the non-linearities but also by the structured (i.e., not fully independent) random matrices. As an added benefit, we believe our methods will allow us to obtain improved dependence of $m$ on the geometric properties of $\mathcal{X}$, rather than on the ambient dimension.
 
 \iffalse %to control quantities of the form 
 \begin{equation}\label{ep}
