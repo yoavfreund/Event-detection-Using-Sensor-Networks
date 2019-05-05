@@ -11,7 +11,7 @@
 
 After having observed and localized the sources we are here concerned with extracting the the environment $\bf E$. The environment is needed for any physical modeling and understanding of how the machine learning approaches work in practice. The models developed here could be aided by some know information about the environment $\bf E$, say the rooms in a house, or probability distributions of sound speed in the ocean or atmosphere.
 
-We will have information about the travel-time and attenuation between a source and sensors. Or  travel-time and attenuation between sensors could be extracted by just observing noise\cite{shapiro2004, sabra2005, gerstoft2006}. In the initial setup, source and receivers locations are assumed known. 
+We will have information about the travel-time and attenuation between a source and sensors. Or  travel-time and attenuation between sensors could be extracted by just observing noise\cite{shapiro2005, sabra2005, gerstoft2006}. In the initial setup, source and receivers locations are assumed known. 
 
 We have worked on this problem for seismic modeling to develop separately two velocity models\cite{Bianco2018}, deemed the \textit{global} and \textit{local} models,  and briefly discuss dictionaries for sparse modeling. The global model considers the larger scale or global features and relates travel times to slowness. The local model considers smaller scale or more localized features with sparse modeling and is considered  to consist of sparse linear combinations of atoms from a dictionary
  We propose to use dictionary learning during the inversion to adapt dictionaries to specific slowness maps.
@@ -44,6 +44,6 @@ Assuming that the travel paths between sensors has been estimated\cite{sabra2005
 We further propose to develop  
 (4) For EM signals, where the wave speed does not vary much the above formulation could be modified to do attenuation tomography.
 (5) Acoustic event detection methods that leverage recent advances in machine learning.
-(6) For unknown sensor location, only a graph of the sensor response is obtained. The edges of the graph will contain information related to travel time between nodes. It could here be useful to extract the information onto a manifold. From there further information could be extracted in the spatial dimension. A well-known example of this is that the location of cities in Switzerland could be constructed from the train schedule\cite{docmani2015}. With more sensors we would be able to extract both location and environmental information.  
+(6) For unknown sensor location, only a graph of the sensor response is obtained. The edges of the graph will contain information related to travel time between nodes. It could here be useful to extract the information onto a manifold. From there further information could be extracted in the spatial dimension. A well-known example of this is that the location of cities in Switzerland could be constructed from the train schedule\cite{dokmanic2015}. With more sensors we would be able to extract both location and environmental information.  
 %\end{itemize}
 
