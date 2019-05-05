@@ -78,14 +78,21 @@ A second interesting aspect of 2D GNS is that it lends itself to a hierarchical 
 \rayan{Agree!}
 %\end{itemize}
 
-\subsection{Graph signal processing approach without a fusion center}
+\subsection{Localizing weak sources with graph signal processing}
 \yoav{I think this section can be combined with Piya's
   sections. Choosing which pairs should communicate is clearly related
-  to their geometric layout.}
+  to their geometric layout.} {\bf Peter: That is fine.}
 
-Here the processing is done locally at each node. A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM at once, i.e., using a fusion center. 
-When the coherence $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM can then be used localize the source more precisely.
+A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM $\hat{\bf S}$ at once, i.e., using a fusion center. 
+When the SCM $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM $\hat{\bf S}$ can then be used to localize the source more precisely.
+
+
 
 To extract very weak signals with a well estimated and robust SCM is needed. Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods\cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could either be communicated further to a wider set of nodes.
 
 Robust signal processing methods\cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. A qualitatively robust estimator is characterized by an IF that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
+
+We propose to work on\\
+(1) A scheme for processing locally at each node. \\
+(2) Estimate of the SCM should be robust to outliers\cite{zoubir2018}. Thus we will investigate the processing for empirical influence functions.  Kernelized methods could likely increase the robustness.
+(3) Extract relevant physical signals that can be used in the extraction of environmental parameters $\bf E$.
