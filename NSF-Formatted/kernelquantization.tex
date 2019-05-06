@@ -277,7 +277,11 @@ Our overarching goal is to reduce the communication constraints by utilizing bot
 through use of $g(x) = f(Q(\widetilde\transfer(x)))$.   
 The idea is that, rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute $Q(\widetilde\transfer(x))\in \{\pm 1\}^m$ with $m\ll d$, and communicate $f(Q(\widetilde\transfer(x)))$. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  For notational convenience in this section, it will at times be easier to separate the transfer function $\phi$ from the randomized measurement operator $\mathcal{A}$ and define
 \begin{equation*}
+<<<<<<< HEAD
     \widetilde{g}(y) = f(Q(\mathcal{A}(y))), \textnormal{ where } y=\transfer(x).
+=======
+    \widetilde{g}(y) = f(Q(\mathcal{A}(y))), \quad \textnormal{where } \quad y=\transfer(x).
+>>>>>>> overleaf-2019-05-06-0423
 \end{equation*}
 %For sensor networks, we can either compare between sensors by embedding each sensors' data through $g(\mathbf{Y}_i) = f(Q(\transfer_i( \mathbf{X})))$ when $\transfer_i$ at each sensor are constructed using the same random measurement operator (though there may be differences due to sensor location, obstructions, etc).  A separate comparison is to have the sensors work collaboratively across a common set of points by building a concatenated sketching from data across all sensors $g(\mathbf{Y}) = \begin{bmatrix}f(Q(\transfer_1(\mathbf{X}))), & ... & f(Q(\transfer_k(\mathbf{X}))) \end{bmatrix}$.
 We aim to prove that this low complexity vector still converges to a type of mean embedding, and to provide a rigorous analysis of the statistical power, convergence rates, and minimal detectable separation criteria between the distributions.  Below we highlight the benefit of this approach in a number of different sensor problems. 
