@@ -257,7 +257,6 @@ Understanding (\ref{ep}) is also helpful for us when we incorporate quantization
 
 
 \subsection{Proposed Work: Quantized Statistics}
-\alex{under construction: notation being worked on}
 %Statistics on Binarized Sketching of Complex Measurements}
 %\rayan{need a clear statement summarizing our goals here}
 %\rayan{we need to unify the notation here. $g$ is being used differently than the previous section}
@@ -277,11 +276,11 @@ Our overarching goal is to reduce the communication constraints by utilizing bot
 through use of $g(x) = f(Q(\widetilde\transfer(x)))$.   
 The idea is that, rather than communicate and compute with $x\in \R^d$ where $d$ may be large, one only needs to compute $Q(\widetilde\transfer(x))\in \{\pm 1\}^m$ with $m\ll d$, and communicate $f(Q(\widetilde\transfer(x)))$. In what follows, $\mathbb{E}_{x\in X} g(x)$ serves as a proxy for the empirical mean embedding of the data set $X$.  For notational convenience in this section, it will at times be easier to separate the transfer function $\phi$ from the randomized measurement operator $\mathcal{A}$ and define
 \begin{equation*}
-<<<<<<< HEAD
-    \widetilde{g}(y) = f(Q(\mathcal{A}(y))), \textnormal{ where } y=\transfer(x).
-=======
+%<<<<<<< HEAD
+ %   \widetilde{g}(y) = f(Q(\mathcal{A}(y))), \textnormal{ where } y=\transfer(x).
+%=======
     \widetilde{g}(y) = f(Q(\mathcal{A}(y))), \quad \textnormal{where } \quad y=\transfer(x).
->>>>>>> overleaf-2019-05-06-0423
+%>>>>>>> overleaf-2019-05-06-0423
 \end{equation*}
 %For sensor networks, we can either compare between sensors by embedding each sensors' data through $g(\mathbf{Y}_i) = f(Q(\transfer_i( \mathbf{X})))$ when $\transfer_i$ at each sensor are constructed using the same random measurement operator (though there may be differences due to sensor location, obstructions, etc).  A separate comparison is to have the sensors work collaboratively across a common set of points by building a concatenated sketching from data across all sensors $g(\mathbf{Y}) = \begin{bmatrix}f(Q(\transfer_1(\mathbf{X}))), & ... & f(Q(\transfer_k(\mathbf{X}))) \end{bmatrix}$.
 We aim to prove that this low complexity vector still converges to a type of mean embedding, and to provide a rigorous analysis of the statistical power, convergence rates, and minimal detectable separation criteria between the distributions.  Below we highlight the benefit of this approach in a number of different sensor problems. 
@@ -302,7 +301,7 @@ The communication benefit of such a statistic is that the sensors need
 only transmit the mean of $g(x)$, rather than all the individual
 points.  %Additional mathematical questions arise in the setting that different sensors collect non-overlapping features from $X$, as this creates a banded embedding matrix $A$.
 
-\alex{Could expand on this, or reference other comments in proposal and a few papers about this for JL embeddings}
+%\alex{Could expand on this, or reference other comments in proposal and a few papers about this for JL embeddings}
 %\yoav{I would like to see a more self-contained description, rather than an expansion. While I agree with the goals, I have no idea how the described math can be used to achieve those goals.}
 
 %\yoav{Rather than describing the existing approach at the end, I would start with it and say, we plan to extend this approach ...}
