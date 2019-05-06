@@ -1,0 +1,153 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{color}
+
+\usepackage{textcomp}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+%\usepackage[noend]{algorithm2e}
+
+%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{calc}
+\usepackage{float}
+
+\usepackage{url}
+
+% For generating custom lists (similar to table of contents, list of figures
+% etc.)
+\usepackage[subfigure]{tocloft}
+
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+\usepackage{latexsym}
+
+\usepackage{enumitem}
+
+% Remove spacing around section headings
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+%\usepackage[left=1.05in,right=1.05in,top=1in,bottom=1in]{geometry}
+
+% tweak or comment out the baselinestretch to control how much space for hand-writing comments you get between the lines
+%\renewcommand{\baselinestretch}{1.8}
+
+% Compress whitespace around itemize and enumerate
+\setitemize{topsep=.0em,parsep=0pt,partopsep=0pt,labelsep=0.2em,itemsep=0pt,leftmargin=0.5em}
+\setenumerate{topsep=.0em,parsep=0pt,partopsep=0pt,labelsep=0.2em,itemsep=0pt,leftmargin=0.5em}
+
+% Remove paragraph indentation
+\setlength{\parindent}{0pt}
+
+% Remove paragraph spacing
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+
+% Decrease the line spread slightly
+\linespread{1.02}
+
+
+\DefineVerbatimEnvironment%
+{tree}{Verbatim}{frame=single,fontsize=\scriptsize}
+
+\DefineVerbatimEnvironment%
+{treeNumber}{Verbatim}{frame=single,numbers=left,fontsize=\scriptsize}
+\title{Collaboration and Evaluation}
+
+\input{macros}
+
+\begin{document}
+\section{Collaboration and Evaluation Plan}
+The members of our team are: Computer Science: Yoav Freund,
+Electrical engineering: Piya Pal and Peter Gerstoft.
+Mathematics: Rayan Saab and Alex Cloninger.
+
+\begin{itemize}
+\item {\bf PI Freund's} expertise is in Computational Learning Theory and
+Computer Science. Among his theoretical work are 
+Boosting~\cite{}, online learning~\cite{}, learning and game
+theory~\cite{} and the RP-tree algorithm~\cite{}. He has also worked
+on applications of machine learning to image analysis for
+biology~\cite{}.
+\item please add yourself.
+\end{itemize}
+
+Description of how we shall colaborate
+
+{\bf Joint Students}\\
+We will recruit and advise graduate and post-graduate students as a
+group. We will actively recruit students who have a strong
+mathematical background and are able and willing to implement
+algorithms as reusable code.  Each student will have two advisors,
+from two of the three disciplines.
+
+{\bf Collaboration}\\
+Each graduate student will have a one hour meeting with each other
+their advisors each week.
+
+We will have a one and a half hour weekly group meeting, which will
+include all PIs and students, in each of which one of the students or
+PIs will present to the others.
+
+{\bf Evaluation}\\
+We plan to submit paper to the following conferences and journals:
+COLT, ICML, AIstat, JMLR, IEEE Signal Processing, IEEE Information
+theory, please add.
+
+We Will implement our algorithms in python and jupyter notebooks and
+make them available through GitHUB.
+
+We will use several benchmarks to evaluate the accuracy.
+\yoav{Piya, Peter, can you suggest benchmark data sets?}\\
+We will collect audio data in Prof. Christiansen's intrumented living
+quarter and evaluate out algorithms on the collected data.
+
+We will evaluate our performance in terms of:
+\begin{enumerate}
+\item number of publications.
+\item number of implementations.
+\item Performance of our methods on benchmark data.
+\end{enumerate}
+
+{\bf Institute for Learning Sensor Networks}\\
+\yoav{Please suggest names for the institute}
+
+In phase II we plan to 
+
+We plan to join forces with researchers in the areas of embedded
+computers, robotics and medical sensing.
+
+All PIs are members of the Haligliou Data Science Institute (HDSI).
+
+{
+\bibliographystyle{abbrv}
+%\bibliography{plato,tripods}
+\bibliography{tripods}
+}
+
+\end{document}
+
+% Collaboration and Evaluation Plan as a separate Supplementary Document
+% (limited to 5 pages). This plan must describe the expertise in the
+% relevant disciplines provided by the PIs as required above under "Who
+% May Serve as PI" as well as plans for working together to meet the
+% goals of the program. The Collaboration and Evaluation Plan must also
+% describe clear measures of success for the project, including
+% developing capability and capacity for a potential Phase II, and a
+% plan for evaluating success. Proposals without this document will be
+% returned without review.
+
