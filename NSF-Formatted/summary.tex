@@ -72,7 +72,34 @@
 
 \begin{document}
 \section{Overview}
-The fact that humans have {\em two} eyes and {\em two} ears has clear
+Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
+
+With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves. We capitalize on the observation that often, the task for which these sensor networks are deployed does not require them to communicate all their data. 
+
+To that end, we propose new methods for designing the placement of sensor networks, to maximize their ability to perform the  while minimizing their communication complexity. 
+
+
+
+
+We propose a novel approach we call {\em Learning Sensor Networks}.
+This approach assumes that sensors are placed at fixed locations and
+remain there for a significant length of time.  Each sensor uses {\em
+  statistical learning} to model it's environment. It communicates
+with neighboring sensors in order to know their models and to
+calibrate parameters such as relative location. After an initial
+training period, which might last minutes, days or months depending on
+the context, the network can distinguish normal from abnormal
+behaviour. Based on that ability, it will transmit to the other
+sensors only a {\em sketch}~\cite{} which captures the novel, or
+salient aspect of the signals.
+
+Learning sensor networks promise much lower energy and bandwidth
+consumption than current sensor networks. To realize this potential we
+plan to develop new new mathematical models, signal processing methods
+and distributed algorithms for computing and combining sketches.
+
+
+\iffalse The fact that humans have {\em two} eyes and {\em two} ears has clear
 benefits. Our two eyes provide us with depth perception. Our two ears
 allow us to detect the direction from which a sound is coming.
 
@@ -113,22 +140,23 @@ Learning sensor networks promise much lower energy and bandwidth
 consumption than current sensor networks. To realize this potential we
 plan to develop new new mathematical models, signal processing methods
 and distributed algorithms for computing and combining sketches.
+\fi
 
-\section{Intellectual Merit}
+%section{Intellectual Merit}
+%\alex{Waiting to update after updated in description document.}
+
 
 \section{Broader Impacts}
 \subsection*{Societal benefits: practical applications}
-Sensor networks are an important emerging technology with applications
-in retail, manufacturing, security and medicine. These networks
-collect vast amounts of raw data, most of which is not relevant to the
-task of the system as a whole. On the other hand, such systems face strict constraints on the power and bandwidth available to each sensor.
+Sensors and sensor networks have been at the forefront of the growth of high dimensional data collection, affecting a number of applications such as
+retail, manufacturing, security and medicine. These networks
+collect vast amounts of raw data, however most of the data collected may not be relevant to the
+task of the system as a whole.  Many of these systems also face strict constraints on the power and bandwidth available to each sensor.
 Sensors are expected to operate for years on a small battery or by
-foraging energy from the environment. A related problem is the
+foraging energy from the environment. Similarly, they are limited by 
 bandwidth, range and energy consumption of wireless communication
 protocols, which greatly limit the data-rate sent in an out of each
-sensor. Our proposed work
-will enable a new generation of sensor networks which will impact all
-aspect of modern society.
+sensor.  Our proposed work will enable a new generation of sensor networks that are capable of operating in a task specific manor, which can have impact in a large number of application fields and scientific disciplines.
 \subsection*{Cross disciplinary collaboration}
 The PIs all have a history of cross disciplinary collaboration, not only across the HDR TRIPODS disciplines but also with neuro-scientists, geoscientists, medical doctors, \rayan{All: insert your stuff here please}. NSF support for this project will allow the PIs to develop new cross-disciplinary collaborations, particularly with researchers in the areas of embedded computers, robotics, and medical sensing. Indeed, practitioners from these areas are likeliest to adapt and apply the results of the proposed research. So, we plan to actively foster collaborations with them, in anticipation of joining forces for phase II of HDR TRIPODS. To that end, we will greatly benefit from the new Halicioglu Data Science Institute (HDSI) at UCSD, which boasts several world class researchers (\rayan{Yoav, Peter, Piya, any particular names we should throw in here?} in those areas among its affiliated members. 
 \subsection*{Teaching and mentorship}
