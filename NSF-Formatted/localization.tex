@@ -44,7 +44,7 @@ We can summarize the self and cross correlation between $M$ time-series measurem
 \end{enumerate}
 
 
-\section{Localization of weak sources (Peter)}
+\subsection{Localization of weak sources }
 
 \yoav{Can the description of SCM be folded into Piya's introduction?}
 
@@ -55,13 +55,19 @@ The propagation path from a given source location would here represent multiple 
 {\bf y}={\bf A}{\bf s}+{\bf n},
 \end{equation}
 where ${\bf A}=[{\bf a}_1, \ldots {\bf a}_K ]$  and $\bf n$ is uncorrelated noise. 
+Here ${\bf x}_k$ and is the spatial location of the source and $a_k\in {\cal R}^N$ is the propagation from source $k$ to the $N$ receivers. 
+In the far-field and free space, ${\bf x}_k$ is determined by the phase delay 
+$e^{\imath \omega \|{\bf x}_n-{\bf x}_k\|/c}$ 
+($c$ is sound speed, $\omega$ frequency, and $\|{\bf x}_n-{\bf x}_k\|$ is distance between source $k$ and receiver $n$). 
+We will here operate in the near field and more complicated environments, so this simple relation might not hold.
+
 The sources might be located in the near field and  composed of many propagation paths. Examples of many propagation paths from a single source could be waves from  
 1) a source in a house propagating though the air and though the wall.
 2) a cell phone signal with a direct path, a reflected path or refracted path.
 3) a car radiating noise though the air and though the ground.
 Further, the sensors are not placed in a regular order, but where practical and maybe with unknown location. Thus the elements in ${\bf a}_k$ are unknown.
 
-\yoav{What is the relationship between $a_k$ and $x_k$?}
+%\yoav{What is the relationship between $a_k$ and $x_k$?}
 
 To make observations of weak sources we observe $L$ snapshots  assuming  stationarity ${\bf Y}=[{\bf y}_1 \ldots {\bf y}_L]$.
 We can here form the sample covariance matrix (SCM)
@@ -70,14 +76,14 @@ We can here form the sample covariance matrix (SCM)
 \end{equation}
 and form the the normalized SCM $\hat{\bf S}$ or coherence with elements
 \begin{equation}
-{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
+\hat{ S}_{ji} =\frac{{ S}_{ji}}{\sqrt{ { S}_{ii}{ S}_{jj}}}
 \end{equation}
 
-\yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
+% \yoav{I am confused about the definition of coherence, should it not be the maximum correlation when one signal to be shifted relative to the other?}
 
-Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
-\begin{equation}
-{\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
-\end{equation}
+% Forming the ensemble mean over multiple snapshots give the cross spectral density matrix${\bf C}\in {\cal R}^N\times N$
+% \begin{equation}
+% {\bf C}={\cal E}[{\bf y} {\bf y}^H]= {\bf A}{\bf s}{\bf s}^H{\bf A}^H+{\bf N},
+% \end{equation}
 
 The array signal processing literature is ample with processing of this type, especially with the structure of the $\bf A$ matrix partially known. In this work we will focus on pushing the computations to the sensor nodes and thus only observing part of SCM.
