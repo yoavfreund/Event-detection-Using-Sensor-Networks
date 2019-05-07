@@ -71,7 +71,7 @@
 \input{macros}
 
 \begin{document}
-Our team consists of University of California San Diego (UCSD) faculty members from the departments of Computer Science (Yoav Freund), Electrical Engineering (Piya Pal, Peter Gerstoft), and Mathematics (Alex Cloninger, Rayan Saab), directly representing three of the four communities of HDR TRIPODS.  Additionally, all members of the team are founding members of UCSD's Halicioglu Data Science Institute (HDSI), a new academic unit at UCSD with a focused mission. Its mission, one that it shares to a large extent with HDR TRIPODS, is to lay the groundwork for the scientific foundations of this emerging discipline, develop new methods and infrastructure, and train students, faculty and industrial partners to use data science in ways that will allow them to solve some of the world’s most pressing problems \cite{the HDSI website}. 
+Our team consists of University of California San Diego (UCSD) faculty members from the departments of Computer Science and Engineering (Yoav Freund), Electrical and Computer Engineering (Piya Pal, Peter Gerstoft), and Mathematics (Alex Cloninger, Rayan Saab), directly representing three of the four communities of HDR TRIPODS.  Additionally, all team members are founding members of UCSD's Halicioglu Data Science Institute (HDSI), a new academic unit at UCSD with a focused mission. Its mission, one that it shares to a large extent with HDR TRIPODS, is to lay the groundwork for the scientific foundations of this emerging discipline, develop new methods and infrastructure, and train students, faculty and industrial partners to use data science in ways that will allow them to solve some of the world’s most pressing problems \url{https://datascience.ucsd.edu/}{ the HDSI website}. 
 
 Having all our team members located on the same campus and regularly interacting through HDSI will greatly enhance our ability to collaborate closely on the proposed projects. In addition to the direct and frequent interaction of the faculty members involved in this proposal, with the NSF's support, we intend to jointly supervise PhD students and to co-mentor a postdoctoral fellow. 
 
@@ -79,11 +79,8 @@ Additionally, we note that our team includes theoreticians who also have a deep 
 
 In what follows, we will describe our expertise, plans for advising joint students, for collaborating, as well as for evaluating the results of our work.  
  
+ \vspace{1cm}
 \section{Expertise}
-
-%The members of our team are: Computer Science: Yoav Freund,
-%Electrical engineering: Piya Pal and Peter Gerstoft.
-%Mathematics: Rayan Saab and Alex Cloninger.
 
 \begin{itemize}
 \item {\bf PI Freund's} expertise is in Computational Learning Theory,
@@ -109,6 +106,7 @@ In what follows, we will describe our expertise, plans for advising joint studen
 \item {\bf Co-PI Pal's} expertise... \yoav{please add yourself}
 \item {\bf Co-PI Saab's} expertise is in applied and computational harmonic analysis, and in mathematical signal processing. He is interested in, and has published extensively on questions regarding efficient acquisition, quantization, representation, and processing of data. He has studied these problems in classical contexts, such as those of band limited functions, but also in modern contexts, such as compressed sensing of structured signals, be they sparse vectors, low-rank matrices, or signals from arbitrary sets. He has also worked on signal and data processing problems related to multiple sensors, including the blind source separation problem. In his work, Saab uses and develops a variety of tools from high dimensional probability theory, applied harmonic analysis, convex analysis and optimization, and quantization theory, among others. 
 \end{itemize}
+\vspace{1cm}
 
 \section{Collaboration Plan}
 %\iffalse
@@ -135,21 +133,18 @@ point of view, joint advising will provide one of the mechanisms by
 which our team members will work together.
 
 The Post Doc will assist PI Freund in keeping track of all activities and work with each of the four PIs on a per need base as well as connected with some of the graduate students. We will make sure that post Doc is actively involved in the project.
-
-{\bf Collaboration}\\  Each
-graduate student will have a one hour meeting with each of their their
-advisors each week. The student and both advisors will also have
-regular bi-weekly meetings to assess progress and ensure continuing
-synergy on each project.  In addition, we will have a one and a half
-hour weekly group meeting, where each meeting will include all PIs and
-students, and where one of the students or PIs will present to the
-others.
+%
+%{\bf Collaboration}\\  Each
+% graduate student will have a one hour meeting with each of their their
+% advisors each week. The student and both advisors will also have
+% regular bi-weekly meetings to assess progress and ensure continuing
+% synergy on each project.  In addition, we will have a one and a half
+% hour weekly group meeting, where each meeting will include all PIs and
+% students, and where one of the students or PIs will present to the
+% others.
 %
 %\rayan{not sure about this one, get rid of it if you don't like it}
 %Finally, we will have annual retreats where all the team members meet in order to discuss our progress and plan our work in the coming year.
-%\fi
-%
-%\yoav{other version}\\
 \\
 \\
 {\bf Joint Students}\\
@@ -158,9 +153,8 @@ In addition to its focus on the proposed scientific content, a main goal of this
 group. We will actively recruit students who have a strong
 mathematical background and are able and willing to implement
 algorithms as reusable code. Equally importantly, we will actively seek out students from underrepresented groups in STEM. 
-
-%Each student will have two advisors, from two of the three disciplines, who will work closely with the student. From a training point of view, this will help the student gain a broader perspective on data science as a field while acquiring an in-depth understanding of tools and methods from more than one area. From a collaboration point of view, joint advising will provide one of the mechanisms by which our team members will work together. 
-
+\\
+\\
 {\bf Collaboration}\\ %\rayan{see if you like these edits.}
 The graduate students will glue our team together and each graduate student will have at least two PI-advisers.  
 Each graduate student will have a one hour meeting with their
@@ -170,24 +164,29 @@ two advisors each week. The student and both advisors will also have regular bi-
 %\peter{\bf OK. Because it is written here does not mean we do it.}
 Finally, we will have a kick-off retreat and followed by annual retreats where all the team members meet to assess our progress on the proposed work.
 \\
+\\
+\\
+{\bf Datasets:}\\
+We will use several benchmarks and dataset to evaluate the accuracy of the developed approaches:\\
+(1) We intend to compare our performance with the DCASE challenge: Two tasks in acoustics and audio signal processing that have befitted from deep leaning are sound event detection and source localization. These methods replace physics-based acoustic propagation models or hand-engineered detectors with deep-learning architectures in the 2017 Detection and Classification of Acoustic Scenes and Events (DCASE) challenge.\cite{mesaros2017dcase}
+This is an annual event, so new datasets will be available.
+\\
+(2)
+Closely related to item (1), but giving us better freedom to demonstrate our methods, will we collect audio data in Prof.\ Christiansen's instrumented living
+quarter (at Computer Science at UCSD). We will evaluate out algorithms on the collected data.
+\\
+(3) For seismic data it is now common to use massive sensor data. We have access to the  5000 geophones collected in a 7x10 km area Long Beach over months at a sampling rates of 500 Hz. We have worked on the data in e.g.\ \cite{riahi2017}. many other data sets are available at the Iris website, \href{iris.edu}.
+\\
+(4) For electromagnetic data we have access to MIMO array data  capable of taking phase coherent measurements for the determination and characterization of electromagnetic (EM) channels. The array aperture is intended to be flexible, with a maximum inter element spacing around 5 wavelengths. 
+\\
+\\
 {\bf Evaluation}\\
-\rayan{not sure what they want here?}
 We plan to submit paper to the following conferences and journals:
 Science, Nature, COLT, ICML, AIstat, JMLR, IEEE Signal Processing, IEEE Information
 theory, Applied and Computational Harmonic Analysis, Foundations of Computational Mathematics, Information and Inference, SIAM Journal on Mathematics of Data Science, please add.
 
 We Will implement our algorithms in python and jupyter notebooks and
 make them available through GitHUB.
-\\
-{\bf Datasets;}\\
-We will use several benchmarks and dataset to evaluate the accuracy of the developed approaches:\\
-(1) We intend to compare our performance with the DCASE challenge: Two tasks in acoustics and audio signal processing that have befitted from deep leaning are sound event detection and source localization. These methods replace physics-based acoustic propagation models or hand-engineered detectors with deep-learning architectures in the 2017 Detection and Classification of Acoustic Scenes and Events (DCASE) challenge.\cite{mesaros2017dcase}
-This is an annual event, so new datasets will be available.
-\\
-(2) For seismic data it is now common to use massive sensor data. We have access to the  5000 geophones collected in a 7x10 km area Long Beach over months at a sampling rates of 500 Hz. We have worked on the data in e.g.\ \cite{riahi2017}. many other data sets are available at the Iris website, \href{iris.edu}.
-(3)
-We will collect audio data in Prof.\ Christiansen's instrumented living
-quarter and evaluate out algorithms on the collected data.
 
 
 We will evaluate our performance in terms of:
