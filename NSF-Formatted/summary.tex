@@ -74,29 +74,25 @@
 \section{Overview}
 Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
 
-With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves. We capitalize on the observation that often, the task for which these sensor networks are deployed does not require them to communicate all their data. 
-
-To that end, we propose new methods for designing the placement of sensor networks, to maximize their ability to perform the  while minimizing their communication complexity. 
-
-
-
-
-We propose a novel approach we call {\em Learning Sensor Networks}.
-This approach assumes that sensors are placed at fixed locations and
-remain there for a significant length of time.  Each sensor uses {\em
+With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves.  It proposes a data-processing framework for sensor networks. Each sensor uses {\em
   statistical learning} to model it's environment. It communicates
 with neighboring sensors in order to know their models and to
 calibrate parameters such as relative location. After an initial
-training period, which might last minutes, days or months depending on
-the context, the network can distinguish normal from abnormal
+training period, the network can distinguish normal from abnormal
 behaviour. Based on that ability, it will transmit to the other
-sensors only a {\em sketch}~\cite{} which captures the novel, or
-salient aspect of the signals.
-
-Learning sensor networks promise much lower energy and bandwidth
+sensors only a {\em sketch} which captures the novel, or
+salient aspect of the signals. This framework promises much lower energy and bandwidth
 consumption than current sensor networks. To realize this potential we
 plan to develop new new mathematical models, signal processing methods
 and distributed algorithms for computing and combining sketches.
+
+\section{Intellectual Merit}
+ We capitalize on the observation that often, the task for which these sensor networks are deployed does not require all of them to communicate, nor does it require them to communicate all their data. Thus, we will propose new techniques for designing the geometry of sensor networks, to maximize their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from \rayan{Piya/Peter: Please edit, and/or insert some relevant areas of research here}. We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform statistical tasks including, for example, change-point detection and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning.     
+
+
+
+
+
 
 
 \iffalse The fact that humans have {\em two} eyes and {\em two} ears has clear
