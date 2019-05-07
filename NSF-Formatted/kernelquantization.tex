@@ -113,7 +113,7 @@ $d_{{V}}(\tilde{\q},\q) := \| {V}(\tilde{\q} -{\q}) \|_2$
 where $V$ is a carefully constructed matrix.
 For a  matrix $A\in\R^{m\times n}$, and a noise-shaping quantizer $Q$, as above, the algorithm for computing these embeddings is simply given by \begin{align}
 g: \mathcal{T} &\to \{\pm 1\}^m\nonumber\quad \text{where} \quad
-x \mapsto \q=Q(A\x).\nonumber
+\x \mapsto \q=Q(A\x).\nonumber
 \end{align}
 %\rayan{Perhaps we need a section where we introduce background material like the  Johnson-Lindenstrauss lemma?}
 
@@ -194,7 +194,7 @@ Henceforth, the map at sensor $i$, $\widetilde\transfer_i$, will be a slight mod
 %The corresponding portion of ${Q}(Ax)$ where the quantization map $Q: \mathbb{R}^m \to \{\pm 1\}^m $ maps the measurements to bits. The sensors then must collaborate to estimate a  quantity of interest, such as the state of the target,  $\theta(x)$ using and estimation function $f(Q(Ax)):=f\left(Q(A_1x),...,Q(A_kx)\right)\approx g(x)$.
 The corresponding signal at sensor $i$, $\mathbf{Y}_i = \widetilde\transfer_i (\mathbf{X})$ can then be quantized via ${Q}(\widetilde\transfer_i (\mathbf{X}))$ with a quantization map $Q: \mathbb{R}^{m_i} \to \{\pm 1\}^{m_i} $ that maps the measurements to bits. A function $f$, to be designed, is then applied to the resulting bits, to further compress them while simultaneously retaining enough information to perform a (say, statistical) task of interest.  The resulting map of all sensors can be represented as
 \begin{equation}\label{eq:binaryembedding}
-x 
+\x 
 %\mapsto Ax = \left[ \begin{array}{c} A_1 x \\ \vdots \\ A_k x \end{array}\right] 
 \mapsto Q(\widetilde\transfer (\x)) =\left[ \begin{array}{c} Q(\widetilde\transfer_1 (\x)) \\ \vdots \\ Q(\widetilde\transfer_k (\x)) \end{array}\right] \mapsto f(Q(\widetilde\transfer (\x)))=: g(\x).%\label{eq:quant_framework}
 \end{equation}
