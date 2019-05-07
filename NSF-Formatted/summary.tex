@@ -72,22 +72,24 @@
 
 \begin{document}
 \section{Overview}
-Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
+Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
 
 With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves.  It proposes a data-processing framework for sensor networks. Each sensor uses {\em
   statistical learning} to model it's environment. It communicates
 with neighboring sensors in order to know their models and to
 calibrate parameters such as relative location. After an initial
 training period, the network can distinguish normal from abnormal
-behaviour. Based on that ability, it will transmit to the other
-sensors only a {\em sketch} which captures the novel, or
-salient aspect of the signals. This framework promises much lower energy and bandwidth
-consumption than current sensor networks. To realize this potential we
-plan to develop new new mathematical models, signal processing methods
-and distributed algorithms for computing and combining sketches.
+behaviour. Based on that ability, a sensor will transmit to the other
+sensors only a {\em sketch} which captures  novel, or
+salient aspect of the data. This framework promises much lower energy and bandwidth
+consumption than current sensor networks. 
 
 \section{Intellectual Merit}
- We capitalize on the observation that often, the task for which these sensor networks are deployed does not require all of them to communicate, nor does it require them to communicate all their data. Thus, we will propose new techniques for designing the geometry of sensor networks, to maximize their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from \rayan{Piya/Peter: Please edit, and/or insert some relevant areas of research here}. We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform statistical tasks including, for example, change-point detection and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning.     
+ To realize this potential we
+plan to develop new  mathematical models, signal processing methods
+and distributed algorithms for computing and combining sketches.
+%We capitalize on the observation that often, the task for which these sensor networks are deployed does not require all of them to communicate, nor does it require them to communicate all their data. 
+We will develop new techniques for designing the geometry of sensor networks, to maximize their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from \rayan{Piya/Peter: Please edit, and/or insert some relevant areas of research here}. We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform statistical tasks including, for example, change-point detection and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning.     
 
 
 
@@ -143,32 +145,10 @@ and distributed algorithms for computing and combining sketches.
 
 
 \section{Broader Impacts}
-\subsection*{Societal benefits: practical applications}
-Sensors and sensor networks have been at the forefront of the growth of high dimensional data collection, affecting a number of applications such as
-retail, manufacturing, security and medicine. These networks
-collect vast amounts of raw data, however most of the data collected may not be relevant to the
-task of the system as a whole.  Many of these systems also face strict constraints on the power and bandwidth available to each sensor.
-Sensors are expected to operate for years on a small battery or by
-foraging energy from the environment. Similarly, they are limited by 
-bandwidth, range and energy consumption of wireless communication
-protocols, which greatly limit the data-rate sent in an out of each
-sensor.  Our proposed work will enable a new generation of sensor networks that are capable of operating in a task specific manor, which can have impact in a large number of application fields and scientific disciplines.
-\subsection*{Cross disciplinary collaboration}
-The PIs all have a history of cross disciplinary collaboration, not only across the HDR TRIPODS disciplines but also with neuro-scientists, geoscientists, medical doctors, \rayan{All: insert your stuff here please}. NSF support for this project will allow the PIs to develop new cross-disciplinary collaborations, particularly with researchers in the areas of embedded computers, robotics, and medical sensing. Indeed, practitioners from these areas are likeliest to adapt and apply the results of the proposed research. So, we plan to actively foster collaborations with them, in anticipation of joining forces for phase II of HDR TRIPODS. To that end, we will greatly benefit from the new Halicioglu Data Science Institute (HDSI) at UCSD, which boasts several world class researchers (\rayan{Yoav, Peter, Piya, any particular names we should throw in here?} in those areas among its affiliated members. 
-\subsection*{Teaching and mentorship}
-{\bf Mentorship} In addition to the proposed scientific content, a main goal of this proposal is to recruit and train highly qualified personnel for the workforce of tomorrow. Exploiting the fact that our team members are all UCSD faculty with affiliations to HDSI, we will recruit and advise graduate and post-graduate students as a
-group. We will actively recruit students who have a strong
-mathematical background and are able and willing to implement
-algorithms as reusable code. \emph{Equally importantly, we will actively seek out students from underrepresented groups in STEM.}
-
-{\bf Teaching} In addition,  HDSI which is a new institute at UCSD, houses an undergraduate program in data science with both major and minor degrees awarded.  It is also encouraging the development of graduate classes focusing on data science, in several departments (including Computer Science, Electrical Engineering, and Mathematics). The PIs will thus develop undergraduate and graduate courses on mathematical and computational aspects of data science, with the graduate ones based in part on several topics courses
-they have already taught. This will help ease the entry of UCSD  students into the field. The
-results of the proposed research will be incorporated into these courses. 
-
-{\bf Mentorship in collaboration with industry} HDSI is piloting a program whereby undergraduates pursuing data science degrees work on projects proposed and partially funded by industry, under the supervision of an HDSI faculty member. With the help of HDSI, we will seek out such collaborators in industry, in areas related to the work proposed herein and use the opportunity for undergraduate mentorship. Here again we will recruit strong undergraduates with a particular focus on underrepresented groups in STEM.
-
-\subsection*{Disseminating knowledge}
-Once again capitalizing on the unique opportunities and resources provided to us by HDSI, we will (in addition to the usual conference and workshop participation) ourselves organize a workshop at UCSD for leading data scientists from across the HDR TRIPODS disciplines. In addition to presenting their (and our) work, the workshop will actively encourage collaborations among its participants by hosting several open-problem sessions.
+By proposing a practical, provably efficient  framework for the design of sensor networks and their communication protocols, the proposed work will enable a new generation of sensor networks. We anticipate that this will have impact in a large number of application fields and scientific disciplines. Thus, in collaboration with practitioners in areas such as embedded computers, robotics, and medical sensing, the results of this research will be applied and refined for practical use. 
+Moreover, a main goal of this proposal is to recruit and train highly qualified personnel for the workforce of tomorrow. We will jointly recruit and advise graduate and post-graduate students, and actively seek students from underrepresented groups in STEM. We will develop undergraduate and graduate courses on mathematical and computational aspects of data science, and incorporate the
+results of the proposed research into these courses. We will also seek out collaborators in industry, in areas related to the work proposed herein and use the opportunity for undergraduate internships and mentorship. Here again we will recruit strong undergraduates with a particular focus on underrepresented groups in STEM.
+To help broadly disseminate our results, and to seed new collaborations in the data-science community, we will organize a workshop at UCSD for leading data scientists from across the HDR TRIPODS disciplines. 
 
 \end{document}
 
