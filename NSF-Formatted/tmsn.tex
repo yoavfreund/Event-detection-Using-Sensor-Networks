@@ -35,7 +35,7 @@ The central location also has the predictive model, which is updated from time t
 In normal operation the camera compares it's observations to the model. If traffic behaviour is as predicted, the camera sends no information to the center. On the other hand, unpredicted behaviour such as a speeding car or an accident will cause the camera to send information to the center, potentially with additional high resolution camera footage.
 
 Estimating whether the distribution of a sequential signal normal is usually based on a "sliding window" technique. Such techniques require choosing the size of the window, which in turn depends on the distribution of the signals.
-One way out of this infinite regress is to use a statistical technique developed by Abraham Wald~\cite{wald} 
+One way out of this infinite regress is to use a statistical technique developed by Abraham Wald~\cite{wald1973} 
 called {\em sequential analysis}. In~\cite{TMSN} we demonstrate how to use sequential analysis in this way.
 
 TMSN can be used in the learning process itself. In particular, if the sensors are using boosting~\cite{boostingbook} then TMSN allows for a new distributed boosting approach. In this approach~\cite{fastboost} different sensor/learners search for 
