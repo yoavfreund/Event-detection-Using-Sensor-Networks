@@ -1,7 +1,8 @@
 \section{Passive Narrow-band Multi-Target Localization With Distributed Sensors (Piya)}
+\label{sec:design}
 \yoav{How is this problem different from the problem of finding the
   best placement for the sensors in order to maximize the accuracy of
-  localization, ignoring communication bendwidth? }
+  localization, ignoring communication bandwidth? }
   \piya{Majority of existing sensor selection problems (based on submodular optimization, or solving subset selection problem subject to maximum tolerable error bounds) utilize a linear model, where the measurements are {\em linear functions} of the quantity of interest. Target localization is inherently non-linear since the information is contained in phase. Moreover, these algorithms do not give theoretical guarantee on the minimum number of required sensors.}
 
 With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
@@ -81,7 +82,7 @@ A second interesting aspect of 2D GNS is that it lends itself to a hierarchical 
 \subsection{Localizing weak sources with graph signal processing}
 \yoav{I think this section can be combined with Piya's
   sections. Choosing which pairs should communicate is clearly related
-  to their geometric layout.} {\bf Peter: That is fine.}
+  to their geometric layout.} \peter{ That is fine. Seems that it is already a subsection}
 
 A graph signal processing approach was used in Ref \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM $\hat{\bf S}$ at once, i.e., using a fusion center. 
 When the SCM $\hat{\bf S}$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM $\hat{\bf S}$ can then be used to localize the source more precisely.
@@ -94,5 +95,5 @@ Robust signal processing methods\cite{zoubir2018} would entail making the proces
 
 We propose to work on\\
 (1) A scheme for processing locally at each node. \\
-(2) Estimate of the SCM should be robust to outliers\cite{zoubir2018}. Thus we will investigate the processing for empirical influence functions.  Kernelized methods could likely increase the robustness, see Section \ref{sec:KernelBackground}. \alex{Is the sentence true?}\\
+(2) Estimate of the SCM should be robust to outliers\cite{zoubir2018}. Thus we will investigate the processing for empirical influence functions.  %Kernelized methods could likely increase the robustness, see Section \ref{sec:KernelBackground}. \alex{Is the sentence true?}\\
 (3) Extract relevant physical signals that can be used in the extraction of environmental parameters $\bf E$.

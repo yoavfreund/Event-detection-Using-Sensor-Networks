@@ -1,4 +1,5 @@
 \section{Quantized Sketches of Complex Signals}
+\label{sec:QuantSketch}
 %\section{Fast binary embeddings and  statistics on binary sketches}
 %\rayan{under construction - need a better title!}
 %\yoav{How about this one?}
@@ -327,7 +328,7 @@ There exists a mean embedding approach to change point analysis \cite{harchaoui2
 \item Multiple Sensor Common Factor Identification: 
 %A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  
 Under a linear model, algorithms such as Canonical Correlation Analysis \cite{hardoon2004canonical} act on multiple streams of simultaneously collected data $\dsignal_i(t)$ to filter noise and recover highly correlated linear projections from two the data sets.
-Recently, a kernel CCA technique called alternating diffusion \cite{lederman2018learning} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and two nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$, and samples $\transfer((x_i,z_i^{(1)}, z_i^{(2)}))$ for $(x_i,z_i^{(1)}, z_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  Due to sensor location or modality, sensor 1 collects data points $Y_1 = transfer_1((x_i,z_i^{(1)}, \xi))$ and sensor 2 collecting data points $Y_2 = \transfer_2((x_i,\zeta,z_i^{(2)}))$.  Then roughly speaking, for some assumptions on $\transfer$ and for $K_i: Y_i\times Y_i \rightarrow \mathbb{R}$,
+Recently, a kernel CCA technique called alternating diffusion \cite{lederman2018learning} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and two nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$, and samples $\transfer((x_i,z_i^{(1)}, z_i^{(2)}))$ for $(x_i,z_i^{(1)}, z_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  Due to sensor location or modality, sensor 1 collects data points $Y_1 = \transfer_1((x_i,z_i^{(1)}, \xi))$ and sensor 2 collecting data points $Y_2 = \transfer_2((x_i,\zeta,z_i^{(2)}))$.  Then roughly speaking, for some assumptions on $\transfer$ and for $K_i: Y_i\times Y_i \rightarrow \mathbb{R}$,
 %and $K_2:Y_2\times Y_2 \rightarrow \mathbb{R}$, 
 Talmon and Wu \cite{talmon2018latent} proved $(K_1 K_2)^t$ is the diffusion kernel on $\mathcal{M}$ only.   This is a very beneficial feature, as it means that one can compute kernel statistics for distributions defined on $\mathcal{M}$ only, independent of the nuisance features that may differ between sensors due only to modality or location.
 

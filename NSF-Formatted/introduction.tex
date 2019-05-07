@@ -24,7 +24,13 @@ area. Computing this high level representation will usually require
 much less information from each sensors than a compressed version of
 the raw signal.
 
+\section{Intellectual Merit}
+
+
 We propose a novel approach we call {\em Learning Sensor Networks}.
+
+\rayan{Need to change depending on the name we settle on!}
+
 This approach assumes that sensors are placed at fixed locations and
 remain there for a significant length of time.  Each sensor uses {\em
   statistical learning} to model it's environment. It communicates
@@ -33,12 +39,13 @@ calibrate parameters such as relative location. After an initial
 training period, which might last minutes, days or months depending on
 the context, the network can distinguish normal from abnormal
 behaviour. Based on that ability, it will transmit to the other
-sensors only a {\em sketch}~\cite{} which captures the novel, or
+sensors only a {\em sketch} (see Section \ref{sec:quant}) which captures the novel, or
 salient aspect of the signals.
 
 Learning sensor networks promise much lower energy and bandwidth
 consumption than current sensor networks. To realize this potential we
 plan to develop new new mathematical models, signal processing methods
-and distributed algorithms for computing and combining sketches.
-
+and distributed algorithms for computing and combining sketches. Indeed, much of the remainder of the proposal is dedicated to expanding on its intellectual merits, focused on solving some of the challenges that sensor networks present.
+Thus, in Section \ref{sec:Framework} we develop our overarching notational framework and describe some motivating applications.  Section \ref{sec:design} focuses on problems arising in the design and geometry of sensor networks. We anticipate that our work in this direction will develop and use methods from signal processing as well as algebraic results from mathematics \rayan{Piya: Please edit this monstrosity I created :) and expand on it}. \rayan{Peter: Ditto please add your stuff}
+Section \ref{sec:QuantSketch} focuses on developing theory and algorithms for embedding large data-sets collected at the sensors into a much lower dimensional binary cube. The objective is for this compressed binary sketch to contain sufficient information to perform a statistical task of interest. To that end, this work will devise and use methods from applied and computational harmonic analysis, high dimensional geometry and probability, as well as (Kernel) statistics.\rayan{Yoav: Please add your stuff} 
 
