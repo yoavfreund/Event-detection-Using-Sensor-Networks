@@ -1,10 +1,10 @@
-\section{Tell me something new}
+\section{Tell me something new}\label{sec:TMSN}
 
 Consider a video system for monitoring a highway. Lets say that the
 highway is 100 miles long and that we have a 5 cameras per mile,
 i.e. 500 cameras. Each camera generates a large raw data stream, on
-the order of 100MB per second. Using video compression this stream can
-be brought down to XXMB/sec. Totalling XXXMB/sec. A common approach
+the order of 1Gbit per second. Using video compression this stream can
+be brought down to 1-10Mbit/sec. Totalling .5-5Gbit/sec. A common approach
 is to send all of this data to a centralized site where a team of
 analysts monitor it to identify accidents, road hazards etc.
 
@@ -13,14 +13,11 @@ Several issues should be noted:
 \item A high bandwidth channel is needed to transmit the information
   to the center. If this channel is wireless, this transmission will
   be costly in terms of energy and available bandwidth.
-\item Manually monitoring 500 video channels a significant task for
-  the analysts. AI methods can be used to aid in that task, our goal
-  is to perform this AI on the camera, rather than in the centralized
-  site.
-\item Under normal conditions, highway traffic is highly
-  predictable. Only unpredictable situations such as an accident, an
-  object on the road or a speeding car warrant the transmission of
-  high-resolution images.
+\item Manually monitoring 500 video channels is a very labor intensive task. 
+\item Highway traffic is, for the most part, highly
+  predictable. Analyst are, for the most part, have no interest in normal traffic. 
+  They need to be alerted to {\em abnormalities} such as an accident, a hazardous 
+  object on the road or a speeding car.
 \end{itemize}
 
 We propose a general framework for designing sensor networks for
@@ -30,46 +27,16 @@ to the center only when it estimates that this information is
 significantly different than what the center will predict without the
 information.
 
-Let $\estate_1(t),\estate_2(t)$ be the estimates of the target
-location for each sensor. {\em In addition, each sensor maintains an
-  estimate of the estimate of the other sensor.}
-$\estate_{1,2}(t),\estate_{2,1}$. Each sensor updates it's estimate of
-the velocity of the location of the target according to the signal it
-measures, but it does not update it's estimate of the other's
-estimate.  If the two estimate are close to each other $\estate_i(t)
-\approx \estate_{i,j}(t)$ then sensor $i$ sends no information to
-sensor $j$. On the other hand, if $\estate_i(t)$ is far from
-$\estate_{i,j}(t)$, then $\estate_{i}$ is transmitted from sensor $i$
-to sensor $j$. Thus if the target is moving in constant speed,
-uninterrupted, there is not communication between the sensors.
+We assume that the cameras are placed at locations and orientations that are fixed for years.
+Each camera learns, over time, a predictive model of the traffic on the small segment of 
+highway that it observes. Inputs to this model might include time of day, day of week, and day of year, visibility, snow, rain etc. Outputs might include the distributions of car speed in each lane, and number of cars per minute.
+The central location also has the predictive model, which is updated from time to time to reflect long term changes. 
 
-The basic idea here is that a sensor sends out information only if
-that information cannot be predicted by the receiver. Similar ideas
-have been used in arithmetic coding and \yoav{I think} in
-$\Sigma\Delta$ encoding.
+In normal operation the camera compares it's observations to the model. If traffic behaviour is as predicted, the camera sends no information to the center. On the other hand, unpredicted behaviour such as a speeding car or an accident will cause the camera to send information to the center, potentially with additional high resolution camera footage.
 
-Recently, PI Freund~\cite{TMSN} proposed an asynchronous computation
-model called ``Tell Me Something New'' in which each agent broadcasts
-a message only when the estimate it computes differs from the existing
-estimates in a statistically significant way.
+Estimating whether the distribution of a sequential signal normal is usually based on a "sliding window" technique. Such techniques require choosing the size of the window, which in turn depends on the distribution of the signals.
+One way out of this infinite regress is to use a statistical technique developed by Abraham Wald~\cite{wald1973} 
+called {\em sequential analysis}. In~\cite{TMSN} we demonstrate how to use sequential analysis in this way.
 
- One important application of sensor networks is to monitor activity
- and identify anomalies. Examples include: building security systems,
- factory floors, highway monitoring, health monitoring for the sick or
- elderly and many others.
-
- On its face, this might seem like an under-constrained impossible
- problem. However, note that for all of the environments listed above
- there is a highly repetitive pattern from day to day and from week to
- week. Add to that the sensors are stationary, and one would expect
- that most sensors observe highly regular and highly predictable
- patterns.
- 
- The approach we propose in this case is that each sensor creates a
- model of the characteristics of the signals that it observes during
- normal operations. It alerts neighboring sensors if it observes
- something that is abnormal, i.e. a signal that has very low
- probability according to the model. When several sensors send an
- alert with a short time window, and when the alerts are consistent
- with each other, a global alert is sent to the human operators.
-
+TMSN can be used in the learning process itself. In particular, if the sensors are using boosting~\cite{boostingbook} then TMSN allows for a new distributed boosting approach. In this approach~\cite{fastboost} different sensor/learners search for 
+improvements in the form of weak rule. If a rule is found that is significantly better than random guessing, it is broadcast to the other sensors. The other sensors test the new rule on their own data and, if they observe a significant advantage, add the weak rule to their own strong rule. This defines a robust asynchronous distributed learning which is currently under development.

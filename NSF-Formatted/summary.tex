@@ -1,0 +1,171 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{color}
+
+\usepackage{textcomp}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{verbatim}
+%\usepackage[noend]{algorithm2e}
+
+%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{calc}
+\usepackage{float}
+
+\usepackage{url}
+
+% For generating custom lists (similar to table of contents, list of figures
+% etc.)
+\usepackage[subfigure]{tocloft}
+
+\usepackage{hyperref}
+\usepackage[all]{hypcap}
+\usepackage{latexsym}
+
+\usepackage{enumitem}
+
+% Remove spacing around section headings
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{*0}{*0}
+\titlespacing{\subsection}{0pt}{*0}{*0}
+\titlespacing{\subsubsection}{0pt}{*0}{*0}
+
+%\usepackage[left=1.05in,right=1.05in,top=1in,bottom=1in]{geometry}
+
+% tweak or comment out the baselinestretch to control how much space for hand-writing comments you get between the lines
+%\renewcommand{\baselinestretch}{1.8}
+
+% Compress whitespace around itemize and enumerate
+\setitemize{topsep=.0em,parsep=0pt,partopsep=0pt,labelsep=0.2em,itemsep=0pt,leftmargin=0.5em}
+\setenumerate{topsep=.0em,parsep=0pt,partopsep=0pt,labelsep=0.2em,itemsep=0pt,leftmargin=0.5em}
+
+% Remove paragraph indentation
+\setlength{\parindent}{0pt}
+
+% Remove paragraph spacing
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
+
+% Decrease the line spread slightly
+\linespread{1.02}
+
+
+\DefineVerbatimEnvironment%
+{tree}{Verbatim}{frame=single,fontsize=\scriptsize}
+
+\DefineVerbatimEnvironment%
+{treeNumber}{Verbatim}{frame=single,numbers=left,fontsize=\scriptsize}
+\title{Project Summary} 
+
+\input{macros}
+
+\begin{document}
+\section{Overview}
+Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
+
+With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves.  It proposes a data-processing framework for sensor networks. Each sensor uses {\em
+  statistical learning} to model it's environment. It communicates
+with neighboring sensors in order to know their models and to
+calibrate parameters such as relative location. After an initial
+training period, the network can distinguish normal from abnormal
+behaviour. Based on that ability, a sensor will transmit to the other
+sensors only a {\em sketch} which captures  novel, or
+salient aspect of the data. This framework promises much lower energy and bandwidth
+consumption than current sensor networks. 
+
+\section{Intellectual Merit}
+ To realize the potential of this framework, 
+ our approach is comprehensive. We will study the design of the network itself, devise algorithms for minimizing the number of nodes that need to communicate, as well as algorithms for minimizing the amount of data that each node communicates. 
+% We plan to develop new  mathematical models, signal processing methods
+%and distributed algorithms for computing and combining compressive data sketches. 
+%We capitalize on the observation that often, the task for which these sensor networks are deployed does not require all of them to communicate, nor does it require them to communicate all their data. 
+Thus, we will develop new techniques for designing the geometry of sensor networks in a way that maximizes their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from Sparse linear arrays such as co-prime and nested arrays.
+We will use the array to localize and identify weak sounds and extract information about the environment. 
+%\rayan{Piya/Peter: Please edit, and/or insert some relevant areas of research here}. 
+%\peter{done.}
+
+We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform various statistical tasks including, for example, change-point detection, correlation analysis, and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning.   
+%\rayan{To do: Insert Yoav's stuff here and streamline.}
+%\rayan{I'm running out of steam for this section, perhaps someone can take over from here?}
+
+
+
+
+
+
+\iffalse The fact that humans have {\em two} eyes and {\em two} ears has clear
+benefits. Our two eyes provide us with depth perception. Our two ears
+allow us to detect the direction from which a sound is coming.
+
+The same holds for artificial sensors. Multiple sensors with
+overlapping receptive fields can produce better representations of the
+environment. However, to produce such representations, the data
+streams generated by the sensors need to be compared and combined. One
+approach is to send all of the signal to a center and use a single
+computer to combined them. This approach requires high bandwidth
+communication and powerful computers and does not scale well to
+networks with hundreds or thousands of sensors.
+
+An alternative is {\em pushing computation to the edge}. Instead of
+performing all of the computation on a central machine, each sensor
+has some computing power which it uses to perform some of the
+computation and reduce the amount of information that needs to be
+sent. This reduction is not compression as we are not asking for a
+reconstruction of the original signal. Instead what we want to produce
+is a high-level representation of the environment. For example, the
+location of an object, or a count of the people in a particular
+area. Computing this high level representation will usually require
+much less information from each sensors than a compressed version of
+the raw signal.
+
+We propose a novel approach we call {\em Learning Sensor Networks}.
+This approach assumes that sensors are placed at fixed locations and
+remain there for a significant length of time.  Each sensor uses {\em
+  statistical learning} to model it's environment. It communicates
+with neighboring sensors in order to know their models and to
+calibrate parameters such as relative location. After an initial
+training period, which might last minutes, days or months depending on
+the context, the network can distinguish normal from abnormal
+behaviour. Based on that ability, it will transmit to the other
+sensors only a {\em sketch}~\cite{rahimi2008random} which captures the novel, or
+salient aspect of the signals.
+
+Learning sensor networks promise much lower energy and bandwidth
+consumption than current sensor networks. To realize this potential we
+plan to develop new new mathematical models, signal processing methods
+and distributed algorithms for computing and combining sketches.
+\fi
+
+%section{Intellectual Merit}
+%\alex{Waiting to update after updated in description document.}
+
+
+\section{Broader Impacts}
+By proposing a practical, provably efficient  framework for the design of sensor networks and their communication protocols, the proposed work will enable a new generation of sensor networks. We anticipate that this will have impact in a large number of application fields and scientific disciplines. Thus, in collaboration with practitioners in areas such as embedded computers, robotics, and medical sensing, the results of this research will be applied and refined for practical use. 
+Moreover, a main goal of this proposal is to recruit and train highly qualified interdisciplinary personnel for the workforce of tomorrow. We will jointly recruit and advise graduate and post-graduate students, and actively seek students from underrepresented groups in STEM. We will develop undergraduate and graduate courses on mathematical and computational aspects of data science, and incorporate the
+results of the proposed research into these courses. We will also seek out collaborators in industry, in areas related to the work proposed herein and use the opportunity for undergraduate internships and mentorship. Here again we will recruit strong undergraduates with a particular focus on underrepresented groups in STEM.
+To help broadly disseminate our results, and to seed new collaborations in the data-science community, we will organize a workshop at UCSD for leading data scientists from across the HDR TRIPODS disciplines. 
+
+\end{document}
+
+% Collaboration and Evaluation Plan as a separate Supplementary Document
+% (limited to 5 pages). This plan must describe the expertise in the
+% relevant disciplines provided by the PIs as required above under "Who
+% May Serve as PI" as well as plans for working together to meet the
+% goals of the program. The Collaboration and Evaluation Plan must also
+% describe clear measures of success for the project, including
+% developing capability and capacity for a potential Phase II, and a
+% plan for evaluating success. Proposals without this document will be
+% returned without review.
+

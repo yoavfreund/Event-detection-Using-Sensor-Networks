@@ -66,12 +66,15 @@
 
 \DefineVerbatimEnvironment%
 {treeNumber}{Verbatim}{frame=single,numbers=left,fontsize=\scriptsize}
-\title{Collaboration and Evaluation} 
-
+%\title{Collaboration and Evaluation} 
+%\maketitle
 \input{macros}
 
 \begin{document}
-Our team consists of University of California San Diego (UCSD) faculty members from the departments of Computer Science (Yoav Freund), Electrical Engineering (Piya Pal, Peter Gerstoft), and Mathematics (Alex Cloninger, Rayan Saab), directly representing three of the four communities of HDR TRIPODS.  Additionally, all members of the team are founding members of UCSD's Halicioglu Data Science Institute (HDSI), a new academic unit at UCSD with a focused mission. Its mission, one that it shares to a large extent with HDR TRIPODS, is to lay the groundwork for the scientific foundations of this emerging discipline, develop new methods and infrastructure, and train students, faculty and industrial partners to use data science in ways that will allow them to solve some of the world’s most pressing problems \cite{the HDSI website}. 
+\section{Collaboration and Evaluation}
+\vspace{1cm}
+
+Our team consists of University of California San Diego (UCSD) faculty members from the departments of Computer Science and Engineering (Yoav Freund), Electrical and Computer Engineering (Piya Pal, Peter Gerstoft), and Mathematics (Alex Cloninger, Rayan Saab), directly representing three of the four communities of HDR TRIPODS.  Additionally, all team members are founding members of UCSD's Halicioglu Data Science Institute (HDSI), a new academic unit at UCSD with a focused mission. Its mission, one that it shares to a large extent with HDR TRIPODS, is to lay the groundwork for the scientific foundations of this emerging discipline, develop new methods and infrastructure, and train students, faculty and industrial partners to use data science in ways that will allow them to solve some of the world’s most pressing problems \url{https://datascience.ucsd.edu/}{ the HDSI website}. 
 
 Having all our team members located on the same campus and regularly interacting through HDSI will greatly enhance our ability to collaborate closely on the proposed projects. In addition to the direct and frequent interaction of the faculty members involved in this proposal, with the NSF's support, we intend to jointly supervise PhD students and to co-mentor a postdoctoral fellow. 
 
@@ -79,16 +82,13 @@ Additionally, we note that our team includes theoreticians who also have a deep 
 
 In what follows, we will describe our expertise, plans for advising joint students, for collaborating, as well as for evaluating the results of our work.  
  
+ \vspace{1cm}
 \section{Expertise}
-
-%The members of our team are: Computer Science: Yoav Freund,
-%Electrical engineering: Piya Pal and Peter Gerstoft.
-%Mathematics: Rayan Saab and Alex Cloninger.
 
 \begin{itemize}
 \item {\bf PI Freund's} expertise is in Computational Learning Theory,
   and statistics. Among his theoretical work are Boosting~\cite{},
-  statistical analysis of the generalization error for ensamble
+  statistical analysis of the generalization error for ensemble
   classifiers~\cite{}, online learning~\cite{}, learning and game
   theory~\cite{} unsupervised learning algorithm~\cite{}.  In
   addition, PI Freund has worked on applications of machine learning
@@ -105,123 +105,159 @@ In what follows, we will describe our expertise, plans for advising joint studen
   and measuring distances between probability distributions.
   % Alex has worked with a number of collaborators in scientific disciplines outside math on data intensive problems, including collaborations with researchers at National Institutes of Health and National Geospatial Administration, and economics , physics, and medical departments at various universities.
 
-\item {\bf Co-PI Gerstoft's} focus on data-driven computational geophysics and within these fields I further cover the subtopics: applied signal processing, inverse methods, mathematical models, extracting information from noise, and machine learning. I currently focus on developing new sensing techniques using large array sensor data. Data science methods (big data/machine learning) and compressive sensing is a main focus for sensing the physical environment.  These techniques are applied to observing tsunamis, earthquakes, traffic, Antarctic signals, as well as extracting environmental information from just noise. 
-\item {\bf Co-PI Pal's} expertise... \yoav{please add yourself}
+\item {\bf Co-PI Gerstoft's} focus on data-driven computational geophysics and within these fields I further cover the subtopics: applied statistical signal processing, inverse methods \cite{gerstoft1994}, mathematical models, extracting information from noise \cite{sabra2005,gerstoft2006}, and machine learning\cite{niu2017source,kong2018}. I currently focus on developing new sensing techniques using large array sensor data. Data science methods (big data/machine learning) and compressive sensing\cite{XenakiCS:2014,Gerstoft2015} is a main focus for sensing the physical environment.  These techniques are applied to observing tsunamis, earthquakes, traffic, Antarctic signals, as well as extracting environmental information from just noise. 
+\item {\bf Co-PI Pal's}  primary research interests are high dimensional statistical signal processing and big data analysis, energy-efficient sensing, high resolution imaging, and optimization techniques for solving inverse problems in signal processing with applications in radar and sonar signal processing, biomedical and molecular imaging, and machine learning. More specifically, I focus on developing new energy-efficient sampling and sensing techniques for acquiring and processing high dimensional signals, and understanding their fundamental performance limits. 
 \item {\bf Co-PI Saab's} expertise is in applied and computational harmonic analysis, and in mathematical signal processing. He is interested in, and has published extensively on questions regarding efficient acquisition, quantization, representation, and processing of data. He has studied these problems in classical contexts, such as those of band limited functions, but also in modern contexts, such as compressed sensing of structured signals, be they sparse vectors, low-rank matrices, or signals from arbitrary sets. He has also worked on signal and data processing problems related to multiple sensors, including the blind source separation problem. In his work, Saab uses and develops a variety of tools from high dimensional probability theory, applied harmonic analysis, convex analysis and optimization, and quantization theory, among others. 
 \end{itemize}
+\vspace{1cm}
 
 \section{Collaboration Plan}
+% \iffalse
 
-{\bf Joint Students}\\
-\rayan{Shouldn't we mention the postdoc here or elsewhere?}  In
-addition to its focus on the proposed scientific content, a main goal
-of this proposal is to recruit and train highly qualified personnel
-for the workforce of tomorrow. Exploiting the fact that our team
-members are all UCSD faculty with affiliations to HDSI, we will
-recruit and advise graduate and post-graduate students as a group. We
-will actively recruit students who have a strong mathematical
-background and are able and willing to implement algorithms as
-reusable code. Equally importantly, we will actively seek out students
-from underrepresented groups in STEM.
 
-Each student will have two advisors, from two of the three
-disciplines, who will work closely with the student. From a training
-point of view, this will help the student gain a broader perspective
-on data science as a field while acquiring an in-depth understanding
-of tools and methods from more than one area. From a collaboration
-point of view, joint advising will provide one of the mechanisms by
-which our team members will work together.
+% {\bf Joint Students and Post Doc}\\
+%  In
+% addition to its focus on the proposed scientific content, a main goal
+% of this proposal is to recruit and train highly qualified personnel
+% for the workforce of tomorrow. Exploiting the fact that our team
+% members are all UCSD faculty with affiliations to HDSI, we will
+% recruit and advise four graduate students and one post-graduate student as a group. We
+% will actively recruit students who have a strong mathematical
+% background and are able and willing to implement algorithms as
+% reusable code. Equally importantly, we will actively seek out students
+% from underrepresented groups in STEM.
 
-{\bf Collaboration}\\ \rayan{see if you like these edits.}  Each
-graduate student will have a one hour meeting with each of their their
-advisors each week. The student and both advisors will also have
-regular bi-weekly meetings to assess progress and ensure continuing
-synergy on each project.  In addition, we will have a one and a half
-hour weekly group meeting, where each meeting will include all PIs and
-students, and where one of the students or PIs will present to the
-others.
+% Each student will have two advisors, from two of the three
+% disciplines, who will work closely with the student. From a training
+% point of view, this will help the student gain a broader perspective
+% on data science as a field while acquiring an in-depth understanding
+% of tools and methods from more than one area. From a collaboration
+% point of view, joint advising will provide one of the mechanisms by
+% which our team members will work together.
 
+% The Post Doc will assist PI Freund in keeping track of all activities and work with each of the four PIs on a per need base as well as connected with some of the graduate students. We will make sure that post Doc is actively involved in the project.\hfill
+% \fi
+% \rayan{Peter, there was repetition here so I just kept one of the two repeated entities, and edited a little. Feel free to make changes but note the previous duplication. Have to go back to teaching now.}\peter{Thanks. This must be a error from github}
+
+%
+%{\bf Collaboration}\\  Each
+% graduate student will have a one hour meeting with each of their their
+% advisors each week. The student and both advisors will also have
+% regular bi-weekly meetings to assess progress and ensure continuing
+% synergy on each project.  In addition, we will have a one and a half
+% hour weekly group meeting, where each meeting will include all PIs and
+% students, and where one of the students or PIs will present to the
+% others.
+%
 %\rayan{not sure about this one, get rid of it if you don't like it}
-Finally, we will have annual retreats where all the team members meet
-in order to discuss our progress and plan our work in the coming year.
-
-\yoav{other version}\\
-\rayan{Shouldn't we mention the postdoc here or elsewhere?}
+%Finally, we will have annual retreats where all the team members meet in order to discuss our progress and plan our work in the coming year.
+%\\
+%\\
+\smallskip
+{\bf Joint Students and Postdoctoral Scholar}\\
+%\rayan{Shouldn't we mention the postdoc here or elsewhere?}
 In addition to its focus on the proposed scientific content, a main goal of this proposal is to recruit and train highly qualified personnel for the workforce of tomorrow. Exploiting the fact that our team members are all UCSD faculty with affiliations to HDSI, we will recruit and advise graduate and post-graduate students as a
 group. We will actively recruit students who have a strong
 mathematical background and are able and willing to implement
 algorithms as reusable code. Equally importantly, we will actively seek out students from underrepresented groups in STEM. 
 
-Each student will have two advisors, from two of the three disciplines, who will work closely with the student. From a training point of view, this will help the student gain a broader perspective on data science as a field while acquiring an in-depth understanding of tools and methods from more than one area. From a collaboration point of view, joint advising will provide one of the mechanisms by which our team members will work together. 
-
-{\bf Collaboration}\\ \rayan{see if you like these edits.}
-The graduate students will glue our team together and each graduate student will have at least two PI-advisers.  
+The Post Doc will assist PI Freund in keeping track of all activities and work with each of the four PIs on a per need base as well as connect with some of the graduate students. We will make sure that post Doc is actively involved in the project.
+\\
+\\
+\\
+{\bf Collaboration}\\ %\rayan{see if you like these edits.}
+The PIs' close proximity by virtue of their affiliation to UCSD and HDSI will facilitate collaboration through regular meetings. Furthermore, the graduate students will glue our team together and each graduate student will have at least two PI-advisers.  
 Each graduate student will have a one hour meeting with their
-two advisors each week. The student and both advisors will also have regular bi-weekly meetings to assess progress and ensure continuing synergy on each project.  In addition, we will have a weekly group meeting with all PIs and students, and where one of the students or PIs will present their work. 
+two advisors each week. The student and both advisors will also have regular bi-weekly meetings to assess progress and ensure continuing synergy on each project.  In addition, we will have a weekly group meeting with all PIs, postdoc, and students, and where one of the team members will present their work. 
 
-\rayan{not sure about this one, get rid of it if you don't like it.}
-\peter{OK. Because it is written here does not mean we do it.}
+
+%\rayan{not sure about this one, get rid of it if you don't like it.}
+%\peter{\bf OK. Because it is written here does not mean we do it.}
 Finally, we will have a kick-off retreat and followed by annual retreats where all the team members meet to assess our progress on the proposed work.
-
+\\
+\\
+\\
+{\bf Datasets:}\\
+PI Gerstoft are familiar with all these data sets and will help the other PIs to access the data.
+We will use several benchmarks and datasets to evaluate the algorithm we develop:\\
+(1) We intend to compare our performance on the DCASE challenge dataset\cite{mesaros2017dcase}: Two tasks in acoustics and audio signal processing in the  Detection and Classification of Acoustic Scenes and Events (DCASE) challenge. see \href{http://dcase.community/challenge2019/index}{http://dcase.community/challenge2019/index}
+This is an annual event, so new datasets will be available, See \href{http://dcase.community/challenge2019/index}{http://dcase.community/challenge2019/index} for updates on the 2019 Challenge
+\\
+\\
+(2)
+Closely related to item (1), but giving us better freedom to demonstrate our methods, will we collect audio data in Prof.\ Christiansen's instrumented living
+quarter (at Computer Science at UCSD). We will evaluate out algorithms on the collected data.
+\\
+(3) For seismic data it is now common to use massive sensor data. We have access to the 5000 geophones collected in a 7x10 km area Long Beach over months at a sampling rates of 500 Hz. We have worked on the data in e.g.\ \cite{riahi2017}. One week of the data used takes 2TB of disk space and apart from geophysical studies can be used to monitoring traffic\cite{riahi2015}. Many other data sets are available at the Iris website \href{www.iris.edu}{www.iris.edu}, as NSF requires all seismic data obtained with NSF funding to be uploaded on Iris. This data is frequently used by PI Gerstoft and will share it with the PIs.
+\\
+(4) For electromagnetic data we have access to MIMO array data  capable of taking phase coherent measurements for the determination and characterization of electromagnetic (EM) channels (1--6 GHz). The array aperture is intended to be flexible, with a maximum inter element spacing around 5 wavelengths. The MIMO array consists of an 8 element source array and 50 element receiver array. The array data is available and will be Collected by PI Gerstoft.
+\\
+(5) An extreme data sensor network is available by using an ad-hoc network of cell-phones
+\\
+\\
+{bf Kaggle data challenge}\\
+Forecasting earthquakes is one of the most important problems in Earth science because of their devastating consequences. Kaggle has launched a Change based on earthquake prediction on laboratory experiments {https://www.kaggle.com/c/LANL-Earthquake-Prediction}{https://www.kaggle.com/c/LANL-Earthquake-Prediction}. We envision that we can can combine our method with our own data set for a Kaggle Challenge.  
+\\
+\\
+{\bf Industrial collaboration}
+PIs Gerstoft and Feund collaborate with startup company  Occuspace on
+Predictive model of campus foot traffic. Since August 2017, the UC San Diego Library had been beta testing a program called Waitz that installed occupancy sensors on each floor. Waitz sensors are unique in that they provide occupancy estimates by measuring mobile device signals (similar to bluetooth/wifi beacons). This information was put on the library’s homepage to try to drive student traffic to less occupied areas for study space. 
+\\
+\\
 {\bf Evaluation}\\
-\rayan{not sure what they want here?}
 We plan to submit paper to the following conferences and journals:
-COLT, ICML, AIstat, JMLR, IEEE Signal Processing, IEEE Information
+Science, Nature, COLT, ICML, AIstat, JMLR, IEEE Signal Processing, IEEE Information
 theory, Applied and Computational Harmonic Analysis, Foundations of Computational Mathematics, Information and Inference, SIAM Journal on Mathematics of Data Science, please add.
 
 We Will implement our algorithms in python and jupyter notebooks and
 make them available through GitHUB.
 
-We will use several benchmarks to evaluate the accuracy.
-\yoav{Piya, Peter, can you suggest benchmark data sets?}\\
-We will collect audio data in Prof. Christiansen's intrumented living
-quarter and evaluate out algorithms on the collected data.\rayan{do we need a collaboration letter from Prof. Christiansen?}
-
-We intend to compare our performance with the DCASE challenge: Two tasks in acoustics and audio signal processing that have befitted from DL are sound event detection and source localization. These methods replace physics-based acoustic propagation models or hand-engineered detectors with deep-learning architectures in the 2017 Detection and Classification of Acoustic Scenes and Events (DCASE) challenge.\cite{mesaros2017dcase}
-This is an annual event, so new datasets will be available at a later time.
 
 We will evaluate our performance in terms of:
 \begin{enumerate}
-\item Number of publications and quality of publication venues.
-\item Number of (open source) implementations.
+\item Number and quality of publications.
+\item Number  and quality of (open source) implementations.
 \item Performance of our methods on benchmark data.
 \end{enumerate}
 
-{\bf Institute for Learning Networks}\\
-\yoav{Please suggest names for the institute}
-\peter{Institute for  Sensor Network Data Science}
+\vspace{1cm}
+{\bf Capability and capacity for a potential Phase II}\\
+We suggest to call our phase II institute for {\bf Institute for  Learning Sensor Network}
+All PIs are members of the Haligliou Data Science Institute (HDSI). Thus we have the space and logistic support to form an effective phase II effort.
 
 We plan to join forces with researchers in the areas of embedded
-computers, robotics and medical sensing.
+computers and  robotics for sensor development. Domain science researchers  at both UCSD Scripps Institute of Oceanography and medical sensing will benefit from our developments.
 
-All PIs are members of the Haligliou Data Science Institute (HDSI).
+We collaborate with many researchers nationally and  internationally, both in mathematics/computer science as well as Domain science in acoustics, seismics, and electromagnetics. We expect that establishing this {\bf Institute for  Learning Sensor Network} will increase the collaboration with many researchers visiting the institute.
 
-\bigskip
+\vspace{1cm}
 
-\rayan{Below are ``Additional Solicitation Specific Review Criteria" from the call that I attempted to address above - need help on this!:}
-\begin{itemize}
-    \item Does the proposal describe a well-integrated research and training program focused on the theoretical foundations of data science and fostering collaboration and interaction among the targeted (at least three of the four) communities of HDR TRIPODS?
-    \rayan{not sure about the well-integrated, but I think we hit the second point}
-    \item Does the proposal address the “broad themes of the program” listed in the Program Description?
-    \rayan{I tried to hit a few of these points here, but we NEED to go back and make edits to the proposal to make sure we have decent coverage.}
-    \item Does the proposal address strategies for workforce development, including but not limited to novel educational and training activities and efforts toward full participation of groups underrepresented in science, technology, engineering and mathematics (STEM)? \rayan{We should make explicit mention of these things in the Broader Impacts section. For example, I am currently advising two undergrads on a project with industry (through HDSI). We need to capitalize on such things more, particularly in the context of underrepresented groups. }
-    
-    \item Transdisciplinarity/Synergy: Is the project transdisciplinary, bringing together theories and approaches from at least three of electrical engineering, mathematics, statistics, and theoretical computer science? Is there synergy between the different groups?\rayan{I think this is fine}
-    
-    \item Vision: Is there a strong case for the ability to identify and articulate a vision for the foundations of data science?
-    \rayan{good question}
-    
-    \item Quality and Value of Collaboration: Is the expertise of the PIs complementary and well-suited to the research and training programs developed in this project? Are the specific roles of each collaborating investigator clear? Does the collective team have expertise representing at least three of the four communities (electrical engineering, mathematics, statistics, and theoretical computer science)?\rayan{fine?}
-    
-    \item Is there a well-developed plan for collaboration and interaction with the domain sciences and industry? \rayan{help?}
-    
-    \item Does the proposal provide a clear plan and rationale for an investment of the size proposed, including clear plans to develop capacity for potential future Phase II operations? \rayan{?}
-    
-    \item Does the Collaboration and Evaluation Plan identify clear measures of success, both for Phase I operations and development of capability for a potential Phase II, along with a plan to evaluate the project with respect to those measures by gathering quantitative and qualitative data? \rayan{?}
-    
-    \item Does the Collaboration and Evaluation Plan provide a clear plan for thoughtful, ongoing assessment of all Institute activities? How will the assessment be used to inform and improve both daily Institute operations and long-range planning, aiming toward a successful Phase II Institute? \rayan{?}
+% \bigskip
 
-\end{itemize}
+% \rayan{Below are ``Additional Solicitation Specific Review Criteria" from the call that I attempted to address above - need help on this!:}
+% \begin{itemize}
+%     \item Does the proposal describe a well-integrated research and training program focused on the theoretical foundations of data science and fostering collaboration and interaction among the targeted (at least three of the four) communities of HDR TRIPODS?
+%     \rayan{not sure about the well-integrated, but I think we hit the second point}
+%     \item Does the proposal address the “broad themes of the program” listed in the Program Description?
+%     \rayan{I tried to hit a few of these points here, but we NEED to go back and make edits to the proposal to make sure we have decent coverage.}
+%     \item Does the proposal address strategies for workforce development, including but not limited to novel educational and training activities and efforts toward full participation of groups underrepresented in science, technology, engineering and mathematics (STEM)? \rayan{We should make explicit mention of these things in the Broader Impacts section. For example, I am currently advising two undergrads on a project with industry (through HDSI). We need to capitalize on such things more, particularly in the context of underrepresented groups. }
+    
+%     \item Transdisciplinarity/Synergy: Is the project transdisciplinary, bringing together theories and approaches from at least three of electrical engineering, mathematics, statistics, and theoretical computer science? Is there synergy between the different groups?\rayan{I think this is fine}
+    
+%     \item Vision: Is there a strong case for the ability to identify and articulate a vision for the foundations of data science?
+%     \rayan{good question}
+    
+%     \item Quality and Value of Collaboration: Is the expertise of the PIs complementary and well-suited to the research and training programs developed in this project? Are the specific roles of each collaborating investigator clear? Does the collective team have expertise representing at least three of the four communities (electrical engineering, mathematics, statistics, and theoretical computer science)?\rayan{fine?}
+    
+%     \item Is there a well-developed plan for collaboration and interaction with the domain sciences and industry? \rayan{help?}
+    
+%     \item Does the proposal provide a clear plan and rationale for an investment of the size proposed, including clear plans to develop capacity for potential future Phase II operations? \rayan{?}
+    
+%     \item Does the Collaboration and Evaluation Plan identify clear measures of success, both for Phase I operations and development of capability for a potential Phase II, along with a plan to evaluate the project with respect to those measures by gathering quantitative and qualitative data? \rayan{?}
+    
+%     \item Does the Collaboration and Evaluation Plan provide a clear plan for thoughtful, ongoing assessment of all Institute activities? How will the assessment be used to inform and improve both daily Institute operations and long-range planning, aiming toward a successful Phase II Institute? \rayan{?}
+
+% \end{itemize}
 
 
 
