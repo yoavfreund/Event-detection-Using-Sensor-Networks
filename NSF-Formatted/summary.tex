@@ -73,36 +73,27 @@
 \begin{document}
 \section{Overview}
 Sensors are ubiquitous, they permeate our homes, work, streets, schools and hospitals.
-Miniaturization makes it practical and economical, to put high-resolution cameras and microphones in every device and on every wall, tree and lamppost. These sensors are used in applications as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring. 
+Miniaturization makes it practical and economical to put high-resolution cameras and microphones in every device and on every wall, tree and lamppost. These sensors are used in applications as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring. 
 
 The utility of these sensors is greatly increased if they are combined into {\em sensor networks}. Combining many
-video cameras with partially overlapping fields of view one can reconstruct temporal sequences in three dimensions and from multiple view-points. However, connecting sensors to each other and to electricity with wires is often impractical, which severely limits sensor networks in terms of energy and communication bandwidth. In particular, it is impractical for each sensor to send all of it's raw data to a central {\em fusing} computer.  
+video cameras one can reconstruct temporal sequences in three dimensions and from multiple view-points. However, connecting sensors to each other and to electricity with wires is often impractical. Sensors therefor use solar cells and wireless communication, placing severe limits on energy and communication bandwidth. In particular, it is impractical for each sensor to send all of it's raw data to a central {\em fusing} computer.  
 
-A leading approach to alleviate this problem is to {\em push the computation to the edge of the network}. In other words
-perform computation at the sensor to decrease the amount of data that the sensor sends out. 
-This proposal focuses on pushing data science to the sensors themselves.  We propose 
+A leading approach to alleviate this problem is to {\em push the computation to the edge of the network} in other words, perform much of the computation on the sensor itself. We propose 
 a data-processing and communication framework for sensor networks. Each sensor uses {\em
   statistical learning} to model the slowly varying aspects of it's environment. Communication between sensors is used for two purposes: 
   to compare and update models in neighboring sensors, and to identify {\em correlations} that correspond to common observed short-term events in the environment.
 
-By partitioning the representation to a slowly varying model and fast varying correlations the sensor network masks out uninteresting events, freeing bandwidth to communicating important transitory events that exhibit themselves as correlations. Such a sensor network, which combines cameras along a busy highway, will be ignore the predictable traffic patterns, but will send back to headquarters a detailed high definition video of the seconds before and after a traffic accident.
+Partitioning the representation into a slowly varying model and a fast varying correlations the sensor network masks out uninteresting events, freeing bandwidth to communicating important transitory events that exhibit themselves as correlations. Such a sensor network, which combines cameras along a busy highway, will be ignore the predictable traffic patterns, but will send back to headquarters a detailed high definition video of the seconds before and after a traffic accident.
 
 \section{Intellectual Merit}
 The need to reduce communication bandwidth is not new. Sophisticated video compression methods such as H264, are used in most digital video cameras. However, the goal of methods is to reconstruct the original sequence of frames, either perfectly (lossless compression) or approximately (lossy compression). The assumption is that the reconstructed video will be viewed by a human who will make the appropriate determinations. Compression is a channel and the ideal channel is one which transmits the original data unchanged.
 
-Our goal in developing {\em learning sensor networks} is different. We see the sensor network not simply as a channel, but as part of the data analysis pipeline. Each sensor builds a model of the data it receives. If the data conforms to the model, then it is considered {\em uninteresting} and therefor is not transmitted.
- 
- To realize the potential of this framework, 
- our approach is comprehensive. We will study the design of the network itself, devise algorithms for minimizing the number of nodes that need to communicate, as well as algorithms for minimizing the amount of data that each node communicates. 
-% We plan to develop new  mathematical models, signal processing methods
-%and distributed algorithms for computing and combining compressive data sketches. 
-%We capitalize on the observation that often, the task for which these sensor networks are deployed does not require all of them to communicate, nor does it require them to communicate all their data. 
-Thus, we will develop new techniques for designing the geometry of sensor networks in a way that maximizes their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from Sparse linear arrays such as co-prime and nested arrays.
-We will use the array to localize and identify weak sounds and extract information about the environment. 
-%\rayan{Piya/Peter: Please edit, and/or insert some relevant areas of research here}. 
-%\peter{done.}
+Our goal in developing {\em learning sensor networks} is different. We see the sensor network not simply as a channel, but as part of the data analysis pipeline. Each sensor builds a model of the data it receives. If the data conforms to the model, then it is considered {\em uninteresting} and therefor is not transmitted, leaving the communication channels available for more important information. Our ultimate model is to develop a mathematical theory of communication which is based on notions of {\em statistical significance}, rather than {\em entropy}. Such a theory might become a new way to understand networks that combine sensors, computation and communication.
 
-We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform various statistical tasks including, for example, change-point detection, correlation analysis, and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning.   
+\iffalse
+Thus, we will develop new techniques for designing the geometry of sensor networks in a way that maximizes their ability to perform their requisite data-processing task while minimizing their communication. For this, we will use and develop methods from Sparse linear arrays such as co-prime and nested arrays.
+We will use the array to localize and identify weak sounds and extract information about the environment. We will use graph theoretic ideas to guide our design and analysis of communication protocols among sensors. We will design and analyze computationally efficient binary sketches that sufficiently summarize the data collected at each sensor. This will allow the sensors to efficiently collaborate to perform various statistical tasks including, for example, change-point detection, correlation analysis, and two-sample tests, using kernel methods. For this, we will use and develop methods in applied harmonic analysis, high dimensional probability, and machine learning. 
+\fi
 %\rayan{To do: Insert Yoav's stuff here and streamline.}
 %\rayan{I'm running out of steam for this section, perhaps someone can take over from here?}
 
@@ -159,7 +150,9 @@ and distributed algorithms for computing and combining sketches.
 
 
 \section{Broader Impacts}
-By proposing a practical, provably efficient  framework for the design of sensor networks and their communication protocols, the proposed work will enable a new generation of sensor networks. We anticipate that this will have impact in a large number of application fields and scientific disciplines. Thus, in collaboration with practitioners in areas such as embedded computers, robotics, and medical sensing, the results of this research will be applied and refined for practical use. 
+A practical, provably efficient theory for sensor networks will inform the systematic development and evaluation of algorithms and communication protocols for sensor networks. 
+The impact of such a theory will be large as distributed communication and computation is currently done ad-hoc and usually leads to designs where the communication bottleneck limits the scaling of the network. We will work in collaboration with practitioners in areas such as embedded computers, robotics, and medical sensing, the results of this research will be applied and refined for practical use. 
+
 Moreover, a main goal of this proposal is to recruit and train highly qualified interdisciplinary personnel for the workforce of tomorrow. We will jointly recruit and advise graduate and post-graduate students, and actively seek students from underrepresented groups in STEM. We will develop undergraduate and graduate courses on mathematical and computational aspects of data science, and incorporate the
 results of the proposed research into these courses. We will also seek out collaborators in industry, in areas related to the work proposed herein and use the opportunity for undergraduate internships and mentorship. Here again we will recruit strong undergraduates with a particular focus on underrepresented groups in STEM.
 To help broadly disseminate our results, and to seed new collaborations in the data-science community, we will organize a workshop at UCSD for leading data scientists from across the HDR TRIPODS disciplines. 
