@@ -33,7 +33,7 @@ We first motivate our sensor selection scheme by reviewing Co-PI Pal's prior wor
 This is provably not possible with uniform geometries, such as a uniform linear array (ULA). Consider the problem of estimating the directions of arrival (DOA) of $K$ far-field sources emitting narrowband plane-waves, using a linear array of $M$ sensors, where the $m$th sensor is located at a distance of $d_m$ (normalized with respect to the wavelength of source signals) from the origin. 
 The sensing geometry and physical laws governing far-field wave propagation propagation together result in the following functional form for the map $\phi(.)$: \[ \phi(\mathbf{d},\theta_i,t) =  e^{j\pi d_m \sin\theta_i}s_i(t)  \]
 %\[ y_m(t) = \sum_{i=1}^K {e^{j\pi d_m \sin\theta_i}s_i(t) + w_m(t) \] 
-where $\theta_i$ is the DOA of the $i$th source and $s_i(t)$ is the corresponding baseband signal (which incurs negligible delay across the sensor array). Assuming that the source signals are statistically uncorrelated, the correlation between $m$th and $n$th sensors can be shown to be of them form \[ \mathbf{R}_{m,n} = \sum_{i=1}^{K}e^{j\pi (d_m-d_n)\sin\theta_i} p_i + \sigma^2_w\delta[m-n] \]
+where $\theta_i$ is the DOA of the $i$th source and $s_i(t)$ is the corresponding baseband signal (which incurs negligible delay across the sensor array). Assuming that the source signals are statistically uncorrelated, the correlation between $m$th and $n$th sensors can be shown to be of the form \[ \mathbf{R}_{m,n} = \sum_{i=1}^{K}e^{j\pi (d_m-d_n)\sin\theta_i} p_i + \sigma^2_w\delta[m-n] \]
 where $p_i$ is the power of the $i$th source and $\sigma^2_w$ is the noise power. 
 It can be noted that the correlation {\bf only depends on the difference $d_m-d_n$ between sensor locations, and not on the actual locations $d_m$}. %As a special example, for a one dimensional antenna array receiving narrowband sources from spatial directions $r_k=\theta_k, 1\leq k\leq D$, we have $\phi(v_m,r_k)=e^{j\pi v_m\sin\theta_k}$. 
 %Let $\mf{d}_m$ denote the spatial location of the $m$th antenna. 
@@ -82,7 +82,7 @@ In particular, the indices of these $M$ rows crucially tell us {\em which sensor
 %\label{lem:general}
 %\end{lem}
 %\end{definition}
-In particular, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
+In particular, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
 \begin{equation}
 \mathbf{R}_{\mathcal{S}_{\text{GNS}}} = \mathbf{A}_{\text{GNS}} \mathbf{R} \mathbf{A}^T_{\text{GNS}} 
 \end{equation}
