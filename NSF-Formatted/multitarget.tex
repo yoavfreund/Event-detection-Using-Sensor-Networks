@@ -1,18 +1,19 @@
 %\section{Narrow-band Multi-Target Localization With Distributed Sensors}
-\section{Narrow-band Multi-Target Localization}
-\label{sec:design}
-\yoav{How is this problem different from the problem of finding the
-  best placement for the sensors in order to maximize the accuracy of
-  localization, ignoring communication bandwidth? }
-  \piya{Majority of existing sensor selection problems (based on submodular optimization, or solving subset selection problem subject to maximum tolerable error bounds) utilize a linear model, where the measurements are {\em linear functions} of the quantity of interest. Target localization is inherently non-linear since the information is contained in phase. Moreover, these algorithms do not give theoretical guarantee on the minimum number of required sensors.}
+\section{Sensor Subset Selection}
+\label{sec:sensorSelection}
+% \yoav{How is this problem different from the problem of finding the
+%   best placement for the sensors in order to maximize the accuracy of
+%   localization, ignoring communication bandwidth? }
+%   \piya{Majority of existing sensor selection problems (based on submodular optimization, or solving subset selection problem subject to maximum tolerable error bounds) utilize a linear model, where the measurements are {\em linear functions} of the quantity of interest. Target localization is inherently non-linear since the information is contained in phase. Moreover, these algorithms do not give theoretical guarantee on the minimum number of required sensors.}
 
-With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
+% With the aim of obtaining a compressive sketch of the correlation matrix (also termed as compressive covariance sensing), we will optimize the design of sensor array (i.e. choice of $\mathbf{d}_m, 1\leq m\leq M$) by understanding how the array geometry controls the algebraic structure of $R_T$. One of the main objectives will be to understand how much communication is needed (and between which subset of sensors) to achieve a certain level of accuracy. To illustrate this, we briefly discuss Co-PI Pal's recent work in structured sampler design (e.g., nested, coprime and generalized nested samplers) which utilize the idea of difference sets.
 
+\yoav{Pia, the description of the difference sets and GNS should be flushed out. By which I mean that the concepts should be described clearly and in sufficient detail that the main results can be stated. On the other hand, details such as 8,9,11 are  distracting.}
 %\subsection{Background and Prior Work: Difference Set-Inspired Designs:} 
 %I will review some results in the context of array processing and DOA estimation...(to be filled in).
 %\subsection{Proposed Research: Correlation-Aware Sensor Selection for Distributed Sensing} 
 
-\subsection{ Correlation-Aware Sensor Selection for Distributed Sensing} 
+%\subsection{ Correlation-Aware Sensor Selection for Distributed Sensing} 
 Motivated by these results, our goal will be to develop a rigorous framework for further developing the key idea of correlation-aware sensing to a distributed scenario and make it applicable for imaging problems beyond point target localization.
 The idea of difference set inspired sampler design can be actually generalized beyond that of antenna arrays, to acquire {\em compressive sketches} of the correlation between signals acquired between pairs of sensors. In general, given $N$ sensors, it is natural to think that one needs to compute the correlation between all $N\choose 2$ time series (from all possible sensor-pairs) to construct the overall $N\times N$ correlation matrix $\mathbf{R}$
 %\footnote
@@ -74,6 +75,15 @@ Firstly,  it is well known that for passive sensing, sensor pairs that are furth
 A second interesting aspect of 2D GNS is that it lends itself to a hierarchical selection of communicating sensors, depending on how many targets to detect, and how large the field of view is. For example, we can divide a wide field of view into smaller segments. Depending on which segment captures the target of interest 
 %\footnote{There can be several criterion for determining this. A simple option would be to divide the sectors based on received signal strength},
 we can zoom into that part and determine the subset of communicating sensors using the 2D GNS-based subset selection rule. We can implement such subset selection by dynamically turning sensors on and off. Alternatively, in a multi-target environment where the targets are sufficiently far apart, we can dedicate different segments to localize different targets and dynamically select the communicating sensors from each segment. Finally, it is to be noted that the orientation of the communicating sensors on the lattice is determined by the integer matrix $\mathbf{P}$ and such orientation can affect target localization performance (especially the source angles). When we have partial knowledge of target location, it will also be of interest to design $\mathbf{P}$ to orient the subset so as to maximize the target detection probability. For multi-target scenario, we can design different $\mathbf{P}$ matrices (if needed) for each of the aforementioned segments.
+
+\yoav{plopped this here, because I wanted it inside the section regarding selection of a subset of the ssensors}
+
+Two questions are of particular interest to our project:
+\begin{enumerate}
+\item Can we exploit the geometry of the measurement model to further compress the  correlation matrix $\mathbf{\hat{R}}$? What is the role of sensor geometry in this case? We should still be able reliably infer $\Theta$ from such a compressed sketch.
+\item How large should $M$ be (in comparison to $K$) for multi-target localization ?
+\end{enumerate}
+
 % We will develop the corresponding structure of the 2D GNS sketching matrix and understand 
 
 %item {\bf Finite Sample Performance:} 
