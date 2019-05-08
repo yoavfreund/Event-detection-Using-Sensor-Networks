@@ -114,7 +114,7 @@ stable $r$th-order (with $r\geq 1$) $\Sigma\Delta$ schemes  \cite{daubechies2003
 With these quantization schemes playing a prominent role, in  \cite{huynh2018fast} co-PI Saab  constructed approximately isometric (distance preserving) embeddings between the metric space  $(\mathcal{T}, \|\cdot\|_2)$ and the binary  cube $\{-1,+1\}^m$ endowed with the pseudo-metric
 $d_{{V}}(\tilde{\q},\q) := \| {V}(\tilde{\q} -{\q}) \|_2$
 where $V$ is a carefully constructed matrix.
-For a  matrix $A\in\R^{m\times n}$, and a noise-shaping quantizer $Q$, as above, the algorithm for computing these embeddings is simply given by $g: \mathcal{T} &\to \{\pm 1\}^m\nonumber$ where $\x \mapsto \q=Q(A\x).\nonumber$
+For a  matrix $A\in\R^{m\times n}$, and a noise-shaping quantizer $Q$, as above, the algorithm for computing these embeddings is simply given by $g: \mathcal{T} \to \{\pm 1\}^m\nonumber$ where $\x \mapsto \q=Q(A\x).\nonumber$
 \iffalse
 \begin{align}
 g: \mathcal{T} &\to \{\pm 1\}^m\nonumber\quad \text{where} \quad
@@ -132,7 +132,7 @@ When $\mathcal{T}$ is finite, \cite{huynh2018fast} shows
 \end{align*}
 Above, $\eta(m)$ decays polynomially fast in $m$ (when $\mathcal{Q}$ is a $\Sigma\Delta$ quantizer), or exponentially fast (when $\mathcal{Q}$ is a distributed noise shaping quantizer). %In fact, we prove a more general version of the above result, which applies to infinite sets $\mathcal{T}$. 
 %\medskip
-Additionally, when $\mathcal{T}$ is arbitrary (with possibly infinite cardinality, e.g., a compact manifold)} \cite{huynh2018fast} shows similar results in terms of the Euclidean radius of $\mathcal{T}$ and its Gaussian width.
+Additionally, when $\mathcal{T}$ is arbitrary (with possibly infinite cardinality, e.g., a compact manifold) \cite{huynh2018fast} shows similar results in terms of the Euclidean radius of $\mathcal{T}$ and its Gaussian width.
 \iffalse
 {Additionally, when $\mathcal{T}$ is arbitrary (with possibly infinite cardinality, e.g., a compact manifold)} \cite{huynh2018fast} shows a similar result albeit whenever $m \gtrsim \frac{\log^4 n}{\alpha^4}\cdot\frac{\omega(\mathcal{T})^2}{\rad(\mathcal{T})^2}$
 %
@@ -179,8 +179,12 @@ Effectively, the mean embedding $\mu_p\in\mathcal{H}$ indexed by $p$ is a unique
 %$MMD(S_1,S_2) = \sum_{x,x'\in S_1} K_{11}(x,x') + \sum_{y,y'\in S_2} K_{22}(y,y')$ - 2\sum_{x\in S_1,y\in S_2} K_{12}(x,y)$
 
 
-When $K$ is a \emph{universal} kernel (e.g. Gaussian) \cite{micchelli2006universal}, then the mean embedding satisfies a key property that $\|\mu_p - \mu_q\|_\mathcal{H}$ %(\rayan{define $\mathcal{H}$}) 
-is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This effectively means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  One key property is that, if we are only given $n$ finite samples $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ to compute the empirical mean embeddings $\widehat{\mu}_X$ and $\widehat{\mu}_Y$, and we compute the mean embedding at all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$, then $\|\widehat{\mu}_\mathbf{Y_1} - \widehat{\mu}_\mathbf{Y_2}\|_2 \rightarrow \|\mu_p - \mu_q\|_\mathcal{H}$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.  
+When $K$ is a \emph{universal} kernel (e.g. Gaussian) \cite{micchelli2006universal}, the mean embedding satisfies a key property that $\|\mu_p - \mu_q\|_\mathcal{H}$ %(\rayan{define $\mathcal{H}$}) 
+is bi-Lipschitz with respect to $\|p - q\|_{L^{\infty}}$ for absolutely continuous distributions $p$ and $q$.  This means that the mean embedding transform maintains the same information as working in $\R^d$, with the benefit that mean embeddings also satisfy nice statistical convergence properties.  Most notably,
+%if we are only given $n$ finite samples $\mathbf{Y_1}\sim p$ and $\mathbf{Y_2}\sim q$ to compute 
+the empirical mean embeddings $\widehat{\mu}_{Y_1}$ and $\widehat{\mu}_{Y_2}$ are easy to construct from finite samples, so %and we compute the mean embedding at all $z\in \mathbf{Y_1}\cup \mathbf{Y_2}$, then 
+their difference satisfies
+$\|\widehat{\mu}_\mathbf{Y_1} - \widehat{\mu}_\mathbf{Y_2}\|_2 \rightarrow \|\mu_p - \mu_q\|_\mathcal{H}$ at a rate $O\left(\frac{1}{\sqrt{n}}\right)$.  
 %A statistical interpretation of the mean embedding distance is that it computes a difference of means test on the eigenfunctions of $K$ rather than in the original space $\mathbb{R}^d$.  This means that two distributions having matching means in the eigenfunction space is equivalent to the distributions having all moments matching in $\mathbb{R}^d$.  A large benefit of the mean embeddings is that this calculation can be done without explicitly computing the eigendecomposition of $K$.
 
 
@@ -194,13 +198,14 @@ This has motivated the computational speed up presented by co-PI Cloninger in \c
 
 
 \subsection{Framework}% \rayan{This feels like a framework rather than a model, what do you think Alex? }
- Our goal  is to present a complete, theoretically rigorous framework for performing various statistical, signal processing, and learning tasks from highly quantized data representations. We focus on the case of 1-bit representations as a theoretical extreme case, but emphasize that our methods should apply to more finely quantized data. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data as well as (b) associated algorithms for performing the aforementioned tasks. Our strategy will be to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
+ Our goal  is to present a complete, theoretically rigorous framework for performing various statistical, signal processing, and learning tasks from highly quantized representations. We focus on the case of 1-bit representations as a theoretical extreme case, but these methods apply to more finely quantized data also. We will propose, and analyze  (a) algorithms for  producing quantized sketches of data, as well as (b) associated algorithms for performing the aforementioned statistical tasks. Our strategy is to develop these algorithms in tandem; that is, we will propose task-based quantization algorithms and quantization-aware algorithms for performing the tasks. We will strive for methods that support fast computation, and that lend themselves to distributed computing on, e.g., a sensor network.
   
 Suppose signals of interest are represented as $N$ vectors $\mathbf{x}[j] \in \mathbf{X}\subset \mathbb{R}^d$ %$Y\in \mathcal{X} \subset \mathbb{R}^d$, 
 for $j\in\{1,...,N\}$,
 where $\mathbf{X}$ could be a finite set, i.e., a
-point cloud, or an infinite set (e.g., a compact manifold, or the set
-of all sparse vectors).  If the data is collected as a time series, then $\mathbf{x}[j] = \mathbf{x}(t_j)$.
+point cloud, or an infinite set.
+%(e.g., a compact manifold, or the set of all sparse vectors).  
+If the data is collected as a time series, then $\mathbf{x}[j] = \mathbf{x}(t_j)$.
 %\yoav{In the discussion so far, the time $t$ has a special role. Is $t$ one of the $d$ coordinates or is it an extra coordinate. In other words, should we use $Y(t)$ ?}
 %Alternatively, we may model signals as random vectors drawn according
 %to some distribution, i.e., $Y\sim~\mathcal{D}$ ofer $R^d$

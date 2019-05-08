@@ -26,7 +26,7 @@ the raw signal.
 
 \section{Intellectual Merit}
 
-
+\iffalse
 We propose a novel approach we call {\em Learning Sensor Networks}.
 
 \rayan{Need to change depending on the name we settle on!}
@@ -46,6 +46,12 @@ Learning sensor networks promise much lower energy and bandwidth
 consumption than current sensor networks. To realize this potential we
 plan to develop new new mathematical models, signal processing methods
 and distributed algorithms for computing and combining sketches. Indeed, much of the remainder of the proposal is dedicated to expanding on its intellectual merits, focused on solving some of the challenges that sensor networks present.
-Thus, in Section \ref{sec:Framework} we develop our overarching notational framework and describe some motivating applications.  Section \ref{sec:design} focuses on problems arising in the design and geometry of sensor networks. We anticipate that our work in this direction will develop and use methods from signal processing as well as algebraic results from mathematics \rayan{Piya: Please edit this monstrosity I created :) and expand on it}. \rayan{Peter: Ditto please add your stuff}
-Section \ref{sec:QuantSketch} focuses on developing theory and algorithms for embedding large data-sets collected at the sensors into a much lower dimensional binary cube. The objective is for this compressed binary sketch to contain sufficient information to perform a statistical task of interest. To that end, this work will devise and use methods from applied and computational harmonic analysis, high dimensional geometry and probability, as well as (Kernel) statistics.\rayan{Yoav: Please add your stuff} 
+\fi
+
+The need to reduce communication bandwidth is not new. Sophisticated video compression methods such as H.264 are used in most digital video cameras. However, the goal of such methods is to reconstruct the original video, either perfectly (lossless compression) or approximately (lossy compression). The assumption is that the reconstructed video will be viewed by a human who will make the appropriate determinations. Compression is a channel and the ideal channel is one which transmits the original data unchanged.
+
+Our goal in developing {\em learning sensor networks} is different. We see a sensor network not simply as a channel, but as part of the data analysis pipeline. Each sensor builds a model of the data it receives. If new data conforms to the model, then it is considered {\em uninteresting} and is not transmitted, leaving the communication channels available for more important information. Our ultimate goal is to develop a mathematical theory of communication which is based on notions of {\em statistical significance}, rather than {\em entropy}. Such a theory might become a new way to understand networks that combine sensors, computation and communication.
+
+%Thus, in Section \ref{sec:Framework} we develop our overarching notational framework and describe some motivating applications.  Sections \ref{sec:TL}, \ref{sec:sensorSelection} focuses on optimizing the design and geometry of sensor networks. We anticipate that our work in this direction will develop and use methods from signal processing as well as algebraic results from mathematics \rayan{Piya: Please edit this monstrosity I created :) and expand on it}. \rayan{Peter: Ditto please add your stuff}
+%Section \ref{sec:QuantSketch} focuses on developing theory and algorithms for embedding large data-sets collected at the sensors into a much lower dimensional binary cube. The objective is for this compressed binary sketch to contain sufficient information to perform a statistical task of interest. To that end, this work will devise and use methods from applied and computational harmonic analysis, high dimensional geometry and probability, as well as (Kernel) statistics.\rayan{Yoav: Please add your stuff} 
 

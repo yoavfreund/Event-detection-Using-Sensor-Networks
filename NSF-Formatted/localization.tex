@@ -1,4 +1,4 @@
-\section{Task based target Localization}
+\section{Target Localization}\label{sec:TL}
 %Using Minimal Number of Sensors}
 
 A sensor network consisting of $M$ sensing units aims to capture information of interest (often described in terms of parameters) regarding the physical environment by acquiring measurements in space (dictated by sensor locations) and in time (dictated by the sampling technique employed at each sensor). In many applications (especially those concerning high-resolution/super-resolution imaging), the goal is to detect certain (possibly time varying) parameters $\Theta(\tau)$ from certain targets (or sources) of interest in the environment by acquiring signals emitted by them. The methodologies proposed in this proposal will be primarily developed for passive sensing, although they can also be integrated into an active sensing scenario if the sensors are also allowed to actively emit signals for localizing targets.
@@ -75,9 +75,12 @@ The focus here is detecting weak sources within a sensor network without a fusio
 A graph signal processing approach was used in \cite{riahi2017} for a 5000 element seismic array by processing the whole normalized SCM $\hat{\bf R}$ \eqref{eq:corr} at once, i.e., using a fusion center. 
 When the SCM $\hat{\bf R }$ is above a certain threshold at  element $ij$ it is likely that a signal is observed and has propagated between nodes $i$ and $j$, essentially forming an edge between nodes  $i$ and $j$ in a graph. When a sufficient set of connected edges are detected in a region of the network a source is likely in that region. Part of the extracted SCM $\hat{\bf R}$ can then be used to localize the source more precisely.
 
-To extract very weak signals  a well estimated and robust SCM \eqref{eq:corr} is needed.  Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods \cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could either be communicated further to a wider set of nodes.
+To extract very weak signals  a well estimated and robust SCM \eqref{eq:corr} is needed.  Thus we  pass the full time series between local nodes $i$ and $j$, not the whole array and develop robust signal processing methods \cite{zoubir2018}. This will represent a lot of communication demand and thus we will only pass signal between neighboring stations. Once a graph edge is formed it could  be communicated further to a wider set of nodes or it could be passed on a central fusion center for furter processing. 
 
-Robust signal processing methods \cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. A qualitatively robust estimator is characterized by an IF that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
+Robust signal processing methods \cite{zoubir2018} would entail making the processing insensitive to outliers. Qualitative robustness can be investigated via the influence function. The influence function  of an estimator 
+measures the sensitivity to a slight change in the distribution
+in the neighborhood of the nominal distribution of the observations. 
+A qualitatively robust estimator is characterized by an influence function that is continuous and bounded. Continuity implies that small changes in the observed sample cause only small changes in the estimate. The boundedness implies that a small amount of contamination cannot lead to an unbounded error the estimate.
 
 We propose to work on\\
 (1) A scheme for processing locally at each node. \\
