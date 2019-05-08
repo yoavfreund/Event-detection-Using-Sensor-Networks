@@ -17,7 +17,7 @@
 Our goal will be to develop a rigorous framework for further developing the key idea of correlation-aware sensing to a distributed scenario via judicious selection of subsets of sensors. As described earlier, two questions are of particular interest to our project:
 \begin{enumerate}
 \item Can we exploit the geometry of the measurement model to further compress the  correlation matrix $\mathbf{R}$? What is the role of sensor geometry in this case? We should still be able reliably infer $\Theta$ from such a compressed sketch.
-\item How large should $M$ be (in comparison to $K$) for multi-target localization ?
+\item How large should $M$ be (in comparison to $K$) for multi-target localization?
 \end{enumerate}
 \noindent{\bf (a) \underline{Background on Difference Set-Inspired Antenna Array Design:}}
 We first motivate our sensor selection scheme by reviewing Co-PI Pal's prior work on sparse antenna array design, where the goal was to design {\em non-uniform} array geometries such that it is possible to localize more sources than the number of sensors. 
@@ -100,7 +100,8 @@ Most sensor networks of interest will be distributed over a two-dimensional area
 %\label{eqn:2LevelToep} \end{equation}
 %where $\mathbf{T}_i\in \mathbb{C}^{N_x\times N_x}$ is a Toeplitz matrix for each $i\in [0,N_y-1]$. 
 
-\noindent We will develop two-dimensional versions of Generalized Nested Sampling (2D-GNS) to guide our sensor selection strategy so that we can produce a lossless sketch of $\mathbf{R}$ with far fewer sensors by exploiting its unique algebraic structure captured in (\ref{eqn:2LevelToep}). Notice that the extension is quite non-trivial given that $\mathbf{R}$ has Toeplitz structure in individual blocks, as well as the blocks are repeated along each (sub)-diagonal. The optimal sketching matrix should exploit the redundancies in both levels to produce a sketch of size $O(\sqrt{N_xN_y})$. 
+\noindent We will develop two-dimensional versions of Generalized Nested Sampling (2D-GNS) to guide our sensor selection strategy so that we can produce a lossless sketch of $\mathbf{R}$ with far fewer sensors by exploiting its unique algebraic structure captured.% in (\ref{eqn:2LevelToep}). 
+Notice that the extension is quite non-trivial given that $\mathbf{R}$ has Toeplitz structure in individual blocks, as well as the blocks are repeated along each (sub)-diagonal. The optimal sketching matrix should exploit the redundancies in both levels to produce a sketch of size $O(\sqrt{N_xN_y})$. 
 
 \noindent {\bf Details of Two-dimensional GNS geometry on Lattices:} We will draw inspirations from our previous works in designing two-dimensional nested arrays to develop the corresponding sketching 2D GNS operator $\mathbf{A}_{\text{2D-GNS}} \in \mathbb{R}^{M \times {N_xN_y}}$, where $M = O(\sqrt{N_xN_y})$. In particular, we propose to select $M=N_d+N_s$ sensors from a total of $N_xN_y$ sensors as follows. We choose a nonsingular {\em integer} matrix $\mathbf{P}\in \mathbb{Z}^{2\times 2}$ such that $\text{det}(\mathbf{P})=N_d$. The $N_s$ sensors belong to the following subset  of the uniform rectangular grid \[ \mathcal{S}_{s} = \{\mathbf{P}[n_1,n_2]^{T}, 0\leq n_1\leq N_1-1, 0\leq n_2\leq N_2-1 \} ,\quad N_1N_2 = N_s \]
 and the $N_d$ sensors are located at \[ \mathcal{S}_d = \{ \mathbf{v} \in \text{FPD}(\mathbf{P}), \mathbf{v} \text{ is integer valued} \} \] 
