@@ -72,19 +72,26 @@
 
 \begin{document}
 \section{Overview}
-Sensor networks are ubiquitous. They are the means by which we collect large amount of data, and the first nodes in an often complex data processing pipeline. Their applications span areas as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring, to name a few. At the same time, sensor networks are often severely resource limited, in terms of their battery power, computational power, or ability to communicate the massive amounts of data they collect.
+Sensors are ubiquitous, they permeate our homes, work, streets, schools and hospitals.
+Miniaturization makes it practical and economical, to put high-resolution cameras and microphones in every device and on every wall, tree and lamppost. These sensors are used in applications as diverse and critical as seismology, forestry and agriculture, surveillance, and industrial and health monitoring. 
 
-With an eye towards minimizing computational and communication complexity, this proposal focuses on pushing data-science to the edge, to the sensors themselves.  It proposes a data-processing framework for sensor networks. Each sensor uses {\em
-  statistical learning} to model it's environment. It communicates
-with neighboring sensors in order to know their models and to
-calibrate parameters such as relative location. After an initial
-training period, the network can distinguish normal from abnormal
-behaviour. Based on that ability, a sensor will transmit to the other
-sensors only a {\em sketch} which captures  novel, or
-salient aspect of the data. This framework promises much lower energy and bandwidth
-consumption than current sensor networks. 
+The utility of these sensors is greatly increased if they are combined into {\em sensor networks}. Combining many
+video cameras with partially overlapping fields of view one can reconstruct temporal sequences in three dimensions and from multiple view-points. However, connecting sensors to each other and to electricity with wires is often impractical, which severely limits sensor networks in terms of energy and communication bandwidth. In particular, it is impractical for each sensor to send all of it's raw data to a central {\em fusing} computer.  
+
+A leading approach to alleviate this problem is to {\em push the computation to the edge of the network}. In other words
+perform computation at the sensor to decrease the amount of data that the sensor sends out. 
+This proposal focuses on pushing data science to the sensors themselves.  We propose 
+a data-processing and communication framework for sensor networks. Each sensor uses {\em
+  statistical learning} to model the slowly varying aspects of it's environment. Communication between sensors is used for two purposes: 
+  to compare and update models in neighboring sensors, and to identify {\em correlations} that correspond to common observed short-term events in the environment.
+
+By partitioning the representation to a slowly varying model and fast varying correlations the sensor network masks out uninteresting events, freeing bandwidth to communicating important transitory events that exhibit themselves as correlations. Such a sensor network, which combines cameras along a busy highway, will be ignore the predictable traffic patterns, but will send back to headquarters a detailed high definition video of the seconds before and after a traffic accident.
 
 \section{Intellectual Merit}
+The need to reduce communication bandwidth is not new. Sophisticated video compression methods such as H264, are used in most digital video cameras. However, the goal of methods is to reconstruct the original sequence of frames, either perfectly (lossless compression) or approximately (lossy compression). The assumption is that the reconstructed video will be viewed by a human who will make the appropriate determinations. Compression is a channel and the ideal channel is one which transmits the original data unchanged.
+
+Our goal in developing {\em learning sensor networks} is different. We see the sensor network not simply as a channel, but as part of the data analysis pipeline. Each sensor builds a model of the data it receives. If the data conforms to the model, then it is considered {\em uninteresting} and therefor is not transmitted.
+ 
  To realize the potential of this framework, 
  our approach is comprehensive. We will study the design of the network itself, devise algorithms for minimizing the number of nodes that need to communicate, as well as algorithms for minimizing the amount of data that each node communicates. 
 % We plan to develop new  mathematical models, signal processing methods

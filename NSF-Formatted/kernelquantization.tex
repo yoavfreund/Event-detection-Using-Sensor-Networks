@@ -5,14 +5,11 @@
 %\yoav{How about this one?}
 
 Consider a monitoring application as described
-in Sec. ~\ref{sec:examples}.  Here a network of sensors is used to
-monitor an area or a system. As an example, consider a network of
-cameras that are used to monitor a highway. The goal of the camera
-network is to provide a real-time summary of the status of the highway
-and detect critical events such as accidents, obstacles on the
-highway, or speeding cars. One approach  is to transmit
-all video streams to a central location and process them there. This
-approach is expensive both in terms of the required communication
+in Sec. \ref{sec:examples}.  Here a network of sensors is used to
+monitor an area or a system, for example a network of
+cameras monitoring a highway. The goal in this example is to provide a real-time summary of the status of the highway
+and detect critical events such as accidents, obstacles, or speeding cars. One approach is to transmit
+all video streams to a central processing location, but this is expensive both in  communication
 bandwidth and the computational resources needed in the central
 location.
 
@@ -75,7 +72,7 @@ their computational complexity and performance guarantees.
 %Indeed, distributed systems often have severe bandwidth and energy constraints that necessitate only sketching (i.e., keeping a parsimonious representation) the data being sensed. Further, to minimize the computational and storage costs associated with such sketches, one may revert to 
 
 % (e.g, \cite{fang2014sparse,boufounos20081}). Additionally, simple binary representations of data can be also quite appealing in hardware implementations, particularly if they are computationally inexpensive and consequently promote speed in hardware devices (\cite{jacques2013robust,le2005analog}). On the other hand, a major concern in using very coarsely sketched data is possible loss of accuracy when performing various tasks of interest, ranging from signal reconstruction to clustering and statistical hypothesis testing, among others.
-\subsection{Background and Prior Work: Quantization and Binary Embeddings}\label{sec:quant}
+\subsection{Prior Work: Quantization and Binary Embeddings}\label{sec:quant}
 %\rayan{under construction: need to shorten}
 We will rely on extremely
 coarse, e.g., binary, quantization of the data-sketches. These methods minimize storage and computation costs (see e.g., \cite{fang2014sparse,boufounos20081}) and have the added benefit of being appealing in hardware implementation particularly if they are computationally inexpensive and thus promote speed in hardware devices  \cite{jacques2013robust,le2005analog}. A growing body of work, which co-PI Saab has contributed significantly to (e.g., \cite{SaabIEEEIT,knudson2016one,saab2018quantization,LybrandSaab2018,iwen2019new, daubechies2015deterministic}), studies signal reconstruction from coarsely quantized measurements. \emph{One important theme that emerges from this line of work  is that if one collects more coarsely quantized (even 1-bit) measurements  than a critical minimal number, and uses sophisticated quantization schemes, then the extra measurements can be efficiently used in quantization-aware algorithms to rapidly drive the reconstruction error down as a function of the number of measurements.} This theme has held true in a wide range of signal and measurement contexts, including band-limited functions \cite{daubechies2015deterministic}, finite frame expansions \cite{iwen2013near},  and compressed sensing of approximately sparse vectors \cite{SaabIEEEIT, saab2018quantization}, low-rank matrices \cite{LybrandSaab2018}, and manifold valued signals \cite{iwen2019new}.
@@ -141,7 +138,7 @@ Signal reconstruction is not our focus here, but the promising results obtained 
 
 
 
-\subsection{Background and Prior Work: Kernel Statistics}\label{sec:KernelBackground}
+\subsection{Prior Work: Kernel Statistics}\label{sec:KernelBackground}
 %\subsubsection*{Background and Motivation}
 %\yoav{This section need to be re-written in a way that will make the connection to sensor networks clear. I don't know what are ``mean embeddings''. Can you describe them? I would focus on universal kernels unless there are good reason to talk about kernels that are not univrsal.}
 
@@ -328,13 +325,18 @@ There exists a mean embedding approach to change point analysis \cite{harchaoui2
 \item Multiple Sensor Common Factor Identification: 
 %A common issue is aggregating multiple sensors to identify and magnify the signal detected by both sensors.  
 Under a linear model, algorithms such as Canonical Correlation Analysis \cite{hardoon2004canonical} act on multiple streams of simultaneously collected data $\dsignal_i(t)$ to filter noise and recover highly correlated linear projections from two the data sets.
-Recently, a kernel CCA technique called alternating diffusion \cite{lederman2018learning} has be used to identify common nonlinear effects by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and two nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$, and samples $\transfer((x_i,z_i^{(1)}, z_i^{(2)}))$ for $(x_i,z_i^{(1)}, z_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  Due to sensor location or modality, sensor 1 collects data points $Y_1 = \transfer_1((x_i,z_i^{(1)}, \xi))$ and sensor 2 collecting data points $Y_2 = \transfer_2((x_i,\zeta,z_i^{(2)}))$.  Then roughly speaking, for some assumptions on $\transfer$ and for $K_i: Y_i\times Y_i \rightarrow \mathbb{R}$,
+Recently, \cite{lederman2018learning} extended a kernel CCA framework to provably identify common nonlinear effects between sources.
+%by building a kernel $K_i$ from each sensing modality and analyzing the product kernel $(K_1 K_2)^t$.   
+Concretely, assume that there exists a hidden manifold $\mathcal{M}$ and nuisance manifolds $\mathcal{N}_1$ and $\mathcal{N}_2$.
+%and samples $\transfer((x_i,z_i^{(1)}, z_i^{(2)}))$ for $(x_i,z_i^{(1)}, z_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$.  
+The full data is $(x_i,z_i^{(1)}, z_i^{(2)})\in \mathcal{M}\times \mathcal{N}_1\times \mathcal{N}_2$, but due to sensor location or modality, sensor 1 collects data points $Y_1 = \transfer_1((x_i,z_i^{(1)}, \xi))$ and sensor 2 collecting data points $Y_2 = \transfer_2((x_i,\zeta,z_i^{(2)}))$.  Then for some assumptions on $\transfer$ and for $K_i: Y_i\times Y_i \rightarrow \mathbb{R}$,
 %and $K_2:Y_2\times Y_2 \rightarrow \mathbb{R}$, 
-Talmon and Wu \cite{talmon2018latent} proved $(K_1 K_2)^t$ is the diffusion kernel on $\mathcal{M}$ only.   This is a very beneficial feature, as it means that one can compute kernel statistics for distributions defined on $\mathcal{M}$ only, independent of the nuisance features that may differ between sensors due only to modality or location.
+\cite{talmon2018latent} proved $(K_1 K_2)^t$ is the diffusion kernel on $\mathcal{M}$ only.   This means that one can compute kernel statistics for distributions defined on $\mathcal{M}$ only, independent of the nuisance features that may differ between sensors due only to modality or location.
 
 
 %However, this requires communication of all $n$ points across sensors to compute the kernel product.  
-We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx \widetilde g(Y_i) \widetilde g(Y_i)^*$.  As the key feature of alternating diffusion is computing the inner product matrix $\widetilde g(Y_1)^* \widetilde g(Y_2)$, which has dimension $d<n$ and is also low rank.  This implies it is possible to sketch $\widetilde g(Y_1)$ (resp. $\widetilde g(Y_2)$) with a small set of vectors $v_j$ (resp. $w_k$) and only communicate vectors $\widetilde g(Y_1)^* v_j$ (resp. $w_k^* \widetilde g(Y_2)$) such that $\mathbb{E}_{j,k}[\widetilde g(Y_1)^* v_j w_k^* \widetilde g(Y_2)] \approx \widetilde g(Y_1)^* \widetilde g(Y_2)$.  The amplification of the common factors observed by both sensors boosts the power of the two sample and change point statistics on the shared observable manifold $\mathcal{M}$, as well as other compressed statistics that can be computed \cite{gribonval2017compressive}.
+We propose to analyze such approaches under minimal communication constraints by utilizing the low rank binarized decomposition $K_i \approx \widetilde g(Y_i) \widetilde g(Y_i)^*$.  As the key feature of alternating diffusion is computing the inner product matrix $\widetilde g(Y_1)^* \widetilde g(Y_2)$, which has dimension $d<n$ and is also low rank.  This implies it is possible to sketch $\widetilde g(Y_1)$ (resp. $\widetilde g(Y_2)$) with a small set of vectors $v_j$ (resp. $w_k$) and only communicate vectors $\widetilde g(Y_1)^* v_j$ (resp. $w_k^* \widetilde g(Y_2)$) such that $\mathbb{E}_{j,k}[\widetilde g(Y_1)^* v_j w_k^* \widetilde g(Y_2)] \approx \widetilde g(Y_1)^* \widetilde g(Y_2)$.  The amplification of the common factors observed by both sensors will be able to boost the power of the two sample and change point statistics on the shared observable manifold $\mathcal{M}$. 
+%, as well as other compressed statistics that can be computed \cite{gribonval2017compressive}.
 %\yoav{This last item looks very interesting, but I don't understand it ... is it related to the problem I suggested of finding the offset of highest correlation for two similar signals?}
 \iffalse\item \rayan{Maybe put in classification \begin{itemize}
     \item Idea 1: Training reduced to computing averages $\mu_j$, over the data of say $Q(\cos(A x+b))$ for each class $x\sim\mathcal{X}_j$. Classification reduced to computing $\mu_y=Q(\cos(Ay+b))$ and finding the closest $\mu_j$ to $\mu_y$. In a sense, this is like 2-sample testing, but with a point mass at $y$. Advantages: Each sensor only keeps the averages relevant to its own portion of $Q(\cos(Ax))$ for $x$ in training set, and later for $y$ to be classified. Each sensor can compute its own piece of the inner product $\langle \mu_j, \mu_y \rangle$, you are ultimately averaging bits, so memory needed at each sensor grows like $m_i\times \log(P)$ where $P$ is the total number of points and $m_i$ is the size of the sketch at each sensor... The idea is that $m_i\ll d$ and $\log(P) \ll P$ so you save a ton on storage/communication. 
