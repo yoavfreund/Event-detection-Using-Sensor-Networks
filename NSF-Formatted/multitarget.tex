@@ -19,7 +19,7 @@ Our goal will be to develop a rigorous framework for further developing the key 
 \item Can we exploit the geometry of the measurement model to further compress the  correlation matrix $\mathbf{R}$? What is the role of sensor geometry in this case? We should still be able reliably infer $\Theta$ from such a compressed sketch.
 \item How large should $M$ be (in comparison to $K$) for multi-target localization ?
 \end{enumerate}
-\subsection{Background on Difference Set-Inspired Antenna Array Design}
+\noindent{\bf (a) \underline{Background on Difference Set-Inspired Antenna Array Design:}}
 We first motivate our sensor selection scheme by reviewing Co-PI Pal's prior work on sparse antenna array design, where the goal was to design {\em non-uniform} array geometries such that it is possible to localize more sources than the number of sensors. 
 \begin{wrapfigure}{r}{0.5\textwidth}
 \begin{center}
@@ -41,36 +41,39 @@ It can be noted that the correlation {\bf only depends on the difference $d_m-d_
 Given the set $\mathcal{S} = \{d_1,d_2,\cdots, d_M\} $ of sensor locations,  we can associate a {\em difference set} $\mathbb{D}_{\mathcal{S}}$ as follows \[ \mathbb{D}_{\mathcal{S}}=\{d_m-d_n, d_m, d_n\in \mathcal{S} \} \] 
 %If $\mathbf{a}(\theta)\in \mathbb{C}^{M\times 1}$ denotes the physical array steering vector, then the co-array steering vector is given by  \be \mathbf{a}_{ca}(\theta)=\mathbf{a}^{*}(\theta)\otimes\mathbf{a}(\theta)  \ee 
 A traditional Uniform Linear Array (ULA) with $M$ antennas has only $2M-1$ elements in its difference set, as shown in Fig. \ref{fig:Nested} (a) and (b). In \cite{PiyaNested}, we proposed a new non-uniform array, namely the nested array, whose virtual array contains $O(M^2)$ elements. 
-The nested array and its virtual array are depicted in Fig. \ref{fig:Nested} (c) and (d). In other words, given the same size of the virtual array, the nested array uses $O(\sqrt{M})$ antennas which results in {\em significant reduction in number of sensors} over Uniform Linear Arrays. This has paved the way for the possibility of localizing {\em more sources than sensors} purely by exploiting the geometry of sensing, and generated significant research interest in recent times both in terms of innovations in new sensing geometries \cite{} as well new results in performance analysis in this regime \cite{}
-\subsection{Difference-set based Correlation Sketching and Sensor Subset Selection:} 
+The nested array and its virtual array are depicted in Fig. \ref{fig:Nested} (c) and (d). In other words, given the same size of the virtual array, the nested array uses $O(\sqrt{M})$ antennas which results in {\em significant reduction in number of sensors} over Uniform Linear Arrays. This has paved the way for the possibility of localizing {\em more sources than sensors} purely by exploiting the geometry of sensing, and generated significant research interest in recent times both in terms of innovations in new sensing geometries \cite{} as well new results in performance analysis in this regime \cite{}. \\
+
+
+\noindent {\bf (b) \underline{Main Idea: Difference-set based Correlation Sketching and Sensor Subset Selection:}}
 The idea of difference set inspired sampler design can be actually generalized beyond  antenna arrays, to acquire {\em compressive sketches} of the correlation between signals acquired between pairs of sensors. In general, given $N$ sensors, it is natural to think that one needs to compute the correlation between all $N\choose 2$ time series (from all possible sensor-pairs) to construct the overall $N\times N$ correlation matrix $\mathbf{R}$
 %\footnote
 (herein, $\mathbf{R}$ represents the ideal correlation matrix, whereas $\mathbf{\hat{R}}$ represents an estimate  computed with finite data).
 However, using the idea of difference-set sampling, one can only compute  cross-correlation values between a much smaller subset of size $\sim\sqrt{N}$ of {\em suitably selected sensor-pairs} and recreate the entire $N\times N$ correlation matrix $\mathbf{R}$. In distributed sensing, this  means that only these sensors need to communicate and exchange information.
 
-\subsubsection{Main Idea: Exploiting Distance-based Redundancies Using Generalized Nested Samplers:} The main idea behind achieving such reduction is to exploit the redundancies present in the correlation values that naturally result from the physical spatial signal model. A widely used example of such a redundancy is that the correlation $\mathbf{R}_{m,n} = E\Big(y_m(t)y^*_n(t)\Big)$ between $m$th and $n$th sensors is of the following form %\begin{equation} 
+\noindent{\bf Approach: Exploiting Distance-based Redundancies Using Generalized Nested Samplers:} The main idea behind achieving such reduction is to exploit the redundancies present in the correlation values that naturally result from the physical spatial signal model. A widely used example of such a redundancy is that the correlation $\mathbf{R}_{m,n} = E\Big(y_m(t)y^*_n(t)\Big)$ between $m$th and $n$th sensors is of the following form %\begin{equation} 
 $\mathbf{R}_{m,n} \approx f(\mathbf{d}_m - \mathbf{d_n}) \label{eqn:CorrRed}$
 %\end{equation}
 Thus, the correlation is spatially only a function of the {\em inter-sensor displacement $\mathbf{d}_m - \mathbf{d_n}$}, and this is a direct consequence of the functional form of $\phi(.)$. This is also referred to as spatial stationarity and it is (exactly or approximately) true for many applications as narrowband and wideband radar \footnote{In the latter case, this holds at individual frequency bands after splitting the wideband signal into narrow frequency bins using a filter bank}, super-resolution optical imaging, mmWave wireless channels %\cite{} 
-and so forth. Hence, depending on the inter-sensor distances, many of these $N\choose 2$ correlation values are actually repeated/redundant. Based on this observation, we propose using a new sketching technique developed by co-PI Pal, called {\bf Generalized Nested Sampling (GNS) to reduce the amount of inter-sensor communication}. Suppose the sensors are located on a uniform grid. In one dimension, (\ref{eqn:CorrRed}) implies that the ideal correlation matrix $\mathbf{R}$ has Toeplitz structure and GNS provides an optimal way to select sensors to sketch such a matrix. The main idea is as follows. Select a subset $\mathcal{S}$ of sensors such that its difference set $\mathbb{D}_{\mathcal{S}}$ contains {\em all possible sensor locations of interest}. In other words, if we want $\mathbb{D}_{\mathcal{S}$ to contain all possible locations of $N$ sensors, how should the set $\mathcal{S}$ be chosen so that it has minimal cardinality? GNS provides a simple yet effective way to select $\mathcal{S}$, which can be equivalently defined in terms of a {\em subset selection} matrix $\mathbf{A}_{\text{GNS}}$ whose structure denotes which sensor is selected.
+and so forth. Hence, depending on the inter-sensor distances, many of these $N\choose 2$ correlation values are actually repeated/redundant. Based on this observation, we propose using a new sketching technique developed by co-PI Pal, called {\bf Generalized Nested Sampling (GNS) to reduce the amount of inter-sensor communication}. Suppose the sensors are located on a uniform grid. In one dimension, (\ref{eqn:CorrRed}) implies that the ideal correlation matrix $\mathbf{R}$ has Toeplitz structure and GNS provides an optimal way to select sensors to sketch such a matrix. The main idea is as follows. Select a subset $\mathcal{S}$ of sensors such that its difference set $\mathbb{D}_{\mathcal{S}}$ contains {\em all possible sensor locations of interest}. In other words, if we want $\mathbb{D}_{\mathcal{S}$ to contain all possible locations of $N$ sensors, how should the set $\mathcal{S}$ be chosen so that it has minimal cardinality? GNS provides a simple yet effective way to select $\mathcal{S}$, which can be equivalently defined in terms of a {\em subset selection} matrix $\mathbf{A}_{\text{GNS}}$ whose structure dictates which $M$ sensors (out of $N$) are selected \cite{}.
 
-\noindent{\bf Details of GNS:} Given any integer $L\ge 6$, GNS is defined in terms of two integer valued parameters $\Theta(N)$ and $\Gamma(N)$ given by
-\begin{equation} \Theta(N) = \lfloor \sqrt{N + \frac{1}{4}} - \frac{1}{2} \rfloor \quad 
-\Gamma(N)=1+L-{\Theta}^2(N) 
-\end{equation}
-%The sampling matrix $\mathbf{A}$ called "Generalized Nested Sampling Matrix" in \cite{HP_GSip} is defined by
-Given $\Theta(N)$ and $\Gamma(N)$, a GNS can be defined as the following measurement/sensor-selection matrix
-\begin{definition} For any integer $N \ge 6$, a Generalized Nested Sampling matrix $\mathbf{A}_{\text{GNS}} \in \mathbb{R}^{M \times N}$, with $M = \Gamma(N) + \Theta(N) - 1$ is given by 
-
-\begin{equation}
- [\mathbf{A}_{\text{GNS}}]_{i,j}= \begin{cases}  1 & \textrm{if} \; j = i,\; 1 \le i \le \Gamma(N) \\
-1 & \textrm{if} \; j=(i-\Gamma(N))\Theta(N)+i, \quad \Gamma(N) < i \le M  \\
-0 &  \text{else}
-\end{cases}
-\label{def_A}
-\end{equation}
-\end{definition}
-Note that $\mathbf{A}_{\text{GNS}}$ is  a {\em row-selection} matrix that selects $M$ out of $N$ elements of a vector. The indices of these $M$ rows crucially tell us {\em which sensors to select} so that we  obtain a lossless sketch of $\mathbf{R}$ via  the cross-correlation between these $M$ sensors. Such selection is governed by the need to exploit distance-based redundancies as captured in (\ref{eqn:CorrRed}). As discussed earlier, when the sensors are located on a one uniform dimensional grid, (\ref{eqn:CorrRed}) essentially implies that the {\bf full correlation matrix $\mathbf{R}$ is a Toeplitz matrix}. %GNS dictates how to select a subset of $M$ sensors which maximally exploit the redundancies in a Toeplitz $\mathbf{R}$. 
+%\noindent{\bf How GNS works} Given any integer $L\ge 6$, GNS is defined in terms of two integer valued parameters $\Theta(N)$ and $\Gamma(N)$ given by
+%\begin{equation} \Theta(N) = \lfloor \sqrt{N + \frac{1}{4}} - \frac{1}{2} \rfloor \quad 
+%\Gamma(N)=1+L-{\Theta}^2(N) 
+%\end{equation}
+%%The sampling matrix $\mathbf{A}$ called "Generalized Nested Sampling Matrix" in \cite{HP_GSip} is defined by
+%Given $\Theta(N)$ and $\Gamma(N)$, a GNS can be defined as the following measurement/sensor-selection matrix
+%\begin{definition} For any integer $N \ge 6$, a Generalized Nested Sampling matrix $\mathbf{A}_{\text{GNS}} \in \mathbb{R}^{M \times N}$, with $M = \Gamma(N) + \Theta(N) - 1$ is given by 
+%
+%\begin{equation}
+% [\mathbf{A}_{\text{GNS}}]_{i,j}= \begin{cases}  1 & \textrm{if} \; j = i,\; 1 \le i \le \Gamma(N) \\
+%1 & \textrm{if} \; j=(i-\Gamma(N))\Theta(N)+i, \quad \Gamma(N) < i \le M  \\
+%0 &  \text{else}
+%\end{cases}
+%\label{def_A}
+%\end{equation}
+%\end{definition}
+%Note that $\mathbf{A}_{\text{GNS}}$ is  a {\em row-selection} matrix that selects $M$ out of $N$ elements of a vector. 
+In particular, the indices of these $M$ rows crucially tell us {\em which sensors to select} so that we  obtain a lossless sketch of $\mathbf{R}$ via  the cross-correlation between these $M$ sensors. Such selection is governed by the need to exploit distance-based redundancies as captured in (\ref{eqn:CorrRed}). As discussed earlier, when the sensors are located on a one uniform dimensional grid, (\ref{eqn:CorrRed}) essentially implies that the {\bf full correlation matrix $\mathbf{R}$ is a Toeplitz matrix}. %GNS dictates how to select a subset of $M$ sensors which maximally exploit the redundancies in a Toeplitz $\mathbf{R}$. 
 %the number of rows of $\mathbf{A}_{\text{GNS}}$ scales . The specific case of $L=M^{2}/4+M/2-1$ was introduced as ``Nested Array" in \cite{PiyaNested}. As discussed in \cite{HP_GSip}, the fundamental idea behind GNS or other sparse ruler type sampler is to exploit the difference set of the sampling indices. In particular, each row of $\mathbf{A}_{s}$ contains a single $1$ and let $c(i)$ denote the index of the column containing it. Then, the $(i,j)$th entry of $\mathbf{R_Y}$ corresponds to $t_{c(i)-c(j)}$. The length of smallest range over which $(i,j)$ should be chosen so that $\{c(i)-c(j)\}$ spans all integers from $0$ to $L-1$ is $O(\sqrt{L})$ and the GNS shows a constructive way to select $c(i)$ over this range.
 %\end{remark}
 %%The following result from \cite{HP_GSip} shows how to compress a $N\times N$ Toeplitz matrix without assuming it to be low rank.
@@ -79,21 +82,23 @@ Note that $\mathbf{A}_{\text{GNS}}$ is  a {\em row-selection} matrix that select
 %\label{lem:general}
 %\end{lem}
 %\end{definition}
-Hence, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
+In particular, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
 \begin{equation}
 \mathbf{R}_{\mathcal{S}_{\text{GNS}}} = \mathbf{A}_{\text{GNS}} \mathbf{R} \mathbf{A}^T_{\text{GNS}} 
 \end{equation}
 The structure of $\mathbf{A}_{\text{GNS}}$ ensures that $\mathbf{R}_{\mathcal{S}_{\text{GNS}}}$ is a {\em lossless} sketch of  $\mathbf{R}$. In turn, this tells us that ideally, it is sufficient for the $M$ sensors from $\mathcal{S}_{\text{GNS}}$ to communicate and exchange their measurements in order to  preserve the correlation information from all $N\choose 2$ sensor pairs. Since $M = \Theta(\sqrt{N})$, we can significantly reduce the cost of communication in a distributed sensor network by such correlation-aware sensor selection. Given the basic idea of GNS, we will focus on the following tasks to extend the capabilities of GNS to perform subset selection in two dimensions.
 %\begin{enumerate}
-\subsubsection{ Proposed Research: Two Dimensional GNS and Hierarchical Sensor Selection:} 
-Most sensor networks of interest will be distributed over a two-dimensional area. Hence, it is important to extend the basic version of GNS (which was developed for sensors on a line) to two dimensions. In such cases, the geometry of sensor configurations have very interesting implications on the redundancy relation (\ref{eqn:CorrRed}) and the structure of $\mathbf{R}$. As an example, if we assume the sensors to be located on a uniform rectangular grid in two dimensions of size $N_x\times N_y$, then (\ref{eqn:CorrRed}) implies that $\mathbf{R}\in \mathbb{C}^{N_xN_y \times N_xN_y}$ is a {\em two-level} (or block) Toeplitz matrix of the form 
-\begin{equation}
-\mathbf{R} = \left[\begin{array}{cccc} \mathbf{T}_0 & \mathbf{T}_1 & \cdots & \mathbf{T}_{(N_y-1}) \\
-\mathbf{T}_{-1} & \mathbf{T}_0 & \cdots & \mathbf{T}_{(N_y-2)}\\
-\vdots & \vdots & \vdots & \vdots \\
-\mathbf{T}_{-(N_y-1)} & \mathbf{T}_{-(N_y-2)} & \cdots & \mathbf{T}_0 \end{array}\right]
-\label{eqn:2LevelToep} \end{equation}
-where $\mathbf{T}_i\in \mathbb{C}^{N_x\times N_x}$ is a Toeplitz matrix for each $i\in [0,N_y-1]$. 
+
+\noindent{\bf (c) \underline{Proposed Research: Two Dimensional GNS and Hierarchical Sensor Selection:}} 
+Most sensor networks of interest will be distributed over a two-dimensional area. Hence, it is important to extend the basic version of GNS (which was developed for sensors on a line) to two dimensions. In such cases, the geometry of sensor configurations have very interesting implications on the redundancy relation (\ref{eqn:CorrRed}) and the structure of $\mathbf{R}$. As an example, if we assume the sensors to be located on a uniform rectangular grid in two dimensions of size $N_x\times N_y$, then (\ref{eqn:CorrRed}) implies that $\mathbf{R}\in \mathbb{C}^{N_xN_y \times N_xN_y}$ is a {\em two-level} (or block) Toeplitz matrix. 
+%of the form 
+%\begin{equation}
+%\mathbf{R} = \left[\begin{array}{cccc} \mathbf{T}_0 & \mathbf{T}_1 & \cdots & \mathbf{T}_{(N_y-1}) \\
+%\mathbf{T}_{-1} & \mathbf{T}_0 & \cdots & \mathbf{T}_{(N_y-2)}\\
+%\vdots & \vdots & \vdots & \vdots \\
+%\mathbf{T}_{-(N_y-1)} & \mathbf{T}_{-(N_y-2)} & \cdots & \mathbf{T}_0 \end{array}\right]
+%\label{eqn:2LevelToep} \end{equation}
+%where $\mathbf{T}_i\in \mathbb{C}^{N_x\times N_x}$ is a Toeplitz matrix for each $i\in [0,N_y-1]$. 
 
 \noindent We will develop two-dimensional versions of Generalized Nested Sampling (2D-GNS) to guide our sensor selection strategy so that we can produce a lossless sketch of $\mathbf{R}$ with far fewer sensors by exploiting its unique algebraic structure captured in (\ref{eqn:2LevelToep}). Notice that the extension is quite non-trivial given that $\mathbf{R}$ has Toeplitz structure in individual blocks, as well as the blocks are repeated along each (sub)-diagonal. The optimal sketching matrix should exploit the redundancies in both levels to produce a sketch of size $O(\sqrt{N_xN_y})$. 
 
