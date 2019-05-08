@@ -48,11 +48,13 @@ Sparse modeling assumes that signals can be reconstructed using a few sparse vec
 Whereas many machine learning techniques in geoscience\cite{kong2018}, are reliant on large amounts of training data, locally sparse travel time tomography (LST)\cite{bianco2018} requires none. In LST we adopt the adaptive dictionary learning paradigm from image denoising \cite{elad2010} and medical imaging \cite{ravishankar2011}, in which dictionaries are learned directly from patches of the corrupted image. The slowness dictionaries are learned from patches of a least squares regularized inversion, whereby we reconstruct a sparsity-constrained slowness image. Assuming sufficiently dense ray sampling 
 LST \cite{bianco2018} obtains high resolution by assuming that small patches of discrete slowness maps are repetitions of few elemental patterns from a dictionary of patterns, that is dictionary learning. 
 
-Assuming that the travel paths between sensors has been estimated\cite{sabra2005,gerstoft2006} We propose the future development of machine learning-based tomography methods in acoustics. Such methods will help to more fully-exploit both existing environmental data $\bf E$, as well as very dense sampling from future arrays with many sensors. Such large scale, mobile, and deformable arrays, will use ambient noise processing \cite{sabra2005}, to obtain very dense and rich data sets. We propose  to: \\
-(1) Further develop a dictionary learning-based travel time tomography \cite{bianco2018}, accounting for uncertainty in the measurements and physics. \\
-(2) Formulate the dictionary learning-based approach as conventional neural network via convolutional sparse coding. \\
+Assuming that the travel paths between sensors has been estimated\cite{sabra2005,gerstoft2006} We propose the future development of machine learning-based tomography methods in acoustics. Such methods will help to more fully-exploit both existing environmental data $\bf E$, as well as very dense sampling from future arrays with many sensors. Such large scale, mobile, and deformable arrays, will use ambient noise processing \cite{sabra2005}, to obtain very dense and rich data sets. 
+
+We propose  to: 
+(1) Further develop a dictionary learning-based travel time tomography \cite{bianco2018}, accounting for uncertainty in the measurements and physics. 
+(2) Formulate the dictionary learning-based approach as conventional neural network via convolutional sparse coding. 
 (3) Apply the framework in (2) to  data assimilation, to obtain higher-resolution estimates of the environment. \\
-(4) For EM signals, where the wave speed does not vary much, the above formulation will be modified to  attenuation tomography.\\
+(4) For EM signals, where the wave speed does not vary much, the above formulation will be modified to  attenuation tomography.
 (5) Develop acoustic event detection methods that leverage recent advances in machine learning.\\
 (6) For unknown sensor location, only a graph of the sensor response is obtained. The edges of the graph will contain information related to travel time between nodes. It could here be useful to extract the information onto a manifold. From there further information could be extracted in the spatial dimension. A well-known example of this is that the location of cities in Switzerland could be constructed from the train schedule \cite{dokmanic2015}. With more sensors we would be able to extract both location and environmental information.  
 %\end{itemize}

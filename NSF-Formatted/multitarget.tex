@@ -20,20 +20,19 @@ Our goal will be to develop a rigorous framework for further developing the key 
 \item How large should $M$ be (in comparison to $K$) for multi-target localization?
 \end{enumerate}
 \noindent{\bf (a) \underline{Background on Difference Set-Inspired Antenna Array Design:}}
-We first motivate our sensor selection scheme by reviewing Co-PI Pal's prior work on sparse antenna array design, where the goal was to design {\em non-uniform} array geometries such that it is possible to localize more sources than the number of sensors. 
-\begin{wrapfigure}{r}{0.5\textwidth}
-\begin{center}
-\includegraphics[width=0.5\textwidth]{figs/FigNested.png}
-\end{center}
+\begin{figure}{t}
+\centering
+\includegraphics[width=0.5\columnwidth]{figs/FigNested.png}
 \caption{\label{fig:Nested}  (a) A Uniform Linear Array with $6$ antennas and (b) its difference co-array with $11$ elements (c) A nested array with $6$ antennas and (d) its difference co-array with $23$ elements.}
 %\vspace{-15mm}
 %\subfigure{\includegraphics[width=2.5in]{GNS_Phase.eps}}
 %\caption{Birds}
-\end{wrapfigure}
+\end{figure}
+We first motivate our sensor selection scheme by reviewing Co-PI Pal's prior work on sparse antenna array design, where the goal was to design {\em non-uniform} array geometries such that it is possible to localize more sources than the number of sensors. 
 This is provably not possible with uniform geometries, such as a uniform linear array (ULA). Consider the problem of estimating the directions of arrival (DOA) of $K$ far-field sources emitting narrowband plane-waves, using a linear array of $M$ sensors, where the $m$th sensor is located at a distance of $d_m$ (normalized with respect to the wavelength of source signals) from the origin. 
 The sensing geometry and physical laws governing far-field wave propagation propagation together result in the following functional form for the map $\phi(.)$: \[ \phi(\mathbf{d},\theta_i,t) =  e^{j\pi d_m \sin\theta_i}s_i(t)  \]
 %\[ y_m(t) = \sum_{i=1}^K {e^{j\pi d_m \sin\theta_i}s_i(t) + w_m(t) \] 
-where $\theta_i$ is the DOA of the $i$th source and $s_i(t)$ is the corresponding baseband signal (which incurs negligible delay across the sensor array). Assuming that the source signals are statistically uncorrelated, the correlation between $m$th and $n$th sensors can be shown to be of the form \[ \mathbf{R}_{m,n} = \sum_{i=1}^{K}e^{j\pi (d_m-d_n)\sin\theta_i} p_i + \sigma^2_w\delta[m-n] \]
+where $\theta_i$ is the DOA of the $i$th source and $s_i(t)$ is the corresponding baseband signal (which incurs negligible delay across the sensor array). Assuming that the source signals are statistically uncorrelated, the correlation between $m$th and $n$th sensors can be shown to be of them form \[ \mathbf{R}_{m,n} = \sum_{i=1}^{K}e^{j\pi (d_m-d_n)\sin\theta_i} p_i + \sigma^2_w\delta[m-n] \]
 where $p_i$ is the power of the $i$th source and $\sigma^2_w$ is the noise power. 
 It can be noted that the correlation {\bf only depends on the difference $d_m-d_n$ between sensor locations, and not on the actual locations $d_m$}. %As a special example, for a one dimensional antenna array receiving narrowband sources from spatial directions $r_k=\theta_k, 1\leq k\leq D$, we have $\phi(v_m,r_k)=e^{j\pi v_m\sin\theta_k}$. 
 %Let $\mf{d}_m$ denote the spatial location of the $m$th antenna. 
@@ -51,7 +50,7 @@ The idea of difference set inspired sampler design can be actually generalized b
 However, using the idea of difference-set sampling, one can only compute  cross-correlation values between a much smaller subset of size $\sim\sqrt{N}$ of {\em suitably selected sensor-pairs} and recreate the entire $N\times N$ correlation matrix $\mathbf{R}$. In distributed sensing, this  means that only these sensors need to communicate and exchange information.
 
 \noindent{\bf Approach: Exploiting Distance-based Redundancies Using Generalized Nested Samplers:} The main idea behind achieving such reduction is to exploit the redundancies present in the correlation values that naturally result from the physical spatial signal model. A widely used example of such a redundancy is that the correlation $\mathbf{R}_{m,n} = E\Big(y_m(t)y^*_n(t)\Big)$ between $m$th and $n$th sensors is of the following form %\begin{equation} 
-$\mathbf{R}_{m,n} \approx f(\mathbf{d}_m - \mathbf{d_n}) \label{eqn:CorrRed}$
+\begin{equation} \mathbf{R}_{m,n} \approx f(\mathbf{d}_m - \mathbf{d_n}) \label{eqn:CorrRed} \end{equation}
 %\end{equation}
 Thus, the correlation is spatially only a function of the {\em inter-sensor displacement $\mathbf{d}_m - \mathbf{d_n}$}, and this is a direct consequence of the functional form of $\phi(.)$. This is also referred to as spatial stationarity and it is (exactly or approximately) true for many applications as narrowband and wideband radar \footnote{In the latter case, this holds at individual frequency bands after splitting the wideband signal into narrow frequency bins using a filter bank}, super-resolution optical imaging, mmWave wireless channels %\cite{} 
 and so forth. Hence, depending on the inter-sensor distances, many of these $N\choose 2$ correlation values are actually repeated/redundant. Based on this observation, we propose using a new sketching technique developed by co-PI Pal, called {\bf Generalized Nested Sampling (GNS) to reduce the amount of inter-sensor communication}. Suppose the sensors are located on a uniform grid. In one dimension, (\ref{eqn:CorrRed}) implies that the ideal correlation matrix $\mathbf{R}$ has Toeplitz structure and GNS provides an optimal way to select sensors to sketch such a matrix. The main idea is as follows. Select a subset $\mathcal{S}$ of sensors such that its difference set $\mathbb{D}_{\mathcal{S}}$ contains {\em all possible sensor locations of interest}. In other words, if we want $\mathbb{D}_{\mathcal{S}}$ to contain all possible locations of $N$ sensors, how should the set $\mathcal{S}$ be chosen so that it has minimal cardinality? GNS provides a simple yet effective way to select $\mathcal{S}$, which can be equivalently defined in terms of a {\em subset selection} matrix $\mathbf{A}_{\text{GNS}}$ whose structure dictates which $M$ sensors (out of $N$) are selected. % \cite{}.
@@ -82,7 +81,7 @@ In particular, the indices of these $M$ rows crucially tell us {\em which sensor
 %\label{lem:general}
 %\end{lem}
 %\end{definition}
-In particular, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
+In particular, GNS dictates how to select a subset $\mathcal{S}_{\text{GNS}}$ of $M =  = \Theta(\sqrt{N})$ sensors out of $N$ available sensors so that the Toeplitz $\mathbf{R}$ can be {\em exactly reconstructed} from the pair-wise correlation between sensors in $\mathcal{S}_{\text{GNS}}$. Let $\mathbf{R}_{\mathcal{S}_{\text{GNS}}} \in \mathbb{C}^{M\times M}$ be the correlation matrix computed by aggregating the signals from these sensors. Then, we have 
 \begin{equation}
 \mathbf{R}_{\mathcal{S}_{\text{GNS}}} = \mathbf{A}_{\text{GNS}} \mathbf{R} \mathbf{A}^T_{\text{GNS}} 
 \end{equation}
